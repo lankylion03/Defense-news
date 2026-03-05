@@ -637,15 +637,21 @@ const PROXY_CHAIN = [
 ];
 
 const RSS_FEEDS = [
-  { name:'Breaking Defense', url:'https://breakingdefense.com/feed/',                         cat:'general' },
-  { name:'Defense News',     url:'https://www.defensenews.com/arc/outboundfeeds/rss/',        cat:'general' },
-  { name:'USNI News',        url:'https://news.usni.org/feed',                                cat:'general' },
-  { name:'C4ISRNET',         url:'https://www.c4isrnet.com/arc/outboundfeeds/rss/',           cat:'general' },
-  { name:'The War Zone',     url:'https://www.thedrive.com/the-war-zone/rss',                 cat:'general' },
-  { name:'Defense One',      url:'https://www.defenseone.com/rss/all/',                       cat:'general' },
-  { name:'SpaceNews',        url:'https://spacenews.com/feed/',                               cat:'general' },
-  { name:'Air Force Mag',    url:'https://www.airandspaceforces.com/feed/',                   cat:'general' },
-  { name:'Mil.com',          url:'https://www.military.com/rss-feeds/news',                   cat:'general' },
+  // Tier 1 — known to work through proxies
+  { name:'Breaking Defense',  url:'https://breakingdefense.com/feed/',                        cat:'general' },
+  { name:'USNI News',         url:'https://news.usni.org/feed',                               cat:'general' },
+  { name:'Defense One',       url:'https://www.defenseone.com/rss/all/',                      cat:'general' },
+  { name:'SpaceNews',         url:'https://spacenews.com/feed/',                              cat:'general' },
+  { name:'Air Force Mag',     url:'https://www.airandspaceforces.com/feed/',                  cat:'general' },
+  // Tier 2 — official government feeds (very CORS-friendly)
+  { name:'DoD News',          url:'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10', cat:'general' },
+  { name:'DoD Contracts',     url:'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10&type=contracts', cat:'contracts' },
+  { name:'DSCA Arms Sales',   url:'https://www.dsca.mil/rss.xml',                             cat:'contracts' },
+  // Tier 3 — alternative sources
+  { name:'RealClear Defense', url:'https://www.realcleardefense.com/index.xml',               cat:'general' },
+  { name:'Defence Blog',      url:'https://defence-blog.com/feed/',                           cat:'general' },
+  { name:'The War Zone',      url:'https://www.thedrive.com/the-war-zone/rss',                cat:'general' },
+  { name:'C4ISRNET',          url:'https://www.c4isrnet.com/arc/outboundfeeds/rss/',          cat:'general' },
 ];
 
 // Category classifier based on keywords
@@ -691,20 +697,25 @@ async function tryProxies(feedUrl) {
   for (let i = 0; i < PROXY_CHAIN.length; i++) {
     try {
       const proxyUrl = PROXY_CHAIN[i](feedUrl);
-      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(7000) });
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
       if (!res.ok) continue;
-      const ct = res.headers.get('content-type') || '';
-      let xmlText;
-      if (ct.includes('json') || PROXY_CHAIN[i](feedUrl).includes('allorigins')) {
-        // allorigins wraps in JSON
-        try { const j = await res.json(); xmlText = j.contents; }
-        catch { const t = await res.text(); try { const j2 = JSON.parse(t); xmlText = j2.contents; } catch { xmlText = t; } }
-      } else {
-        xmlText = await res.text();
+      // Get raw text first, then figure out if it's JSON-wrapped or raw XML
+      const rawText = await res.text();
+      if (!rawText || rawText.length < 50) continue;
+      let xmlText = rawText;
+      // If it looks like JSON (allorigins, codetabs wrap responses)
+      if (rawText.trimStart().startsWith('{') || rawText.trimStart().startsWith('[')) {
+        try {
+          const j = JSON.parse(rawText);
+          xmlText = j.contents || j.data || j.body || rawText;
+        } catch(e) { xmlText = rawText; }
       }
       if (!xmlText || xmlText.length < 100) continue;
+      // Try parsing as XML
       const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
-      const items = xml.querySelectorAll('item');
+      const parseErr = xml.querySelector('parsererror');
+      if (parseErr) continue;
+      const items = xml.querySelectorAll('item, entry'); // entry for Atom feeds
       if (items.length > 0) return { xml, proxyIndex: i };
     } catch(e) { /* try next proxy */ }
   }
