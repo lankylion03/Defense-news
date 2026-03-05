@@ -2,260 +2,533 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DEFINT // Defense News Feed</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>DEFINT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
-/* ── THEMES ── */
-[data-theme="dark"] {
-  --bg:#0a0e13; --bg2:#0f1520; --bg3:#141c28; --border:#1e2d3d;
-  --accent:#38bdf8; --accent2:#fb923c; --green:#34d399; --red:#f87171;
-  --yellow:#fbbf24; --purple:#a78bfa; --conflict:#ff6b6b;
-  --text:#cbd5e1; --text-sub:#94a3b8; --text-dim:#64748b; --text-bright:#f1f5f9;
-  --card-bg:#0f1520; --card-hover:#121b2b; --shadow:rgba(0,0,0,0.45);
-  --ribbon-bg:#0b1118; --ribbon-border:#1e2d3d;
-}
-[data-theme="light"] {
-  --bg:#f4f7fb; --bg2:#ffffff; --bg3:#edf1f7; --border:#dce3ed;
-  --accent:#0284c7; --accent2:#ea580c; --green:#059669; --red:#dc2626;
-  --yellow:#d97706; --purple:#7c3aed; --conflict:#dc2626;
-  --text:#1e293b; --text-sub:#374151; --text-dim:#6b7280; --text-bright:#0f172a;
-  --card-bg:#ffffff; --card-hover:#f8fafc; --shadow:rgba(0,0,0,0.07);
-  --ribbon-bg:#1e293b; --ribbon-border:#334155;
+/* ── TOKENS ── */
+:root {
+  --bg:         #080c10;
+  --bg2:        #0f1520;
+  --bg3:        #141c28;
+  --border:     #1e2d3d;
+  --accent:     #38bdf8;
+  --green:      #34d399;
+  --red:        #f87171;
+  --yellow:     #fbbf24;
+  --orange:     #fb923c;
+  --purple:     #a78bfa;
+  --conflict:   #ff6b6b;
+  --text:       #e2e8f0;
+  --text-sub:   #94a3b8;
+  --text-dim:   #4a5568;
+  --text-bright:#f8fafc;
+  --card:       #0f1520;
+  --card-hover: #131d2e;
+  --shadow:     rgba(0,0,0,0.5);
+  --mono:       'Share Tech Mono', monospace;
+  --sans:       'DM Sans', sans-serif;
+  --serif:      'DM Serif Display', serif;
+  --header-h:   56px;
+  --tab-h:      44px;
+  --search-h:   52px;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden;transition:background .2s,color .2s;}
-[data-theme="dark"] body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.018) 3px,rgba(0,0,0,.018) 4px);pointer-events:none;z-index:9999;}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overscroll-behavior: none;
+}
+
+/* Subtle scanlines */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.015) 3px, rgba(0,0,0,.015) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
 
 /* ── HEADER ── */
 .header {
-  background:var(--bg2);
-  border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:300;
-  box-shadow:0 2px 12px var(--shadow);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(8,12,16,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
 }
+
 .header-top {
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 28px;height:56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  height: var(--header-h);
 }
+
 .logo {
-  font-family:'Share Tech Mono',monospace;
-  font-size:18px;color:var(--accent);letter-spacing:3px;
-  display:flex;align-items:center;gap:10px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
 }
-.logo-slash{color:var(--text-dim);}
-.logo-sub{font-size:10px;color:var(--text-dim);letter-spacing:2px;}
-
-.header-actions{display:flex;align-items:center;gap:12px;}
-.live-pill{display:flex;align-items:center;gap:6px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green);letter-spacing:1px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);padding:4px 10px;border-radius:20px;}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.6s ease infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-.clock-text{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);}
-
-.settings-wrap{position:relative;}
-.settings-btn{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);color:var(--text-sub);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:7px 14px;cursor:pointer;border-radius:7px;transition:all .15s;}
-.settings-btn:hover{border-color:var(--accent);color:var(--accent);}
-.settings-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:8px;min-width:220px;box-shadow:0 10px 30px var(--shadow);display:none;z-index:400;}
-.settings-menu.open{display:block;}
-.s-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:7px;gap:12px;transition:background .12s;}
-.s-row:hover{background:var(--bg3);}
-.s-label{font-size:13px;color:var(--text);font-weight:500;}
-.s-sub{font-size:11px;color:var(--text-dim);margin-top:1px;}
-.toggle{position:relative;width:40px;height:22px;flex-shrink:0;}
-.toggle input{display:none;}
-.t-track{position:absolute;inset:0;background:var(--border);border-radius:11px;cursor:pointer;transition:background .2s;}
-.toggle input:checked+.t-track{background:var(--accent);}
-.t-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;pointer-events:none;}
-.toggle input:checked~.t-thumb{transform:translateX(18px);}
-
-/* ── TICKER ── */
-.ticker-bar{background:var(--ribbon-bg);border-bottom:1px solid var(--ribbon-border);padding:0 20px;height:28px;display:flex;align-items:center;overflow:hidden;}
-.ticker-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent);background:rgba(56,189,248,.1);padding:2px 8px;margin-right:16px;flex-shrink:0;border:1px solid rgba(56,189,248,.2);border-radius:2px;}
-.ticker-scroll{display:flex;animation:tk 80s linear infinite;white-space:nowrap;}
-@keyframes tk{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.ti{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);padding-right:44px;}
-.ti .up{color:var(--green);} .ti .dn{color:var(--red);}
-
-/* ── NAV RIBBON ── */
-.nav-ribbon {
-  background:var(--ribbon-bg);
-  border-bottom:1px solid var(--ribbon-border);
-  padding:0 28px;
-  display:flex;
-  align-items:center;
-  gap:2px;
-  overflow-x:auto;
-  scrollbar-width:none;
+.logo-mark {
+  font-family: var(--mono);
+  font-size: 20px;
+  color: var(--accent);
+  letter-spacing: 3px;
 }
-.nav-ribbon::-webkit-scrollbar{display:none;}
-
-.nav-tab {
-  position:relative;
-  display:flex;align-items:center;gap:7px;
-  padding:0 16px;
-  height:42px;
-  background:none;border:none;
-  color:rgba(255,255,255,0.5);
-  font-family:'DM Sans',sans-serif;
-  font-size:13.5px;font-weight:500;
-  cursor:pointer;white-space:nowrap;
-  transition:color .15s;
-  border-bottom:2px solid transparent;
-  margin-bottom:-1px;
+.logo-sep { color: var(--border); font-family: var(--mono); }
+.logo-sub {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
 }
-[data-theme="light"] .nav-tab{color:rgba(255,255,255,0.6);}
-.nav-tab:hover{color:rgba(255,255,255,0.85);}
-.nav-tab.active{color:#fff;border-bottom-color:var(--accent);}
-.nav-tab .tab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.nav-tab .tab-count{font-family:'Share Tech Mono',monospace;font-size:10px;background:rgba(255,255,255,.1);padding:1px 6px;border-radius:10px;color:rgba(255,255,255,.5);}
-.nav-tab.active .tab-count{background:rgba(56,189,248,.25);color:var(--accent);}
 
-/* Date dropdown in ribbon */
-.ribbon-date {
-  margin-left:auto;
-  display:flex;align-items:center;gap:8px;
-  flex-shrink:0;
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.live-pill {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(52,211,153,.08);
+  border: 1px solid rgba(52,211,153,.2);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 1px;
 }
-.ribbon-date label{font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px;white-space:nowrap;}
-.ribbon-date select{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);font-family:'DM Sans',sans-serif;font-size:12px;padding:5px 10px;border-radius:5px;cursor:pointer;outline:none;transition:border-color .15s;}
-.ribbon-date select:hover{border-color:rgba(56,189,248,.5);}
-
-/* Focus area dropdown */
-.nav-dropdown{position:relative;}
-.nav-dropdown-menu{position:absolute;top:calc(100% + 4px);left:0;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px;min-width:200px;box-shadow:0 8px 24px var(--shadow);display:none;z-index:400;}
-.nav-dropdown-menu.open{display:block;}
-.nav-dd-item{display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;background:none;border:none;color:var(--text-sub);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;border-radius:5px;text-align:left;transition:all .12s;}
-.nav-dd-item:hover{background:var(--bg3);color:var(--text-bright);}
-.nav-dd-item.active{background:rgba(56,189,248,.08);color:var(--accent);}
-
-/* ── LAYOUT ── */
-.page-body {
-  display:grid;
-  grid-template-columns:1fr 280px;
-  max-width:1400px;
-  margin:0 auto;
-  gap:0;
-  padding:24px 28px;
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 1.8s ease infinite;
 }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.7)} }
+
+.settings-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text-sub);
+  font-size: 18px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.settings-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Settings sheet */
+.settings-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 200;
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s;
+}
+.settings-overlay.open { opacity: 1; pointer-events: all; }
+.settings-sheet {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--bg2);
+  border-radius: 20px 20px 0 0;
+  border-top: 1px solid var(--border);
+  padding: 12px 0 40px;
+  z-index: 201;
+  transform: translateY(100%);
+  transition: transform .3s cubic-bezier(.32,.72,0,1);
+}
+.settings-overlay.open .settings-sheet { transform: translateY(0); }
+.sheet-handle {
+  width: 36px; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+.sheet-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  padding: 0 20px 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.sheet-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  gap: 16px;
+}
+.sheet-row-label { font-size: 15px; color: var(--text); font-weight: 500; }
+.sheet-row-sub { font-size: 12px; color: var(--text-dim); margin-top: 1px; }
+
+/* iOS-style toggle */
+.ios-toggle { position: relative; width: 51px; height: 31px; flex-shrink: 0; }
+.ios-toggle input { display: none; }
+.ios-track {
+  position: absolute; inset: 0;
+  background: var(--border);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.ios-toggle input:checked + .ios-track { background: #30d158; }
+.ios-thumb {
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 27px; height: 27px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,.3);
+  transition: transform .2s cubic-bezier(.32,.72,0,1);
+  pointer-events: none;
+}
+.ios-toggle input:checked ~ .ios-thumb { transform: translateX(20px); }
+
+/* ── TABS ── */
+.tabs-wrap {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 0;
+  padding: 0 4px;
+  height: var(--tab-h);
+  align-items: center;
+  border-top: 1px solid var(--border);
+}
+.tabs-wrap::-webkit-scrollbar { display: none; }
+
+.tab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px;
+  background: none; border: none;
+  color: var(--text-dim);
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: 8px;
+  transition: all .15s;
+  position: relative;
+  flex-shrink: 0;
+}
+.tab:hover { color: var(--text); background: rgba(255,255,255,.04); }
+.tab.active { color: var(--text-bright); background: rgba(56,189,248,.1); }
+.tab-dot { width: 6px; height: 6px; border-radius: 50%; }
+.tab-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: rgba(255,255,255,.08);
+  color: var(--text-dim);
+  padding: 1px 5px;
+  border-radius: 8px;
+}
+.tab.active .tab-count { background: rgba(56,189,248,.2); color: var(--accent); }
+
+/* ── SEARCH BAR ── */
+.search-wrap {
+  padding: 8px 14px 10px;
+  border-top: 1px solid var(--border);
+}
+.search-inner {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0 14px;
+  height: 38px;
+  transition: border-color .15s;
+}
+.search-inner:focus-within { border-color: var(--accent); }
+.search-icon { color: var(--text-dim); font-size: 15px; flex-shrink: 0; }
+.search-input {
+  flex: 1;
+  background: none; border: none; outline: none;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+}
+.search-input::placeholder { color: var(--text-dim); }
+.search-clear {
+  background: none; border: none;
+  color: var(--text-dim);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  display: none;
+  line-height: 1;
+}
+.search-clear.visible { display: block; }
+
+/* ── MAIN SCROLL AREA ── */
+.page-offset {
+  /* header-top + tabs + search */
+  padding-top: calc(var(--header-h) + var(--tab-h) + 58px);
+  padding-bottom: 90px;
+}
+
+/* ── STATUS BAR ── */
+.status-bar {
+  margin: 0 14px 12px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+  transition: all .2s;
+}
+.status-bar.live   { background: rgba(52,211,153,.07); border: 1px solid rgba(52,211,153,.15); color: var(--text-sub); }
+.status-bar.error  { background: rgba(248,113,113,.07); border: 1px solid rgba(248,113,113,.15); color: #f87171; }
+.status-bar.loading{ background: rgba(56,189,248,.07); border: 1px solid rgba(56,189,248,.15); color: var(--text-dim); }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.status-bar.live .status-dot   { background: var(--green); }
+.status-bar.error .status-dot  { background: var(--red); }
+.status-bar.loading .status-dot{ background: var(--accent); animation: pulse 1s infinite; }
+.status-refresh {
+  margin-left: auto;
+  background: none; border: none;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  padding: 0;
+}
+.status-refresh:disabled { opacity: .4; }
 
 /* ── FEED ── */
-.feed-col{display:flex;flex-direction:column;gap:16px;min-width:0;}
-.feed-header{display:flex;align-items:center;justify-content:space-between;}
-.feed-title-area{}
-.feed-title{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
-.feed-subtitle{font-size:12px;color:var(--text-dim);margin-top:2px;}
-.refresh-btn{display:flex;align-items:center;gap:6px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:11px;padding:7px 14px;cursor:pointer;border-radius:6px;letter-spacing:1px;transition:all .15s;}
-.refresh-btn:hover{background:rgba(56,189,248,.16);border-color:var(--accent);}
-.refresh-btn:disabled{opacity:.4;cursor:not-allowed;}
-.spin{display:inline-block;animation:spin .8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* Section divider */
-.section-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;padding:6px 0;border-bottom:1px solid var(--border);margin-bottom:2px;display:flex;align-items:center;gap:8px;}
-.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 14px;
+}
 
 /* ── CARDS ── */
-.news-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px 22px;cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s;position:relative;overflow:hidden;animation:slideIn .3s ease both;box-shadow:0 1px 4px var(--shadow);}
-@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.news-card:hover{border-color:rgba(56,189,248,.3);background:var(--card-hover);box-shadow:0 4px 20px var(--shadow);}
-.news-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:10px 0 0 10px;}
-.news-card.general::before{background:var(--text-dim);}
-.news-card.contracts::before{background:var(--accent);}
-.news-card.funding::before{background:var(--green);}
-.news-card.testing::before{background:var(--yellow);}
-.news-card.policy::before{background:var(--accent2);}
-.news-card.international::before{background:var(--purple);}
-.news-card.conflict::before{background:var(--conflict);}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  animation: rise .3s ease both;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: border-color .15s, background .15s;
+  text-decoration: none;
+  display: block;
+  -webkit-user-select: none;
+  user-select: none;
+}
+@keyframes rise { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+.card:active { background: var(--card-hover); border-color: rgba(56,189,248,.2); transform: scale(.99); transition: transform .1s; }
 
-.card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
-.cat-tag{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:4px;}
-.tag-general    {background:rgba(100,116,139,.15);color:var(--text-dim);border:1px solid rgba(100,116,139,.25);}
-.tag-contracts  {background:rgba(56,189,248,.12);color:var(--accent);border:1px solid rgba(56,189,248,.25);}
-.tag-funding    {background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.25);}
-.tag-testing    {background:rgba(251,191,36,.12);color:var(--yellow);border:1px solid rgba(251,191,36,.25);}
-.tag-policy     {background:rgba(251,146,60,.12);color:var(--accent2);border:1px solid rgba(251,146,60,.25);}
-.tag-international{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.25);}
-.tag-conflict   {background:rgba(255,107,107,.12);color:var(--conflict);border:1px solid rgba(255,107,107,.25);}
+.card-accent {
+  height: 3px;
+  width: 100%;
+}
 
-.card-source{font-size:13px;font-weight:600;color:var(--text-sub);}
-.card-time{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);margin-left:auto;}
+.card-body { padding: 14px 16px 16px; }
 
-.card-headline{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text-bright);line-height:1.35;margin-bottom:10px;letter-spacing:.1px;}
-.card-summary{font-size:14px;color:var(--text-sub);line-height:1.7;}
-.card-impact{font-size:13px;color:var(--text-dim);line-height:1.6;border-left:2px solid var(--border);padding-left:12px;margin-top:10px;font-style:italic;}
-[data-theme="light"] .card-impact{color:var(--text-sub);}
+.card-meta {
+  display: flex; align-items: center;
+  flex-wrap: wrap; gap: 7px;
+  margin-bottom: 10px;
+}
 
-.card-footer{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
-.card-companies{font-size:12px;color:var(--text-dim);font-weight:500;}
-.card-amount{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--green);background:rgba(52,211,153,.08);padding:2px 9px;border-radius:4px;border:1px solid rgba(52,211,153,.2);}
-.source-link{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--accent);text-decoration:none;border:1px solid rgba(56,189,248,.2);padding:3px 10px;border-radius:5px;transition:all .13s;letter-spacing:.3px;}
-.source-link:hover{background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.5);}
+.cat-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.t-general      { background: rgba(100,116,139,.15); color: #94a3b8; border: 1px solid rgba(100,116,139,.2); }
+.t-conflict     { background: rgba(255,107,107,.12); color: var(--conflict); border: 1px solid rgba(255,107,107,.25); }
+.t-contracts    { background: rgba(56,189,248,.12);  color: var(--accent);   border: 1px solid rgba(56,189,248,.25); }
+.t-funding      { background: rgba(52,211,153,.12);  color: var(--green);    border: 1px solid rgba(52,211,153,.25); }
+.t-testing      { background: rgba(251,191,36,.12);  color: var(--yellow);   border: 1px solid rgba(251,191,36,.25); }
+.t-policy       { background: rgba(251,146,60,.12);  color: var(--orange);   border: 1px solid rgba(251,146,60,.25); }
+.t-international{ background: rgba(167,139,250,.12); color: var(--purple);   border: 1px solid rgba(167,139,250,.25); }
 
-/* Live badge */
-.live-badge{display:inline-flex;align-items:center;gap:4px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--green);background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);padding:1px 6px;border-radius:3px;letter-spacing:1px;}
-.live-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.6s ease infinite;}
+.card-source { font-size: 12px; font-weight: 600; color: var(--text-sub); }
+.card-time   { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-left: auto; }
 
-/* RSS status bar */
-.rss-status{display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.15);border-radius:7px;font-size:12px;color:var(--text-sub);}
-.rss-status.error{background:rgba(248,113,113,.05);border-color:rgba(248,113,113,.15);color:var(--red);}
-.rss-status.loading{background:rgba(56,189,248,.05);border-color:rgba(56,189,248,.15);color:var(--text-dim);}
-.rss-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;}
-.rss-status.error .rss-dot{background:var(--red);}
-.rss-status.loading .rss-dot{background:var(--accent);animation:blink 1s infinite;}
+.live-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--mono); font-size: 9px;
+  color: var(--green);
+  background: rgba(52,211,153,.1);
+  border: 1px solid rgba(52,211,153,.2);
+  padding: 1px 5px; border-radius: 3px;
+  letter-spacing: 1px;
+}
+.live-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse 1.6s ease infinite; }
+
+.card-headline {
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--text-bright);
+  line-height: 1.35;
+  margin-bottom: 9px;
+}
+
+.card-summary {
+  font-size: 13.5px;
+  color: var(--text-sub);
+  line-height: 1.65;
+}
+
+.card-footer {
+  display: flex; align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.card-companies { font-size: 12px; color: var(--text-dim); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-amount {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--green);
+  background: rgba(52,211,153,.08);
+  border: 1px solid rgba(52,211,153,.18);
+  padding: 2px 8px; border-radius: 4px;
+  white-space: nowrap;
+}
+.card-link {
+  margin-left: auto;
+  font-size: 11px; font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid rgba(56,189,248,.2);
+  padding: 3px 10px; border-radius: 5px;
+  white-space: nowrap;
+  transition: background .13s;
+}
+.card-link:hover { background: rgba(56,189,248,.1); }
+
+/* Accent bar colors */
+.accent-general      { background: #4a5568; }
+.accent-conflict     { background: var(--conflict); }
+.accent-contracts    { background: var(--accent); }
+.accent-funding      { background: var(--green); }
+.accent-testing      { background: var(--yellow); }
+.accent-policy       { background: var(--orange); }
+.accent-international{ background: var(--purple); }
 
 /* ── LOADING ── */
-.loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 20px;gap:18px;}
-.loading-grid{display:grid;grid-template-columns:repeat(5,9px);gap:5px;}
-.lc{width:9px;height:9px;background:var(--border);border-radius:2px;animation:lglow 1.4s ease infinite;}
-.lc:nth-child(1){animation-delay:0s}.lc:nth-child(2){animation-delay:.08s}.lc:nth-child(3){animation-delay:.16s}.lc:nth-child(4){animation-delay:.24s}.lc:nth-child(5){animation-delay:.32s}
-.lc:nth-child(6){animation-delay:.08s}.lc:nth-child(7){animation-delay:.16s}.lc:nth-child(8){animation-delay:.24s}.lc:nth-child(9){animation-delay:.32s}.lc:nth-child(10){animation-delay:.40s}
-.lc:nth-child(11){animation-delay:.16s}.lc:nth-child(12){animation-delay:.24s}.lc:nth-child(13){animation-delay:.32s}.lc:nth-child(14){animation-delay:.40s}.lc:nth-child(15){animation-delay:.48s}
-@keyframes lglow{0%,100%{background:var(--border)}50%{background:var(--accent)}}
-.loading-text{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);letter-spacing:2px;}
-.loading-sub{font-size:12px;color:var(--text-dim);text-align:center;max-width:280px;line-height:1.5;}
+.loading {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 20px; gap: 20px;
+}
+.loading-dots {
+  display: flex; gap: 8px;
+}
+.loading-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  animation: dotpulse 1.2s ease infinite;
+}
+.loading-dot:nth-child(2) { animation-delay: .15s; }
+.loading-dot:nth-child(3) { animation-delay: .3s; }
+@keyframes dotpulse { 0%,100%{background:var(--border);transform:scale(1)} 50%{background:var(--accent);transform:scale(1.3)} }
+.loading-text { font-family: var(--mono); font-size: 12px; color: var(--text-dim); letter-spacing: 2px; }
+.loading-sub  { font-size: 13px; color: var(--text-dim); text-align: center; max-width: 260px; line-height: 1.5; }
 
-/* ── RIGHT SIDEBAR ── */
-.side-col{display:flex;flex-direction:column;gap:20px;padding-left:24px;border-left:1px solid var(--border);}
-.side-section{}
-.side-title{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:14px;}
+/* ── EMPTY ── */
+.empty {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.empty-icon { font-size: 40px; margin-bottom: 12px; display: block; }
 
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.kpi-card{background:var(--bg3);border:1px solid var(--border);padding:12px;border-radius:8px;}
-.kpi-val{font-family:'Share Tech Mono',monospace;font-size:22px;line-height:1;margin-bottom:3px;}
-.kpi-val.ca{color:var(--accent);} .kpi-val.cg{color:var(--green);} .kpi-val.cy{color:var(--yellow);} .kpi-val.co{color:var(--accent2);}
-.kpi-label{font-size:11px;color:var(--text-dim);font-weight:500;}
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(8,12,16,0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 100;
+}
+.nav-item {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px;
+  padding: 10px 0;
+  background: none; border: none;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  transition: color .15s;
+}
+.nav-item.active { color: var(--accent); }
+.nav-item:hover { color: var(--text); }
+.nav-icon { font-size: 20px; line-height: 1; }
 
-.watch-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);}
-.watch-item:last-child{border-bottom:none;}
-.wt{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-bright);font-weight:bold;}
-.wn{font-size:11px;color:var(--text-dim);margin-top:1px;}
-.wc{font-family:'Share Tech Mono',monospace;font-size:11px;text-align:right;}
-.wc.up{color:var(--green);} .wc.dn{color:var(--red);}
+/* ── PULL TO REFRESH hint ── */
+.ptr-hint {
+  text-align: center;
+  padding: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
 
-.topic-item{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);}
-.topic-item:last-child{border-bottom:none;}
-.t-rank{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);width:18px;flex-shrink:0;}
-.t-name{font-size:13px;font-weight:600;color:var(--text);flex:1;}
-.t-bar{height:3px;background:rgba(56,189,248,.1);border-radius:2px;margin-top:3px;}
-.t-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .8s ease;}
+/* ── LIGHT MODE ── */
+[data-theme="light"] {
+  --bg: #f4f7fb; --bg2: #ffffff; --bg3: #edf1f7; --border: #dce3ed;
+  --accent: #0284c7; --green: #059669; --red: #dc2626;
+  --yellow: #d97706; --orange: #ea580c; --purple: #7c3aed; --conflict: #dc2626;
+  --text: #1e293b; --text-sub: #374151; --text-dim: #6b7280; --text-bright: #0f172a;
+  --card: #ffffff; --card-hover: #f8fafc; --shadow: rgba(0,0,0,.06);
+}
+[data-theme="light"] body::before { display: none; }
+[data-theme="light"] .header { background: rgba(244,247,251,0.95); }
+[data-theme="light"] .bottom-nav { background: rgba(244,247,251,0.95); }
 
-.rss-sources{display:flex;flex-direction:column;gap:6px;}
-.rss-source-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;}
-.rss-source-name{font-size:12px;font-weight:500;color:var(--text);}
-.rss-source-count{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);background:var(--bg2);padding:1px 6px;border-radius:3px;}
-.rss-source-ok{width:6px;height:6px;border-radius:50%;background:var(--green);}
-.rss-source-err{width:6px;height:6px;border-radius:50%;background:var(--red);}
+/* ── DESKTOP CENTERING ── */
+@media (min-width: 600px) {
+  .header, .bottom-nav { max-width: 600px; margin: 0 auto; left: 50%; transform: translateX(-50%); right: auto; width: 100%; }
+  .page-offset { max-width: 600px; margin: 0 auto; }
+}
 
-.no-results{text-align:center;padding:50px 20px;font-size:14px;color:var(--text-dim);font-style:italic;}
-
-::-webkit-scrollbar{width:5px;height:5px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
-
-@media(max-width:900px){.page-body{grid-template-columns:1fr;}.side-col{display:none;}}
-@media(max-width:640px){.nav-ribbon{padding:0 12px;}.header-top{padding:0 16px;}}
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -264,372 +537,245 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 <div class="header">
   <div class="header-top">
     <div class="logo">
-      DEFINT
-      <span class="logo-slash">//</span>
-      <span class="logo-sub">DEFENSE NEWS FEED</span>
+      <span class="logo-mark">DEFINT</span>
+      <span class="logo-sep">//</span>
+      <span class="logo-sub">DEFENSE NEWS</span>
     </div>
-    <div class="header-actions">
-      <div class="live-pill"><div class="live-dot"></div>RSS LIVE</div>
-      <span class="clock-text" id="clock">--:--:-- UTC</span>
-      <div class="settings-wrap">
-        <button class="settings-btn" id="settingsBtn" onclick="toggleSettings()">⚙ Settings</button>
-        <div class="settings-menu" id="settingsMenu">
-          <div class="s-row">
-            <div><div class="s-label">Light Mode</div><div class="s-sub">Switch appearance</div></div>
-            <label class="toggle"><input type="checkbox" id="themeToggle" onchange="setTheme(this.checked)"><div class="t-track"></div><div class="t-thumb"></div></label>
-          </div>
-          <div class="s-row">
-            <div><div class="s-label">Compact Cards</div><div class="s-sub">Hide impact analysis</div></div>
-            <label class="toggle"><input type="checkbox" id="compactToggle" onchange="setCompact(this.checked)"><div class="t-track"></div><div class="t-thumb"></div></label>
-          </div>
-          <div class="s-row">
-            <div><div class="s-label">Auto-Refresh</div><div class="s-sub">Update every 20 min</div></div>
-            <label class="toggle"><input type="checkbox" id="autoRefresh" checked onchange="setAutoRefresh(this.checked)"><div class="t-track"></div><div class="t-thumb"></div></label>
-          </div>
-        </div>
+    <div class="header-right">
+      <div class="live-pill" id="livePill">
+        <div class="live-dot"></div>
+        <span id="livePillText">LIVE</span>
       </div>
+      <button class="settings-btn" onclick="openSettings()" aria-label="Settings">⚙</button>
     </div>
   </div>
 
-  <!-- TICKER -->
-  <div class="ticker-bar">
-    <span class="ticker-lbl">MKT</span>
-    <div class="ticker-scroll">
-      <span class="ti">LMT <span class="up">+1.02%</span></span><span class="ti">RTX <span class="up">+0.87%</span></span><span class="ti">NOC <span class="dn">-0.44%</span></span><span class="ti">GD <span class="up">+0.61%</span></span><span class="ti">BA <span class="up">+1.78%</span></span><span class="ti">HII <span class="dn">-0.22%</span></span><span class="ti">PLTR <span class="up">+4.13%</span></span><span class="ti">AVAV <span class="up">+1.34%</span></span><span class="ti">RCAT <span class="up">+5.02%</span></span><span class="ti">KTOS <span class="up">+2.41%</span></span><span class="ti">CACI <span class="up">+0.78%</span></span><span class="ti">SAIC <span class="dn">-0.15%</span></span><span class="ti">HXL <span class="up">+0.93%</span></span>
-      <span class="ti">LMT <span class="up">+1.02%</span></span><span class="ti">RTX <span class="up">+0.87%</span></span><span class="ti">NOC <span class="dn">-0.44%</span></span><span class="ti">GD <span class="up">+0.61%</span></span><span class="ti">BA <span class="up">+1.78%</span></span><span class="ti">HII <span class="dn">-0.22%</span></span><span class="ti">PLTR <span class="up">+4.13%</span></span><span class="ti">AVAV <span class="up">+1.34%</span></span><span class="ti">RCAT <span class="up">+5.02%</span></span><span class="ti">KTOS <span class="up">+2.41%</span></span><span class="ti">CACI <span class="up">+0.78%</span></span><span class="ti">SAIC <span class="dn">-0.15%</span></span><span class="ti">HXL <span class="up">+0.93%</span></span>
-    </div>
+  <!-- Category tabs -->
+  <div class="tabs-wrap" id="tabsWrap">
+    <button class="tab active" data-cat="all" onclick="setTab('all',this)">
+      All <span class="tab-count" id="tc-all">—</span>
+    </button>
+    <button class="tab" data-cat="general" onclick="setTab('general',this)">
+      <span class="tab-dot" style="background:#64748b"></span>General
+      <span class="tab-count" id="tc-general">—</span>
+    </button>
+    <button class="tab" data-cat="conflict" onclick="setTab('conflict',this)">
+      <span class="tab-dot" style="background:var(--conflict)"></span>Conflict
+      <span class="tab-count" id="tc-conflict">—</span>
+    </button>
+    <button class="tab" data-cat="contracts" onclick="setTab('contracts',this)">
+      <span class="tab-dot" style="background:var(--accent)"></span>Contracts
+      <span class="tab-count" id="tc-contracts">—</span>
+    </button>
+    <button class="tab" data-cat="funding" onclick="setTab('funding',this)">
+      <span class="tab-dot" style="background:var(--green)"></span>Funding
+      <span class="tab-count" id="tc-funding">—</span>
+    </button>
+    <button class="tab" data-cat="testing" onclick="setTab('testing',this)">
+      <span class="tab-dot" style="background:var(--yellow)"></span>Testing
+      <span class="tab-count" id="tc-testing">—</span>
+    </button>
+    <button class="tab" data-cat="policy" onclick="setTab('policy',this)">
+      <span class="tab-dot" style="background:var(--orange)"></span>Policy
+      <span class="tab-count" id="tc-policy">—</span>
+    </button>
   </div>
 
-  <!-- NAV RIBBON -->
-  <nav class="nav-ribbon" id="navRibbon">
-    <button class="nav-tab active" data-cat="all" onclick="setTab('all',this)">
-      <span class="tab-dot" style="background:var(--text-dim)"></span>
-      All News
-      <span class="tab-count" id="tc-all">0</span>
-    </button>
-    <button class="nav-tab" data-cat="general" onclick="setTab('general',this)">
-      <span class="tab-dot" style="background:var(--text-dim)"></span>
-      General Defense
-      <span class="tab-count" id="tc-general">0</span>
-    </button>
-    <button class="nav-tab" data-cat="conflict" onclick="setTab('conflict',this)">
-      <span class="tab-dot" style="background:var(--conflict)"></span>
-      Conflict Updates
-      <span class="tab-count" id="tc-conflict">0</span>
-    </button>
-    <button class="nav-tab" data-cat="contracts" onclick="setTab('contracts',this)">
-      <span class="tab-dot" style="background:var(--accent)"></span>
-      Contracts
-      <span class="tab-count" id="tc-contracts">0</span>
-    </button>
-    <button class="nav-tab" data-cat="funding" onclick="setTab('funding',this)">
-      <span class="tab-dot" style="background:var(--green)"></span>
-      Funding
-      <span class="tab-count" id="tc-funding">0</span>
-    </button>
-    <button class="nav-tab" data-cat="testing" onclick="setTab('testing',this)">
-      <span class="tab-dot" style="background:var(--yellow)"></span>
-      Testing & R&D
-      <span class="tab-count" id="tc-testing">0</span>
-    </button>
-    <button class="nav-tab" data-cat="policy" onclick="setTab('policy',this)">
-      <span class="tab-dot" style="background:var(--accent2)"></span>
-      Policy
-      <span class="tab-count" id="tc-policy">0</span>
-    </button>
-    <button class="nav-tab" data-cat="international" onclick="setTab('international',this)">
-      <span class="tab-dot" style="background:var(--purple)"></span>
-      International
-      <span class="tab-count" id="tc-international">0</span>
-    </button>
-
-    <!-- Focus dropdown -->
-    <div class="nav-dropdown" style="margin-left:8px;">
-      <button class="nav-tab" onclick="toggleFocusMenu(event)" id="focusTabBtn">
-        Focus Area ▾
-      </button>
-      <div class="nav-dropdown-menu" id="focusMenu">
-        <button class="nav-dd-item" onclick="setFocus('autonomous systems',this)">🤖 Autonomous Systems</button>
-        <button class="nav-dd-item" onclick="setFocus('drone warfare',this)">🚁 Drone Warfare</button>
-        <button class="nav-dd-item" onclick="setFocus('hypersonic weapons',this)">⚡ Hypersonics</button>
-        <button class="nav-dd-item" onclick="setFocus('space defense',this)">🛰 Space Defense</button>
-        <button class="nav-dd-item" onclick="setFocus('cyber warfare',this)">💻 Cyber / JADC2</button>
-        <button class="nav-dd-item" onclick="setFocus('AI defense technology',this)">🧠 AI / Tech</button>
-        <button class="nav-dd-item" onclick="setFocus('naval',this)">⚓ Naval</button>
-        <button class="nav-dd-item" onclick="setFocus('missile defense',this)">🎯 Missile Defense</button>
-      </div>
+  <!-- Search -->
+  <div class="search-wrap">
+    <div class="search-inner">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" type="search" placeholder="Search defense news…"
+        oninput="onSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
     </div>
-
-    <!-- Date filter on right -->
-    <div class="ribbon-date">
-      <label>DATE</label>
-      <select id="dateFilter" onchange="render()">
-        <option value="all">All Time</option>
-        <option value="today">Today</option>
-        <option value="week">This Week</option>
-        <option value="twoweeks">2 Weeks</option>
-        <option value="month">Month</option>
-      </select>
-    </div>
-  </nav>
+  </div>
 </div>
 
-<!-- ══ PAGE BODY ══ -->
-<div class="page-body">
+<!-- ══ SCROLL AREA ══ -->
+<div class="page-offset">
 
-  <!-- FEED -->
-  <div class="feed-col">
-    <div class="feed-header">
-      <div class="feed-title-area">
-        <div class="feed-title" id="feedTitle">ALL DEFENSE NEWS</div>
-        <div class="feed-subtitle" id="feedSubtitle">Loading from live RSS sources…</div>
-      </div>
-      <button class="refresh-btn" id="refreshBtn" onclick="fetchAllFeeds()">
-        <span id="refreshIcon">⟳</span> Refresh
-      </button>
-    </div>
-
-    <div id="rssStatus" class="rss-status loading">
-      <div class="rss-dot"></div>
-      <span id="rssStatusText">Connecting to RSS feeds…</span>
-    </div>
-
-    <div class="loading-state" id="loadingState">
-      <div class="loading-grid">
-        <div class="lc"></div><div class="lc"></div><div class="lc"></div><div class="lc"></div><div class="lc"></div>
-        <div class="lc"></div><div class="lc"></div><div class="lc"></div><div class="lc"></div><div class="lc"></div>
-        <div class="lc"></div><div class="lc"></div><div class="lc"></div><div class="lc"></div><div class="lc"></div>
-      </div>
-      <div class="loading-text">FETCHING LIVE NEWS</div>
-      <div class="loading-sub">Pulling from Breaking Defense, Defense News, USNI News, C4ISRNET and more…</div>
-    </div>
-
-    <div id="newsContainer"></div>
+  <!-- Status bar -->
+  <div class="status-bar loading" id="statusBar">
+    <div class="status-dot"></div>
+    <span id="statusText">Connecting to live sources…</span>
+    <button class="status-refresh" id="refreshBtn" onclick="fetchAll()" disabled>⟳ Refresh</button>
   </div>
 
-  <!-- RIGHT SIDEBAR -->
-  <div class="side-col">
-    <div class="side-section">
-      <div class="side-title">Today's Pulse</div>
-      <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-val ca" id="kTotal">—</div><div class="kpi-label">Stories</div></div>
-        <div class="kpi-card"><div class="kpi-val cg" id="kContracts">—</div><div class="kpi-label">Contracts</div></div>
-        <div class="kpi-card"><div class="kpi-val cy" id="kFunding">—</div><div class="kpi-label">Funding</div></div>
-        <div class="kpi-card"><div class="kpi-val co" id="kTesting">—</div><div class="kpi-label">Testing</div></div>
+  <!-- Loading -->
+  <div class="loading" id="loadingState">
+    <div class="loading-dots">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
+    <div class="loading-text">FETCHING LIVE NEWS</div>
+    <div class="loading-sub">Pulling from Breaking Defense, USNI News, Defense One and more…</div>
+  </div>
+
+  <!-- Feed -->
+  <div class="feed" id="feed"></div>
+
+  <div class="ptr-hint" id="ptrHint" style="display:none">— End of feed · Auto-refreshes every 20 min —</div>
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="scrollToTop()">
+    <span class="nav-icon">⊞</span>Feed
+  </button>
+  <button class="nav-item" onclick="setTab('conflict', document.querySelector('[data-cat=conflict]')); scrollToTop()">
+    <span class="nav-icon">⚡</span>Conflict
+  </button>
+  <button class="nav-item" onclick="setTab('contracts', document.querySelector('[data-cat=contracts]')); scrollToTop()">
+    <span class="nav-icon">📋</span>Contracts
+  </button>
+  <button class="nav-item" onclick="openSettings()">
+    <span class="nav-icon">⚙</span>Settings
+  </button>
+</div>
+
+<!-- ══ SETTINGS SHEET ══ -->
+<div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()">
+  <div class="settings-sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">SETTINGS</div>
+    <div class="sheet-row">
+      <div>
+        <div class="sheet-row-label">Light Mode</div>
+        <div class="sheet-row-sub">Switch to light theme</div>
       </div>
+      <label class="ios-toggle">
+        <input type="checkbox" id="themeToggle" onchange="setTheme(this.checked)">
+        <div class="ios-track"></div>
+        <div class="ios-thumb"></div>
+      </label>
     </div>
-
-    <div class="side-section">
-      <div class="side-title">RSS Sources</div>
-      <div class="rss-sources" id="rssSources">
-        <div style="font-size:12px;color:var(--text-dim)">Connecting…</div>
+    <div class="sheet-row">
+      <div>
+        <div class="sheet-row-label">Compact Summaries</div>
+        <div class="sheet-row-sub">Show shorter article previews</div>
       </div>
+      <label class="ios-toggle">
+        <input type="checkbox" id="compactToggle" onchange="setCompact(this.checked)">
+        <div class="ios-track"></div>
+        <div class="ios-thumb"></div>
+      </label>
     </div>
-
-    <div class="side-section">
-      <div class="side-title">Defense Watchlist</div>
-      <div class="watch-item"><div><div class="wt">LMT</div><div class="wn">Lockheed Martin</div></div><div class="wc up">+1.02%</div></div>
-      <div class="watch-item"><div><div class="wt">RTX</div><div class="wn">Raytheon Tech</div></div><div class="wc up">+0.87%</div></div>
-      <div class="watch-item"><div><div class="wt">NOC</div><div class="wn">Northrop Grumman</div></div><div class="wc dn">-0.44%</div></div>
-      <div class="watch-item"><div><div class="wt">GD</div><div class="wn">General Dynamics</div></div><div class="wc up">+0.61%</div></div>
-      <div class="watch-item"><div><div class="wt">PLTR</div><div class="wn">Palantir</div></div><div class="wc up">+4.13%</div></div>
-      <div class="watch-item"><div><div class="wt">KTOS</div><div class="wn">Kratos Defense</div></div><div class="wc up">+2.41%</div></div>
-      <div class="watch-item"><div><div class="wt">AVAV</div><div class="wn">AeroVironment</div></div><div class="wc up">+1.34%</div></div>
-      <div class="watch-item"><div><div class="wt">RCAT</div><div class="wn">Red Cat Holdings</div></div><div class="wc up">+5.02%</div></div>
+    <div class="sheet-row">
+      <div>
+        <div class="sheet-row-label">Auto-Refresh</div>
+        <div class="sheet-row-sub">Update feed every 20 minutes</div>
+      </div>
+      <label class="ios-toggle">
+        <input type="checkbox" id="autoToggle" checked onchange="setAuto(this.checked)">
+        <div class="ios-track"></div>
+        <div class="ios-thumb"></div>
+      </label>
     </div>
-
-    <div class="side-section">
-      <div class="side-title">Trending</div>
-      <div id="trending"><div style="font-size:12px;color:var(--text-dim)">Loading…</div></div>
+    <div class="sheet-row" style="border-top:1px solid var(--border); margin-top:4px; padding-top:18px;">
+      <div>
+        <div class="sheet-row-label" style="color:var(--text-dim);font-size:13px;" id="sourceStatus">Sources: checking…</div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-// ══ STATE ══
+// ── STATE ──
 let allArticles = [];
-let currentCat = 'all';
+let currentCat  = 'all';
+let searchQuery = '';
 let compactMode = false;
-let autoRefreshTimer = null;
-let sourceCounts = {};
+let autoTimer   = null;
 
-// ══ CLOCK ══
-function tick(){ document.getElementById('clock').textContent = new Date().toUTCString().split(' ')[4]+' UTC'; }
-tick(); setInterval(tick, 1000);
+// ── SETTINGS ──
+function openSettings()  { document.getElementById('settingsOverlay').classList.add('open'); }
+function closeSettings() { document.getElementById('settingsOverlay').classList.remove('open'); }
+function setTheme(light) { document.documentElement.setAttribute('data-theme', light ? 'light' : 'dark'); }
+function setCompact(v)   { compactMode = v; render(); }
+function setAuto(v) {
+  clearInterval(autoTimer);
+  if (v) autoTimer = setInterval(fetchAll, 20 * 60 * 1000);
+}
+function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-// ══ SETTINGS ══
-function toggleSettings(){ document.getElementById('settingsMenu').classList.toggle('open'); }
-document.addEventListener('click', e => {
-  if (!e.target.closest('.settings-wrap')) document.getElementById('settingsMenu').classList.remove('open');
-  if (!e.target.closest('.nav-dropdown')) document.getElementById('focusMenu').classList.remove('open');
-});
-function setTheme(isLight){ document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark'); }
-function setCompact(v){ compactMode = v; render(); }
-function setAutoRefresh(v){
-  clearInterval(autoRefreshTimer);
-  if (v) autoRefreshTimer = setInterval(() => fetchAllFeeds(), 20 * 60 * 1000);
+// ── TABS ──
+function setTab(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  // sync bottom nav active
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  render();
+  scrollToTop();
 }
 
-// ══ NAV ══
-function setTab(cat, btn){
-  currentCat = cat;
-  document.querySelectorAll('.nav-tab[data-cat]').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  const labels = {all:'ALL DEFENSE NEWS', general:'GENERAL DEFENSE', conflict:'CONFLICT UPDATES', contracts:'CONTRACTS', funding:'FUNDING', testing:'TESTING & R&D', policy:'POLICY', international:'INTERNATIONAL'};
-  document.getElementById('feedTitle').textContent = labels[cat] || cat.toUpperCase();
+// ── SEARCH ──
+function onSearch(val) {
+  searchQuery = val.toLowerCase().trim();
+  document.getElementById('searchClear').classList.toggle('visible', val.length > 0);
+  render();
+}
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').classList.remove('visible');
+  searchQuery = '';
   render();
 }
 
-function toggleFocusMenu(e){
-  e.stopPropagation();
-  document.getElementById('focusMenu').classList.toggle('open');
-}
+// ── RENDER ──
+function render() {
+  const feed = document.getElementById('feed');
+  let items = currentCat === 'all' ? allArticles : allArticles.filter(a => a.category === currentCat);
+  if (searchQuery) {
+    items = items.filter(a =>
+      (a.headline + ' ' + (a.summary||'') + ' ' + (a.companies||'')).toLowerCase().includes(searchQuery)
+    );
+  }
 
-function setFocus(topic, btn){
-  document.getElementById('focusMenu').classList.remove('open');
-  document.querySelectorAll('.nav-tab[data-cat]').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.nav-dd-item').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  document.getElementById('feedTitle').textContent = topic.toUpperCase();
-  currentCat = '__focus__';
-  applyFocusFilter(topic);
-}
+  document.getElementById('ptrHint').style.display = items.length ? 'block' : 'none';
 
-function applyFocusFilter(topic){
-  const KEYWORDS = {
-    'autonomous systems':   ['autonomous','lattice','hivemind','drone','uav','uas','switchblade','replicator','cca','valkyrie','robotic'],
-    'drone warfare':        ['drone','uav','uas','switchblade','loitering','replicator','v-bat','teal','xq-58','valkyrie','cca','quadcopter'],
-    'hypersonic weapons':   ['hypersonic','mach','glide','darpa','cps','hermeus','hgv','prompt strike'],
-    'space defense':        ['space','satellite','orbital','sbx','ussf','sda','true anomaly','rocket lab','starlink','leo'],
-    'cyber warfare':        ['cyber','maven','ai/ml','palantir','software','digital','jadc2','convergence','electronic warfare','ew'],
-    'AI defense technology':['ai','machine learning','artificial intelligence','autonomous','hivemind','lattice','maven','palantir','software','algorithm'],
-    'naval':                ['navy','ship','destroyer','submarine','zumwalt','aukus','surface','maritime','carrier','littoral'],
-    'missile defense':      ['missile','sbx','mda','cps','interceptor','ballistic','hypersonic','thaad','patriot','prompt strike','aegis']
-  };
-  const terms = KEYWORDS[topic] || topic.toLowerCase().split(' ');
-  const filtered = allArticles.filter(a =>
-    terms.some(t => (a.headline+' '+(a.summary||'')+' '+(a.companies||'')).toLowerCase().includes(t))
-  );
-  renderList(filtered.length ? filtered : allArticles.slice(0, 10));
-}
-
-// ══ DATE FILTER ══
-const DATE_MAP = {
-  'Just now':0,'Breaking':0,'Today':0,'2h ago':0,'4h ago':0,'6h ago':0,'12h ago':0,
-  'Yesterday':1,'1 day ago':1,'2 days ago':2,'3 days ago':3,'4 days ago':4,'5 days ago':5,
-  '6 days ago':6,'1 week ago':7,'8 days ago':8,'10 days ago':10,'2 weeks ago':14,
-  '3 weeks ago':21,'1 month ago':30
-};
-function daysAgo(t){
-  const s = (t||'').trim();
-  if (DATE_MAP[s] !== undefined) return DATE_MAP[s];
-  // try to parse "X days ago", "X weeks ago" etc
-  const m = s.match(/(\d+)\s*(day|week|month)/i);
-  if (m) { const n=+m[1]; const u=m[2].toLowerCase(); return u==='week'?n*7:u==='month'?n*30:n; }
-  return 5; // default for RSS items with no clear date label
-}
-function passesDate(a){
-  const d = daysAgo(a.time);
-  const f = document.getElementById('dateFilter').value;
-  if (f==='today')    return d===0;
-  if (f==='week')     return d<=7;
-  if (f==='twoweeks') return d<=14;
-  if (f==='month')    return d<=30;
-  return true;
-}
-
-// ══ RENDER ══
-function render(){
-  if (currentCat === '__focus__') return; // handled separately
-  let filtered = currentCat==='all' ? allArticles : allArticles.filter(a=>a.category===currentCat);
-  filtered = filtered.filter(passesDate);
-  renderList(filtered);
-}
-
-function renderList(articles){
-  const container = document.getElementById('newsContainer');
-  const dateVal = document.getElementById('dateFilter').value;
-  const f = dateVal !== 'all' ? articles.filter(passesDate) : articles;
-
-  document.getElementById('feedSubtitle').textContent =
-    f.length + ' stor' + (f.length===1?'y':'ies') +
-    (dateVal!=='all' ? ' · date filtered' : '') +
-    ' · last updated ' + new Date().toLocaleTimeString();
-
-  if (!f.length){
-    container.innerHTML = `<div class="no-results">No stories match your current filters.<br>Try adjusting the date range or category.</div>`;
+  if (!items.length) {
+    feed.innerHTML = `<div class="empty"><span class="empty-icon">🔍</span>${searchQuery ? 'No results for "'+searchQuery+'"' : 'No stories in this category yet.'}</div>`;
     return;
   }
 
-  container.innerHTML = f.map((a,i)=>`
-    <div class="news-card ${a.category}" style="animation-delay:${Math.min(i*.04,.4)}s">
-      <div class="card-meta">
-        <span class="cat-tag tag-${a.category}">${catLabel(a.category)}</span>
-        <span class="card-source">${a.source||'—'}</span>
-        ${a.isLive ? `<span class="live-badge"><span class="live-badge-dot"></span>LIVE</span>` : ''}
-        <span class="card-time">${a.time||'Recent'}</span>
+  const CAT_LABELS = { general:'DEFENSE', conflict:'CONFLICT', contracts:'CONTRACT', funding:'FUNDING', testing:'TESTING', policy:'POLICY', international:'INTL' };
+
+  feed.innerHTML = items.map((a, i) => `
+    <a class="card" href="${a.url||'#'}" target="${a.url?'_blank':'_self'}" rel="noopener"
+       style="animation-delay:${Math.min(i * .04, .5)}s">
+      <div class="card-accent accent-${a.category}"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="cat-tag t-${a.category}">${CAT_LABELS[a.category]||a.category.toUpperCase()}</span>
+          <span class="card-source">${a.source}</span>
+          ${a.isLive ? `<span class="live-badge"><span class="live-badge-dot"></span>LIVE</span>` : ''}
+          <span class="card-time">${a.time}</span>
+        </div>
+        <div class="card-headline">${a.headline}</div>
+        <div class="card-summary">${compactMode ? a.summary.split('.')[0]+'.' : a.summary}</div>
+        ${(a.companies || a.amount) ? `
+        <div class="card-footer">
+          ${a.companies ? `<span class="card-companies">▸ ${a.companies}</span>` : ''}
+          ${a.amount    ? `<span class="card-amount">${a.amount}</span>` : ''}
+          ${a.url       ? `<span class="card-link">Read ↗</span>` : ''}
+        </div>` : ''}
       </div>
-      <div class="card-headline">${a.headline}</div>
-      ${!compactMode
-        ? `<div class="card-summary">${a.summary}</div>${a.impact?`<div class="card-impact">⚡ ${a.impact}</div>`:''}`
-        : `<div class="card-summary">${a.summary.split('.')[0]}.</div>`}
-      <div class="card-footer">
-        ${a.companies?`<span class="card-companies">▸ ${a.companies}</span>`:''}
-        ${a.amount?`<span class="card-amount">${a.amount}</span>`:''}
-        ${a.url?`<a class="source-link" href="${a.url}" target="_blank">SOURCE ↗</a>`:''}
-      </div>
-    </div>`).join('');
+    </a>`).join('');
 }
 
-function catLabel(c){
-  return {general:'DEFENSE',conflict:'CONFLICT',contracts:'CONTRACT',funding:'FUNDING',testing:'TESTING',policy:'POLICY',international:'INTERNATIONAL'}[c]||c.toUpperCase();
-}
-
-function updateCounts(articles){
-  const cats = ['all','general','conflict','contracts','funding','testing','policy','international'];
-  cats.forEach(c=>{
-    const count = c==='all' ? articles.length : articles.filter(a=>a.category===c).length;
+function updateCounts(articles) {
+  const cats = ['all','general','conflict','contracts','funding','testing','policy'];
+  cats.forEach(c => {
     const el = document.getElementById('tc-'+c);
-    if (el) el.textContent = count;
+    if (el) el.textContent = c === 'all' ? articles.length : articles.filter(a=>a.category===c).length;
   });
-  document.getElementById('kTotal').textContent     = articles.length;
-  document.getElementById('kContracts').textContent = articles.filter(a=>a.category==='contracts').length;
-  document.getElementById('kFunding').textContent   = articles.filter(a=>a.category==='funding').length;
-  document.getElementById('kTesting').textContent   = articles.filter(a=>a.category==='testing').length;
 }
 
-function updateTrending(articles){
-  const map = {};
-  articles.forEach(a=>(a.companies||'').split(/[·,]/).forEach(c=>{
-    const t=c.trim();
-    if(t && !['DoD','U.S. Army','HASC','NATO','U.S. Navy','USAF'].includes(t)) map[t]=(map[t]||0)+1;
-  }));
-  const sorted=Object.entries(map).sort((x,y)=>y[1]-x[1]).slice(0,7);
-  const max=sorted[0]?.[1]||1;
-  document.getElementById('trending').innerHTML=sorted.length
-    ? sorted.map(([name,count],i)=>`
-        <div class="topic-item"><span class="t-rank">${String(i+1).padStart(2,'0')}</span>
-        <div style="flex:1"><div class="t-name">${name}</div>
-        <div class="t-bar"><div class="t-fill" style="width:${count/max*100}%"></div></div></div></div>`).join('')
-    : `<div style="font-size:12px;color:var(--text-dim)">No data yet</div>`;
-}
-
-function updateRssSources(){
-  document.getElementById('rssSources').innerHTML = RSS_FEEDS.map(f=>`
-    <div class="rss-source-item">
-      <div>
-        <div class="rss-source-name">${f.name}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span class="rss-source-count">${sourceCounts[f.name]||0}</span>
-        <div class="${(sourceCounts[f.name]||0)>0?'rss-source-ok':'rss-source-err'}"></div>
-      </div>
-    </div>`).join('');
-}
-
-// ══ RSS FEEDS ══
-// Multiple CORS proxies tried in order — first success wins
-const PROXY_CHAIN = [
+// ── CORS PROXY CHAIN ──
+const PROXIES = [
   url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
   url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
   url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
@@ -637,209 +783,184 @@ const PROXY_CHAIN = [
 ];
 
 const RSS_FEEDS = [
-  // Tier 1 — known to work through proxies
-  { name:'Breaking Defense',  url:'https://breakingdefense.com/feed/',                        cat:'general' },
-  { name:'USNI News',         url:'https://news.usni.org/feed',                               cat:'general' },
-  { name:'Defense One',       url:'https://www.defenseone.com/rss/all/',                      cat:'general' },
-  { name:'SpaceNews',         url:'https://spacenews.com/feed/',                              cat:'general' },
-  { name:'Air Force Mag',     url:'https://www.airandspaceforces.com/feed/',                  cat:'general' },
-  // Tier 2 — official government feeds (very CORS-friendly)
-  { name:'DoD News',          url:'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10', cat:'general' },
-  { name:'DoD Contracts',     url:'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10&type=contracts', cat:'contracts' },
-  { name:'DSCA Arms Sales',   url:'https://www.dsca.mil/rss.xml',                             cat:'contracts' },
-  // Tier 3 — alternative sources
-  { name:'RealClear Defense', url:'https://www.realcleardefense.com/index.xml',               cat:'general' },
-  { name:'Defence Blog',      url:'https://defence-blog.com/feed/',                           cat:'general' },
-  { name:'The War Zone',      url:'https://www.thedrive.com/the-war-zone/rss',                cat:'general' },
-  { name:'C4ISRNET',          url:'https://www.c4isrnet.com/arc/outboundfeeds/rss/',          cat:'general' },
+  { name:'Breaking Defense', url:'https://breakingdefense.com/feed/' },
+  { name:'USNI News',        url:'https://news.usni.org/feed' },
+  { name:'Defense One',      url:'https://www.defenseone.com/rss/all/' },
+  { name:'SpaceNews',        url:'https://spacenews.com/feed/' },
+  { name:'Air Force Mag',    url:'https://www.airandspaceforces.com/feed/' },
+  { name:'DoD News',         url:'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10' },
+  { name:'RealClear Defense',url:'https://www.realcleardefense.com/index.xml' },
+  { name:'Defence Blog',     url:'https://defence-blog.com/feed/' },
+  { name:'The War Zone',     url:'https://www.thedrive.com/the-war-zone/rss' },
+  { name:'C4ISRNET',         url:'https://www.c4isrnet.com/arc/outboundfeeds/rss/' },
 ];
 
-// Category classifier based on keywords
-function classifyArticle(title, desc){
-  const text = (title+' '+desc).toLowerCase();
-  if (/conflict|ukraine|russia|israel|gaza|hamas|hezbollah|houthi|sudan|taiwan|combat|attack|strike|war|battle|troops|troops|killed|wounded|offensive|ceasefire|airstrike/.test(text)) return 'conflict';
-  if (/contract|award|billion|million|idiq|rfp|procurement|buy|purchase|deal|\$\d/.test(text)) return 'contracts';
-  if (/fund|raise|series [a-f]|invest|capital|valuation|startup|venture/.test(text)) return 'funding';
-  if (/test|trial|demonstrat|prototype|experiment|flight test|launch|exercise|war game|live fire/.test(text)) return 'testing';
-  if (/policy|congress|senate|ndaa|budget|pentagon|secdef|legislation|regulation|authoriz|appropriat/.test(text)) return 'policy';
-  if (/nato|uk|australia|israel|japan|germany|france|india|china|russia|south korea|taiwan|allies|bilateral|multilateral/.test(text)) return 'international';
+function classify(title, desc) {
+  const t = (title+' '+desc).toLowerCase();
+  if (/\bukrain|russia.*attack|israel|gaza|hamas|hezbollah|houthi|taiwan.*strait|pla.*exercis|combat|airstrike|offensive|ceasefire|killed|troops.*deploy|red sea.*attack|strike.*iran/.test(t)) return 'conflict';
+  if (/contract|award|idiq|rfp|procurement|\$\d.*[mb]illion|deal.*defense|billion.*contract/.test(t)) return 'contracts';
+  if (/fund|raise|series [a-f]|invest|capital|valuation|startup|venture|ipo/.test(t)) return 'funding';
+  if (/test|trial|demonstrat|prototype|flight test|live fire|exercise|war game|hypersonic.*test/.test(t)) return 'testing';
+  if (/congress|senate|ndaa|budget|policy|pentagon.*plan|legislation|authoriz|appropriat|secdef|white house.*defense/.test(t)) return 'policy';
+  if (/nato|aukus|uk.*defense|australia.*military|japan.*defense|germany.*bundeswehr|france.*military|india.*defense|bilateral|multilateral/.test(t)) return 'international';
   return 'general';
 }
 
-function parseRelativeTime(dateStr){
+function relTime(dateStr) {
   if (!dateStr) return 'Recent';
   try {
     const d = new Date(dateStr);
     if (isNaN(d)) return 'Recent';
-    const diff = Math.floor((Date.now() - d) / 1000 / 60); // minutes
-    if (diff < 60)   return diff <= 5 ? 'Just now' : diff+'m ago';
-    if (diff < 1440) return Math.floor(diff/60)+'h ago';
-    if (diff < 2880) return 'Yesterday';
-    const days = Math.floor(diff/1440);
-    if (days <= 7)   return days+' days ago';
-    if (days <= 14)  return '1 week ago';
-    if (days <= 21)  return '2 weeks ago';
+    const m = Math.floor((Date.now() - d) / 60000);
+    if (m < 2)    return 'Just now';
+    if (m < 60)   return m+'m ago';
+    if (m < 1440) return Math.floor(m/60)+'h ago';
+    if (m < 2880) return 'Yesterday';
+    const days = Math.floor(m/1440);
+    if (days <= 6)  return days+'d ago';
+    if (days <= 13) return '1 week ago';
+    if (days <= 20) return '2 weeks ago';
     return '1 month ago';
-  } catch(e){ return 'Recent'; }
+  } catch(e) { return 'Recent'; }
 }
 
-function stripHtml(html){
-  return (html||'').replace(/<[^>]*>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
+function clean(html) {
+  return (html||'').replace(/<[^>]+>/g,'')
+    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&nbsp;/g,' ')
+    .replace(/\s+/g,' ').trim();
 }
 
-function truncate(str, n){
-  const s = stripHtml(str);
-  return s.length > n ? s.slice(0,n).replace(/\s+\S*$/,'')+'…' : s;
+function trunc(str, n) {
+  const s = clean(str);
+  return s.length > n ? s.slice(0,n).replace(/\s\S*$/,'')+'…' : s;
 }
 
-// Try each proxy in chain until one returns parseable XML
 async function tryProxies(feedUrl) {
-  for (let i = 0; i < PROXY_CHAIN.length; i++) {
+  for (const makeProxy of PROXIES) {
     try {
-      const proxyUrl = PROXY_CHAIN[i](feedUrl);
-      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+      const res = await fetch(makeProxy(feedUrl), { signal: AbortSignal.timeout(8000) });
       if (!res.ok) continue;
-      // Get raw text first, then figure out if it's JSON-wrapped or raw XML
-      const rawText = await res.text();
-      if (!rawText || rawText.length < 50) continue;
-      let xmlText = rawText;
-      // If it looks like JSON (allorigins, codetabs wrap responses)
-      if (rawText.trimStart().startsWith('{') || rawText.trimStart().startsWith('[')) {
-        try {
-          const j = JSON.parse(rawText);
-          xmlText = j.contents || j.data || j.body || rawText;
-        } catch(e) { xmlText = rawText; }
+      const raw = await res.text();
+      if (!raw || raw.length < 80) continue;
+      let xmlText = raw;
+      if (raw.trimStart().startsWith('{')) {
+        try { const j = JSON.parse(raw); xmlText = j.contents || j.data || raw; } catch { xmlText = raw; }
       }
-      if (!xmlText || xmlText.length < 100) continue;
-      // Try parsing as XML
       const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
-      const parseErr = xml.querySelector('parsererror');
-      if (parseErr) continue;
-      const items = xml.querySelectorAll('item, entry'); // entry for Atom feeds
-      if (items.length > 0) return { xml, proxyIndex: i };
-    } catch(e) { /* try next proxy */ }
+      if (xml.querySelector('parsererror')) continue;
+      const items = xml.querySelectorAll('item, entry');
+      if (items.length) return xml;
+    } catch {}
   }
   return null;
 }
 
-async function fetchFeed(feed){
+async function fetchFeed(feed) {
   try {
-    const result = await tryProxies(feed.url);
-    if (!result) throw new Error('All proxies failed');
-    const { xml } = result;
-    const items = Array.from(xml.querySelectorAll('item')).slice(0, 15);
+    const xml = await tryProxies(feed.url);
+    if (!xml) return [];
+    const items = Array.from(xml.querySelectorAll('item, entry')).slice(0, 14);
     return items.map(item => {
-      const title   = stripHtml(item.querySelector('title')?.textContent||'');
-      const link    = item.querySelector('link')?.textContent?.trim() || item.querySelector('guid')?.textContent?.trim() || '';
-      const desc    = item.querySelector('description')?.textContent || item.querySelector('content\:encoded')?.textContent || '';
-      const pubDate = item.querySelector('pubDate')?.textContent || item.querySelector('dc\:date')?.textContent || '';
-      const summary = truncate(desc, 300);
-      const cat     = classifyArticle(title, summary);
+      const title   = clean(item.querySelector('title')?.textContent||'');
+      const link    = (item.querySelector('link')?.getAttribute('href') || item.querySelector('link')?.textContent || item.querySelector('guid')?.textContent || '').trim();
+      const desc    = item.querySelector('description')?.textContent || item.querySelector('summary')?.textContent || item.querySelector('content')?.textContent || '';
+      const pubDate = item.querySelector('pubDate')?.textContent || item.querySelector('published')?.textContent || item.querySelector('updated')?.textContent || '';
+      const summary = trunc(desc, 280);
       return {
         headline: title,
-        summary,
-        category: cat,
+        summary: summary || 'Read the full story at ' + feed.name,
+        category: classify(title, summary),
         source: feed.name,
-        time: parseRelativeTime(pubDate),
-        companies: null,
-        amount: null,
+        time: relTime(pubDate),
+        companies: null, amount: null,
         url: link,
         isLive: true,
-        pubDate: pubDate ? new Date(pubDate).getTime() : 0
+        _ts: pubDate ? new Date(pubDate).getTime() : 0
       };
-    }).filter(a => a.headline.length > 10);
-  } catch(e){
-    console.warn('Feed failed:', feed.name, e.message);
+    }).filter(a => a.headline.length > 8);
+  } catch(e) {
     return [];
   }
 }
 
-async function fetchAllFeeds(){
+let sourceCounts = {};
+
+async function fetchAll() {
   const btn = document.getElementById('refreshBtn');
   const loading = document.getElementById('loadingState');
-  const container = document.getElementById('newsContainer');
-  const statusEl = document.getElementById('rssStatus');
-  const statusText = document.getElementById('rssStatusText');
+  const statusBar = document.getElementById('statusBar');
+  const statusText = document.getElementById('statusText');
 
   btn.disabled = true;
-  document.getElementById('refreshIcon').className = 'spin';
   loading.style.display = 'flex';
-  container.innerHTML = '';
-  statusEl.className = 'rss-status loading';
-  statusText.textContent = 'Connecting to RSS feeds…';
+  document.getElementById('feed').innerHTML = '';
+  document.getElementById('ptrHint').style.display = 'none';
+  statusBar.className = 'status-bar loading';
+  statusText.textContent = 'Fetching live news…';
 
-  try {
-    // Fetch all feeds in parallel
-    const results = await Promise.allSettled(RSS_FEEDS.map(f => fetchFeed(f)));
-    let articles = [];
-    sourceCounts = {};
+  const results = await Promise.allSettled(RSS_FEEDS.map(f => fetchFeed(f)));
+  let articles = [];
+  sourceCounts = {};
 
-    results.forEach((r, i) => {
-      const feedArticles = r.status==='fulfilled' ? r.value : [];
-      sourceCounts[RSS_FEEDS[i].name] = feedArticles.length;
-      articles = articles.concat(feedArticles);
-    });
+  results.forEach((r, i) => {
+    const items = r.status === 'fulfilled' ? r.value : [];
+    sourceCounts[RSS_FEEDS[i].name] = items.length;
+    articles = articles.concat(items);
+  });
 
-    // Sort by date descending
-    articles.sort((a,b) => (b.pubDate||0) - (a.pubDate||0));
+  // Deduplicate by headline similarity
+  const seen = new Set();
+  articles = articles.filter(a => {
+    const key = a.headline.toLowerCase().slice(0, 60);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 
-    const successCount = Object.values(sourceCounts).filter(c=>c>0).length;
+  // Sort newest first
+  articles.sort((a, b) => (b._ts || 0) - (a._ts || 0));
 
-    if (articles.length > 0){
-      allArticles = articles;
-      statusEl.className = 'rss-status';
-      statusText.textContent = `✓ Live — ${articles.length} stories from ${successCount}/${RSS_FEEDS.length} sources · Auto-refreshes every 20 min`;
-    } else {
-      // All feeds failed — fall back to curated data
-      allArticles = FALLBACK_DATA;
-      statusEl.className = 'rss-status error';
-      statusText.textContent = `Live RSS unavailable — some sources may block external requests. Showing curated news. Try refreshing.`;
-    }
+  const ok = Object.values(sourceCounts).filter(c => c > 0).length;
 
-    updateCounts(allArticles);
-    updateTrending(allArticles);
-    updateRssSources();
-    loading.style.display = 'none';
-    render();
-
-  } catch(e){
-    allArticles = FALLBACK_DATA;
-    statusEl.className = 'rss-status error';
-    statusText.textContent = 'RSS unavailable — showing curated news.';
-    updateCounts(allArticles);
-    updateTrending(allArticles);
-    loading.style.display = 'none';
-    render();
+  if (articles.length) {
+    allArticles = articles;
+    statusBar.className = 'status-bar live';
+    statusText.textContent = `${articles.length} stories · ${ok}/${RSS_FEEDS.length} sources · updated ${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
+    document.getElementById('livePillText').textContent = 'LIVE';
+    document.getElementById('sourceStatus').textContent =
+      RSS_FEEDS.map(f => `${f.name}: ${sourceCounts[f.name]||0}`).join(' · ');
+  } else {
+    allArticles = FALLBACK;
+    statusBar.className = 'status-bar error';
+    statusText.textContent = 'Live feeds unavailable — showing curated news';
+    document.getElementById('livePillText').textContent = 'CACHED';
   }
 
+  updateCounts(allArticles);
+  loading.style.display = 'none';
+  render();
   btn.disabled = false;
-  document.getElementById('refreshIcon').className = '';
 }
 
-// ══ FALLBACK DATA (shown if RSS is blocked) ══
-const FALLBACK_DATA = [
-  {headline:"Ukraine Claims Strike on Russian Black Sea Fleet Headquarters in Sevastopol",summary:"Ukrainian forces struck the Russian Black Sea Fleet HQ using Storm Shadow cruise missiles, causing significant structural damage and casualties among fleet command personnel. Russia confirmed the attack and declared a state of emergency in Crimea. The strike marks Ukraine's deepest penetration of Crimean naval infrastructure since the war began.",impact:"Striking fleet command disrupts Russia's ability to coordinate Black Sea naval operations — potentially reducing the threat to Odessa port and Ukrainian grain export lanes.",category:"conflict",source:"Reuters / BBC",time:"Today",companies:null,amount:null,url:"https://reuters.com"},
-  {headline:"IDF Conducts Precision Strikes on Hezbollah Weapons Depots in Southern Lebanon",summary:"The Israel Defense Forces conducted overnight airstrikes targeting Hezbollah weapons storage facilities in the Bekaa Valley, citing intelligence of imminent rocket transfer to Hamas. Lebanon's government condemned the strikes while Hezbollah vowed retaliation.",impact:"Degrading weapons transfer pipelines forces Hezbollah to route through more costly and exposed channels — a key Israeli strategic objective ahead of any northern front escalation.",category:"conflict",source:"Times of Israel / Al Jazeera",time:"Today",companies:"IDF",amount:null,url:"https://timesofisrael.com"},
-  {headline:"Pentagon Awards Anduril $100M+ Contract for Autonomous Counter-Drone Systems",summary:"The DoD awarded Anduril Industries a major contract to deploy its Lattice AI platform and Roadrunner interceptor drones across CONUS and overseas bases. The system autonomously detects and neutralizes hostile UAS threats in real time without requiring human approval for each engagement.",impact:"Signals DoD comfort removing humans from kinetic counter-UAS decisions — a significant policy shift with direct implications for autonomous weapons rules of engagement.",category:"contracts",source:"Breaking Defense",time:"2 days ago",companies:"Anduril Industries · DoD",amount:"$100M+",url:"https://breakingdefense.com"},
-  {headline:"Shield AI Raises $500M Series F, Valued at $2.8B",summary:"Shield AI closed a $500M Series F pushing its valuation to $2.8B. Funds will expand V-BAT production and accelerate Hivemind, which allows aircraft to operate without GPS, comms, or human control in contested environments.",impact:"A $2.8B private valuation signals defense VC entering a new era — investors betting autonomous aviation software is the next trillion-dollar defense market.",category:"funding",source:"Defense One",time:"3 days ago",companies:"Shield AI",amount:"$500M",url:"https://defenseone.com"},
-  {headline:"DoD Releases Replicator 2.0 RFP — 1,000 Attritable Drones by Q4 2025",summary:"DIU issued a new Replicator 2.0 RFP seeking 1,000+ low-cost attritable autonomous systems by Q4 2025. Requirements emphasize open-architecture software, sub-$500K unit cost, and logistics interoperability.",impact:"Replicator directly answers China's mass-production drone capacity — forces traditional primes to compete on cost and speed.",category:"policy",source:"C4ISRNET",time:"3 days ago",companies:"DoD · DIU",amount:null,url:"https://c4isrnet.com"},
-  {headline:"DARPA Completes Full-Scale Mach 5+ Hypersonic Glide Vehicle Test",summary:"DARPA and AFRL completed a full-range flight test of an air-launched hypersonic glide vehicle achieving Mach 5+ sustained glide. The test validated thermal protection performance and guidance accuracy ahead of 2026 operational evaluation.",impact:"Successful testing accelerates U.S. closing the gap with China and Russia in a domain considered nearly impossible to intercept.",category:"testing",source:"Aviation Week",time:"4 days ago",companies:"DARPA · AFRL · Lockheed Martin",amount:null,url:"https://aviationweek.com"},
-  {headline:"Palantir Wins $480M Army AI/ML Extension for Maven Smart System",summary:"Palantir secured a $480M extension to power the Army's Maven Smart System, fusing multi-domain sensor data via AI for targeting and ISR. Contract runs through FY2027 with FY2029 options.",impact:"Maven is now the template for joint-force AI integration — this extension locks Palantir into a dominant position ahead of multi-service competitions.",category:"contracts",source:"Defense News",time:"5 days ago",companies:"Palantir · U.S. Army",amount:"$480M",url:"https://defensenews.com"},
-  {headline:"Red Sea Houthi Attacks Force Major Rerouting of Global Defense Logistics",summary:"Persistent Houthi drone and missile attacks on commercial shipping have forced the rerouting of defense-critical cargo including military vehicle shipments and electronics components. The U.S. Navy has expanded Operation Prosperity Guardian with additional destroyers and expanded rules of engagement.",impact:"Red Sea instability is raising defense logistics costs 15-20% and creating delivery delays — exposing vulnerabilities in just-in-time military supply chains.",category:"conflict",source:"USNI News",time:"5 days ago",companies:"U.S. Navy",amount:null,url:"https://news.usni.org"},
-  {headline:"UK and Australia Commit to AUKUS Pillar II Autonomous Undersea Vehicle Program",summary:"The UK MoD and Australian DoD committed to joint AUV development under AUKUS Pillar II targeting deep-water ISR and mine countermeasures. Thales and BAE are primary contractors with fielding in 2028.",impact:"Undersea autonomous systems are the least-monitored domain in competition with China — AUKUS AUV programs counter Chinese submarine expansion.",category:"international",source:"Jane's Defence",time:"1 week ago",companies:"UK MoD · ADF · Thales · BAE Systems",amount:null,url:"https://janes.com"},
-  {headline:"AeroVironment Awarded $180M IDIQ for Switchblade 600 Loitering Munitions",summary:"AeroVironment received a $180M IDIQ for Switchblade 600 systems for U.S. Army and allied partners via FMS. The man-portable anti-armor munition has 40+ km range with proven combat use in Ukraine.",impact:"Accelerating demand for affordable one-way attack drones validates the low-cost attritable munitions thesis reshaping battlefield economics.",category:"contracts",source:"Defense News",time:"1 week ago",companies:"AeroVironment · U.S. Army",amount:"$180M",url:"https://defensenews.com"},
-  {headline:"Taiwan Strait Tension Rises as PLA Conducts Largest Naval Exercise in Decade",summary:"The People's Liberation Army Navy conducted its largest Taiwan Strait exercise since 2022, deploying over 40 surface vessels and simulating amphibious assault and port blockade scenarios. Taiwan's military went to elevated readiness and the U.S. dispatched a carrier strike group.",impact:"Large-scale PLA exercises serve dual purposes — real capability building and coercive signaling. U.S. carrier deployment demonstrates deterrence commitment but also tests response timelines.",category:"conflict",source:"Reuters / Defense News",time:"1 week ago",companies:"PLA Navy · U.S. Navy · ROC Military",amount:null,url:"https://reuters.com"},
-  {headline:"Kratos Secures $92M USAF Contract for XQ-58 Valkyrie Production",summary:"Kratos received a $92M contract for XQ-58A Valkyrie UCAVs for the Air Force's Collaborative Combat Aircraft program. The low-cost attritable Valkyrie is designed to fly alongside manned fighters in contested airspace.",impact:"CCA is among the most consequential USAF programs in a decade — Kratos' production contract confirms it's transitioning from demo to actual fielding.",category:"contracts",source:"Aviation Week",time:"1 week ago",companies:"Kratos Defense · USAF",amount:"$92M",url:"https://aviationweek.com"},
-  {headline:"Pentagon AI Autonomy Policy Update Expands Authorized Lethal Force Use Cases",summary:"The DoD updated DoDD 3000.09 to authorize expanded autonomous targeting under defined conditions, following a classified operational review. The update reflects Ukraine lessons and aligns with allied frameworks.",impact:"Among the most consequential defense policy decisions in modern history — directly shapes how every branch designs, acquires, and deploys autonomous weapons.",category:"policy",source:"Defense One",time:"1 week ago",companies:"DoD",amount:null,url:"https://defenseone.com"},
-  {headline:"Japan Approves $43B Defense Buildup Including Tomahawks and Hypersonics",summary:"Japan's cabinet approved a ¥6.5T ($43B) multi-year buildup covering Tomahawk procurement, domestic hypersonic development, and F-35 fleet expansion — Japan's largest defense expansion since WWII.",impact:"Japan acquiring Tomahawks reshapes Pacific deterrence — an ally with counter-strike capability reduces the burden on U.S. forces and complicates adversary planning.",category:"international",source:"Japan Times",time:"2 weeks ago",companies:"JSDF · Raytheon · Mitsubishi",amount:"$43B",url:"https://japantimes.co.jp"},
-  {headline:"Northrop Grumman Wins $2.4B B-21 Raider Low-Rate Initial Production Contract",summary:"Northrop received a $2.4B LRIP contract for the B-21 Raider as it approaches initial operational capability. The B-21 will replace the B-1 and B-2 as the cornerstone of U.S. strategic airpower.",impact:"LRIP approval means the program has cleared major technical and cost hurdles — the most advanced stealth platform ever built is on a credible path to fielding.",category:"contracts",source:"Air & Space Forces Magazine",time:"2 weeks ago",companies:"Northrop Grumman · USAF",amount:"$2.4B",url:"https://www.airandspaceforces.com"},
-  {headline:"NATO Approves Multi-Domain Command Structure Integrating Space and Cyber",summary:"NATO's Military Committee approved a restructured joint C2 framework integrating space, cyber, and undersea domains. A dedicated Space Centre at Ramstein AB and permanent Cyber directorate at SHAPE were established.",impact:"Integrating space and cyber into NATO's formal command chain enables coordinated — not just shared — operations across non-traditional domains.",category:"international",source:"NATO HQ / Defense News",time:"2 weeks ago",companies:"NATO · SHAPE · USSF",amount:null,url:"https://defensenews.com"},
-  {headline:"SDA Awards $700M Contracts for Proliferated LEO Constellation Tranche 2",summary:"Space Development Agency awarded $700M to York Space and Rocket Lab for the next PWSA tranche targeting global missile tracking and JADC2 data relay from low Earth orbit.",impact:"PWSA directly enables JADC2 by providing persistent, low-latency satellite connectivity — moving the U.S. from centralized to resilient mesh satellite architecture.",category:"contracts",source:"SpaceNews",time:"2 weeks ago",companies:"SDA · York Space · Rocket Lab",amount:"$700M",url:"https://spacenews.com"},
+// ── FALLBACK ──
+const FALLBACK = [
+  {headline:"Pentagon Awards Anduril $100M+ Contract for Autonomous Counter-Drone Systems",summary:"The DoD awarded Anduril Industries a major contract deploying Lattice AI and Roadrunner interceptors across bases. The system autonomously detects and neutralizes hostile UAS threats in real time.",category:"contracts",source:"Breaking Defense",time:"Recent",companies:"Anduril Industries",amount:"$100M+",url:"https://breakingdefense.com",isLive:false,_ts:0},
+  {headline:"Shield AI Raises $500M Series F, Valued at $2.8B",summary:"Shield AI closed a $500M round to expand V-BAT production and accelerate Hivemind, which allows aircraft to fly without GPS or human control in contested environments.",category:"funding",source:"Defense One",time:"Recent",companies:"Shield AI",amount:"$500M",url:"https://defenseone.com",isLive:false,_ts:0},
+  {headline:"DARPA Completes Full-Scale Mach 5+ Hypersonic Glide Vehicle Test",summary:"DARPA and AFRL successfully completed a full-range flight test of an air-launched HGV achieving Mach 5+ sustained glide, validating thermal protection and guidance ahead of 2026 evaluation.",category:"testing",source:"Aviation Week",time:"Recent",companies:"DARPA · AFRL · Lockheed Martin",amount:null,url:"https://aviationweek.com",isLive:false,_ts:0},
+  {headline:"DoD Releases Replicator 2.0 RFP for 1,000 Attritable Drones",summary:"DIU issued an RFP seeking 1,000+ low-cost attritable autonomous systems by Q4 2025, emphasizing open-architecture software and sub-$500K unit costs.",category:"policy",source:"C4ISRNET",time:"Recent",companies:"DoD · DIU",amount:null,url:"https://c4isrnet.com",isLive:false,_ts:0},
+  {headline:"Palantir Wins $480M Army AI/ML Extension for Maven Smart System",summary:"Palantir secured a $480M extension to power Maven Smart System, fusing multi-domain sensor data for AI-driven targeting and ISR through FY2027.",category:"contracts",source:"Defense News",time:"Recent",companies:"Palantir · U.S. Army",amount:"$480M",url:"https://defensenews.com",isLive:false,_ts:0},
+  {headline:"Ukraine Claims Major Strike on Russian Black Sea Fleet HQ",summary:"Ukrainian forces struck the Black Sea Fleet headquarters using long-range cruise missiles, causing significant damage to command infrastructure in Sevastopol.",category:"conflict",source:"Reuters",time:"Recent",companies:null,amount:null,url:"https://reuters.com",isLive:false,_ts:0},
+  {headline:"Japan Approves $43B Defense Buildup Including Tomahawks and Hypersonics",summary:"Japan's cabinet approved a ¥6.5T multi-year buildup covering Tomahawk procurement, domestic hypersonic development, and F-35 fleet expansion — Japan's largest defense expansion since WWII.",category:"international",source:"Japan Times",time:"Recent",companies:"JSDF · Raytheon",amount:"$43B",url:"https://japantimes.co.jp",isLive:false,_ts:0},
+  {headline:"Northrop Grumman Wins $2.4B B-21 Raider Low-Rate Initial Production Contract",summary:"Northrop received a $2.4B LRIP contract for the B-21 Raider as it approaches IOC, replacing the B-1 and B-2 as the cornerstone of U.S. strategic airpower.",category:"contracts",source:"Air Force Mag",time:"Recent",companies:"Northrop Grumman · USAF",amount:"$2.4B",url:"https://www.airandspaceforces.com",isLive:false,_ts:0},
+  {headline:"AeroVironment Awarded $180M IDIQ for Switchblade 600 Loitering Munitions",summary:"AeroVironment received a $180M IDIQ for Switchblade 600 systems for U.S. Army and allied partners. The anti-armor munition has 40+ km range and proven combat use in Ukraine.",category:"contracts",source:"Defense News",time:"Recent",companies:"AeroVironment · U.S. Army",amount:"$180M",url:"https://defensenews.com",isLive:false,_ts:0},
+  {headline:"PLA Conducts Largest Taiwan Strait Naval Exercise in a Decade",summary:"The PLAN deployed 40+ vessels simulating amphibious assault and blockade scenarios around Taiwan. The U.S. dispatched a carrier strike group in response.",category:"conflict",source:"Reuters",time:"Recent",companies:"PLA Navy · U.S. Navy",amount:null,url:"https://reuters.com",isLive:false,_ts:0},
+  {headline:"NATO Approves Multi-Domain Command Structure Integrating Space and Cyber",summary:"NATO established a dedicated Space Centre at Ramstein AB and permanent Cyber directorate at SHAPE, formally integrating space and cyber into joint command.",category:"international",source:"Defense News",time:"Recent",companies:"NATO · SHAPE",amount:null,url:"https://defensenews.com",isLive:false,_ts:0},
+  {headline:"NDAA 2026 Draft Mandates Counter-UAS at All CONUS Military Installations",summary:"The draft NDAA requires all continental U.S. bases to implement C-UAS perimeter defense by 2028, creating an estimated $3-5B procurement opportunity.",category:"policy",source:"Breaking Defense",time:"Recent",companies:"DoD · HASC",amount:null,url:"https://breakingdefense.com",isLive:false,_ts:0},
 ];
 
-// ══ BOOT ══
-setAutoRefresh(true);
-fetchAllFeeds();
+// ── BOOT ──
+setAuto(true);
+fetchAll();
 </script>
 </body>
 </html>
