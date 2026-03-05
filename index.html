@@ -628,18 +628,24 @@ function updateRssSources(){
 }
 
 // ══ RSS FEEDS ══
-// We use allorigins.win as a CORS proxy to fetch RSS feeds from the browser
-const CORS = 'https://api.allorigins.win/get?url=';
+// Multiple CORS proxies tried in order — first success wins
+const PROXY_CHAIN = [
+  url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  url => `https://thingproxy.freeboard.io/fetch/${url}`,
+];
 
 const RSS_FEEDS = [
-  { name:'Breaking Defense',   url:'https://breakingdefense.com/feed/',           cat:'general' },
-  { name:'Defense News',       url:'https://www.defensenews.com/arc/outboundfeeds/rss/', cat:'general' },
-  { name:'USNI News',          url:'https://news.usni.org/feed',                  cat:'general' },
-  { name:'C4ISRNET',           url:'https://www.c4isrnet.com/arc/outboundfeeds/rss/', cat:'general' },
-  { name:'The War Zone',       url:'https://www.thedrive.com/the-war-zone/rss',   cat:'general' },
-  { name:'Defense One',        url:'https://www.defenseone.com/rss/all/',          cat:'general' },
-  { name:'SpaceNews',          url:'https://spacenews.com/feed/',                 cat:'general' },
-  { name:'Janes',              url:'https://www.janes.com/feeds/news',            cat:'international' },
+  { name:'Breaking Defense', url:'https://breakingdefense.com/feed/',                         cat:'general' },
+  { name:'Defense News',     url:'https://www.defensenews.com/arc/outboundfeeds/rss/',        cat:'general' },
+  { name:'USNI News',        url:'https://news.usni.org/feed',                                cat:'general' },
+  { name:'C4ISRNET',         url:'https://www.c4isrnet.com/arc/outboundfeeds/rss/',           cat:'general' },
+  { name:'The War Zone',     url:'https://www.thedrive.com/the-war-zone/rss',                 cat:'general' },
+  { name:'Defense One',      url:'https://www.defenseone.com/rss/all/',                       cat:'general' },
+  { name:'SpaceNews',        url:'https://spacenews.com/feed/',                               cat:'general' },
+  { name:'Air Force Mag',    url:'https://www.airandspaceforces.com/feed/',                   cat:'general' },
+  { name:'Mil.com',          url:'https://www.military.com/rss-feeds/news',                   cat:'general' },
 ];
 
 // Category classifier based on keywords
@@ -680,23 +686,44 @@ function truncate(str, n){
   return s.length > n ? s.slice(0,n).replace(/\s+\S*$/,'')+'…' : s;
 }
 
+// Try each proxy in chain until one returns parseable XML
+async function tryProxies(feedUrl) {
+  for (let i = 0; i < PROXY_CHAIN.length; i++) {
+    try {
+      const proxyUrl = PROXY_CHAIN[i](feedUrl);
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(7000) });
+      if (!res.ok) continue;
+      const ct = res.headers.get('content-type') || '';
+      let xmlText;
+      if (ct.includes('json') || PROXY_CHAIN[i](feedUrl).includes('allorigins')) {
+        // allorigins wraps in JSON
+        try { const j = await res.json(); xmlText = j.contents; }
+        catch { const t = await res.text(); try { const j2 = JSON.parse(t); xmlText = j2.contents; } catch { xmlText = t; } }
+      } else {
+        xmlText = await res.text();
+      }
+      if (!xmlText || xmlText.length < 100) continue;
+      const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
+      const items = xml.querySelectorAll('item');
+      if (items.length > 0) return { xml, proxyIndex: i };
+    } catch(e) { /* try next proxy */ }
+  }
+  return null;
+}
+
 async function fetchFeed(feed){
   try {
-    const proxyUrl = CORS + encodeURIComponent(feed.url);
-    const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
-    if (!res.ok) throw new Error('HTTP '+res.status);
-    const data = await res.json();
-    const xml = new DOMParser().parseFromString(data.contents, 'text/xml');
-    const items = Array.from(xml.querySelectorAll('item')).slice(0, 12);
-
+    const result = await tryProxies(feed.url);
+    if (!result) throw new Error('All proxies failed');
+    const { xml } = result;
+    const items = Array.from(xml.querySelectorAll('item')).slice(0, 15);
     return items.map(item => {
       const title   = stripHtml(item.querySelector('title')?.textContent||'');
       const link    = item.querySelector('link')?.textContent?.trim() || item.querySelector('guid')?.textContent?.trim() || '';
-      const desc    = item.querySelector('description')?.textContent || item.querySelector('content\\:encoded')?.textContent || '';
-      const pubDate = item.querySelector('pubDate')?.textContent || item.querySelector('dc\\:date')?.textContent || '';
-      const summary = truncate(desc, 280);
+      const desc    = item.querySelector('description')?.textContent || item.querySelector('content\:encoded')?.textContent || '';
+      const pubDate = item.querySelector('pubDate')?.textContent || item.querySelector('dc\:date')?.textContent || '';
+      const summary = truncate(desc, 300);
       const cat     = classifyArticle(title, summary);
-
       return {
         headline: title,
         summary,
@@ -755,7 +782,7 @@ async function fetchAllFeeds(){
       // All feeds failed — fall back to curated data
       allArticles = FALLBACK_DATA;
       statusEl.className = 'rss-status error';
-      statusText.textContent = `RSS unavailable (CORS blocked in this browser) — showing curated news. Host this file on a server for live feeds.`;
+      statusText.textContent = `Live RSS unavailable — some sources may block external requests. Showing curated news. Try refreshing.`;
     }
 
     updateCounts(allArticles);
