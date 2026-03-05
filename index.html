@@ -36,7 +36,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 [data-theme="light"] body::before{display:none;}
 
 /* ── HEADER ── */
-.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,12,16,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:transform .25s ease;}
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,12,16,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform;}
 [data-theme="light"] .header{background:rgba(244,247,251,.95);}
 .header-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:var(--header-h);}
 .logo{display:flex;align-items:baseline;gap:7px;}
@@ -88,18 +88,17 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .status-refresh:disabled{opacity:.4;}
 
 /* Feed */
-.feed{display:flex;flex-direction:column;gap:0;padding:0 14px;width:100%;}
+.feed{display:block;padding:0 14px;width:100%;}
 
 /* Cards */
-.card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;animation:none;box-shadow:0 1px 4px var(--shadow);transition:border-color .15s,background .15s;display:block;position:relative;text-decoration:none;-webkit-user-select:none;user-select:none;margin-bottom:10px;width:100%;}
-@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.card:active{background:var(--card-hover);border-color:rgba(56,189,248,.2);transform:scale(.99);transition:transform .1s;}.card:focus{outline:none;}.card:focus-visible{outline:none;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 4px var(--shadow);transition:border-color .15s,background .15s;display:block;position:relative;-webkit-user-select:none;user-select:none;margin-bottom:10px;width:100%;min-width:0;cursor:pointer;-webkit-transform:translateZ(0);transform:translateZ(0);}
+.card:active{background:var(--card-hover);border-color:rgba(56,189,248,.2);transform:scale(.99);transition:transform .1s;}
 .card.alert-match{border-color:var(--yellow) !important;}
 .card.saved-highlight{border-color:var(--accent) !important;}
 .card-accent{height:3px;width:100%;display:block;}
 .accent-general{background:#4a5568;} .accent-conflict{background:var(--conflict);} .accent-contracts{background:var(--accent);}
 .accent-funding{background:var(--green);} .accent-testing{background:var(--yellow);} .accent-policy{background:var(--orange);} .accent-international{background:var(--purple);}
-.card-body{padding:20px 20px 20px 20px;width:100%;}
+.card-body{padding:20px;width:100%;box-sizing:border-box;}
 .card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:13px;}
 .cat-tag{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;font-weight:bold;}
 .t-general{background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.2);}
@@ -208,7 +207,9 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 /* Desktop centering */
 @media(min-width:600px){
-  .header,.bottom-nav{max-width:600px;margin:0 auto;left:50%;transform:translateX(-50%);right:auto;width:100%;}
+  .header,.bottom-nav{max-width:600px;margin:0 auto;left:50%;right:auto;width:100%;}
+  .header{-webkit-transform:translateX(-50%) translateZ(0);transform:translateX(-50%) translateZ(0);}
+  .bottom-nav{transform:translateX(-50%);}
   .page-offset{max-width:600px;margin:0 auto;}
   .overlay .sheet{max-width:600px;margin:0 auto;left:50%;transform:translateX(-50%) translateY(100%);right:auto;width:100%;}
   .overlay.open .sheet{transform:translateX(-50%) translateY(0);}
@@ -672,33 +673,112 @@ function render() {
     return;
   }
 
-  feed.innerHTML = items.map((a, i) => {
+  // Build cards with createElement to avoid Safari innerHTML reflow bugs
+  const frag = document.createDocumentFragment();
+
+  items.forEach((a, i) => {
     const isAlertMatch = matchesAlert(a);
     const saved = isSaved(a.url);
-    return `
-    <a class="card${isAlertMatch?' alert-match':''}${saved?' saved-highlight':''}"
-       href="${a.url||'#'}" target="${a.url?'_blank':'_self'}" rel="noopener"
-       style="animation-delay:0s">
-      <div class="card-accent accent-${a.category}"></div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="cat-tag t-${a.category}">${CAT_LABELS[a.category]||a.category.toUpperCase()}</span>
-          <span class="card-source">${a.source}</span>
-          ${a.isLive ? `<span class="live-badge"><span class="live-badge-dot"></span>LIVE</span>` : ''}
-          ${isAlertMatch ? `<span class="alert-badge">⚡ ALERT</span>` : ''}
-          <span class="card-time">${a.time}</span>
-        </div>
-        <div class="card-headline">${a.headline}</div>
-        <div class="card-summary">${compactMode ? a.summary.split('.')[0]+'.' : a.summary}</div>
-        <div class="card-footer">
-          <div class="card-actions" style="margin-left:auto;display:flex;align-items:center;gap:6px;">
-            ${a.url ? `<a class="card-link" href="${a.url}" target="_blank" onclick="event.stopPropagation()">Read ↗</a>` : ''}
-            <button class="save-btn${saved?' saved':''}" onclick="toggleSave('${a.url}',event)" title="${saved?'Remove saved':'Save article'}">🔖</button>
-          </div>
-        </div>
-      </div>
-    </a>`;
-  }).join('');
+
+    const card = document.createElement('div');
+    card.className = 'card' + (isAlertMatch ? ' alert-match' : '') + (saved ? ' saved-highlight' : '');
+    // Make the whole card clickable — opens article in new tab
+    card.addEventListener('click', function(e) {
+      // Don't navigate if they clicked save button or inner link
+      if (e.target.closest('.save-btn') || e.target.closest('.card-link')) return;
+      if (a.url) window.open(a.url, '_blank', 'noopener');
+    });
+
+    const accent = document.createElement('div');
+    accent.className = 'card-accent accent-' + a.category;
+
+    const body = document.createElement('div');
+    body.className = 'card-body';
+
+    // Meta row
+    const meta = document.createElement('div');
+    meta.className = 'card-meta';
+
+    const catTag = document.createElement('span');
+    catTag.className = 'cat-tag t-' + a.category;
+    catTag.textContent = CAT_LABELS[a.category] || a.category.toUpperCase();
+    meta.appendChild(catTag);
+
+    const source = document.createElement('span');
+    source.className = 'card-source';
+    source.textContent = a.source;
+    meta.appendChild(source);
+
+    if (a.isLive) {
+      const liveBadge = document.createElement('span');
+      liveBadge.className = 'live-badge';
+      liveBadge.innerHTML = '<span class="live-badge-dot"></span>LIVE';
+      meta.appendChild(liveBadge);
+    }
+
+    if (isAlertMatch) {
+      const alertBadge = document.createElement('span');
+      alertBadge.className = 'alert-badge';
+      alertBadge.textContent = '⚡ ALERT';
+      meta.appendChild(alertBadge);
+    }
+
+    const time = document.createElement('span');
+    time.className = 'card-time';
+    time.textContent = a.time;
+    meta.appendChild(time);
+
+    body.appendChild(meta);
+
+    // Headline
+    const headline = document.createElement('div');
+    headline.className = 'card-headline';
+    headline.textContent = a.headline;
+    body.appendChild(headline);
+
+    // Summary
+    const summary = document.createElement('div');
+    summary.className = 'card-summary';
+    summary.textContent = compactMode ? a.summary.split('.')[0] + '.' : a.summary;
+    body.appendChild(summary);
+
+    // Footer
+    const footer = document.createElement('div');
+    footer.className = 'card-footer';
+
+    const actions = document.createElement('div');
+    actions.className = 'card-actions';
+    actions.style.cssText = 'margin-left:auto;display:flex;align-items:center;gap:6px;';
+
+    if (a.url) {
+      const readLink = document.createElement('a');
+      readLink.className = 'card-link';
+      readLink.href = a.url;
+      readLink.target = '_blank';
+      readLink.rel = 'noopener';
+      readLink.textContent = 'Read ↗';
+      readLink.addEventListener('click', function(e) { e.stopPropagation(); });
+      actions.appendChild(readLink);
+    }
+
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'save-btn' + (saved ? ' saved' : '');
+    saveBtn.textContent = '🔖';
+    saveBtn.title = saved ? 'Remove saved' : 'Save article';
+    saveBtn.addEventListener('click', function(e) { toggleSave(a.url, e); });
+    actions.appendChild(saveBtn);
+
+    footer.appendChild(actions);
+    body.appendChild(footer);
+
+    card.appendChild(accent);
+    card.appendChild(body);
+    frag.appendChild(card);
+  });
+
+  // Clear and append in one shot
+  feed.innerHTML = '';
+  feed.appendChild(frag);
 }
 
 function updateCounts(articles) {
@@ -868,25 +948,7 @@ const FALLBACK=[
   {headline:"NDAA 2026 Draft Mandates Counter-UAS at All CONUS Bases",summary:"The draft NDAA requires all continental U.S. bases to implement C-UAS perimeter defense by 2028, creating an estimated $3-5B procurement opportunity.",category:"policy",source:"Breaking Defense",time:"Recent",companies:"DoD · HASC",amount:null,url:"https://breakingdefense.com",isLive:false,_ts:0,_notified:false},
 ];
 
-// ══ SCROLL TO HIDE HEADER ══
-let lastScroll = 0;
-let headerHidden = false;
-window.addEventListener('scroll', () => {
-  const current = window.scrollY;
-  const header = document.querySelector('.header');
-  const headerH = header.offsetHeight;
-  if (current <= 10) {
-    header.style.transform = 'translateY(0)';
-    headerHidden = false;
-  } else if (current > lastScroll + 8 && !headerHidden) {
-    header.style.transform = `translateY(-${headerH}px)`;
-    headerHidden = true;
-  } else if (current < lastScroll - 8 && headerHidden) {
-    header.style.transform = 'translateY(0)';
-    headerHidden = false;
-  }
-  lastScroll = current;
-}, { passive: true });
+// ══ HEADER: always visible (scroll-hide removed for Safari PWA compatibility) ══
 
 // ══ BOOT ══
 renderAlertTags();
