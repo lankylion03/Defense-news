@@ -776,6 +776,38 @@ function render() {
   // Clear and append in one shot
   feed.innerHTML = '';
   feed.appendChild(frag);
+
+  // DEBUG: measure card widths after paint
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const cards = feed.querySelectorAll('.card');
+      const feedW = feed.getBoundingClientRect().width;
+      let issues = [];
+      cards.forEach((c, i) => {
+        const r = c.getBoundingClientRect();
+        const parentR = c.parentElement.getBoundingClientRect();
+        if (Math.abs(r.width - (feedW - 28)) > 2) { // 28 = 14px padding * 2... but feed padding shouldn't affect child widths with border-box
+          issues.push(`Card ${i}: ${r.width.toFixed(1)}px (parent: ${parentR.width.toFixed(1)}px, feed: ${feedW.toFixed(1)}px, offsetLeft: ${c.offsetLeft}, parentTag: ${c.parentElement.tagName}.${c.parentElement.className})`);
+        }
+      });
+      if (issues.length) {
+        console.log('=== CARD WIDTH DEBUG ===');
+        console.log('Feed width:', feedW);
+        console.log('Feed padding:', getComputedStyle(feed).padding);
+        console.log('Issues:', issues.length, 'of', cards.length);
+        issues.slice(0, 10).forEach(s => console.log(s));
+        // Also check DOM nesting
+        const firstCard = cards[0];
+        const lastCard = cards[cards.length - 1];
+        if (firstCard && lastCard) {
+          let depth1 = 0, el = firstCard; while (el && el !== feed) { el = el.parentElement; depth1++; }
+          let depth2 = 0; el = lastCard; while (el && el !== feed) { el = el.parentElement; depth2++; }
+          console.log(`First card depth from feed: ${depth1}, Last card depth: ${depth2}`);
+          if (depth1 !== depth2) console.log('!!! NESTING BUG DETECTED !!!');
+        }
+      }
+    });
+  });
 }
 
 function updateCounts(articles) {
