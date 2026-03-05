@@ -2,8 +2,8 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Defense News">
 <meta name="theme-color" content="#080c10">
@@ -13,231 +13,123 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#080c10; --bg2:#0f1520; --bg3:#141c28; --border:#1e2d3d;
-  --accent:#38bdf8; --green:#34d399; --red:#f87171; --yellow:#fbbf24;
-  --orange:#fb923c; --purple:#a78bfa; --conflict:#ff6b6b;
-  --text:#e2e8f0; --text-sub:#94a3b8; --text-dim:#4a5568; --text-bright:#f8fafc;
-  --card:#0f1520; --card-hover:#131d2e; --shadow:rgba(0,0,0,.5);
-  --mono:'Share Tech Mono',monospace; --sans:'DM Sans',sans-serif; --serif:'DM Serif Display',serif;
-  --header-h:56px; --tab-h:44px;
-}
-[data-theme="light"] {
-  --bg:#f4f7fb; --bg2:#fff; --bg3:#edf1f7; --border:#dce3ed;
-  --accent:#0284c7; --green:#059669; --red:#dc2626; --yellow:#d97706;
-  --orange:#ea580c; --purple:#7c3aed; --conflict:#dc2626;
-  --text:#1e293b; --text-sub:#374151; --text-dim:#6b7280; --text-bright:#0f172a;
-  --card:#fff; --card-hover:#f8fafc; --shadow:rgba(0,0,0,.06);
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}a{text-decoration:none;color:inherit;outline:none;}a:focus{outline:none;}a:visited{color:inherit;}
-html{scroll-behavior:smooth;overflow-x:hidden;}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;min-height:100dvh;overflow-x:hidden;}
-body::before{display:none;}
-
-/* ── HEADER ── */
-.header{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);}
-[data-theme="light"] .header{background:var(--bg);}
-.header-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:var(--header-h);}
-.logo{display:flex;align-items:baseline;gap:7px;}
-.logo-mark{font-family:var(--mono);font-size:19px;color:var(--accent);letter-spacing:3px;}
-.logo-sep{color:var(--border);font-family:var(--mono);}
-.logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:2px;}
-.header-right{display:flex;align-items:center;gap:8px;}
-.live-pill{display:flex;align-items:center;gap:5px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:20px;padding:4px 10px;font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:1px;}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.8s ease infinite;}
+:root{--bg:#080c10;--bg2:#0f1520;--bg3:#141c28;--border:#1e2d3d;--accent:#38bdf8;--green:#34d399;--red:#f87171;--yellow:#fbbf24;--orange:#fb923c;--purple:#a78bfa;--conflict:#ff6b6b;--text:#e2e8f0;--text-sub:#94a3b8;--text-dim:#4a5568;--text-bright:#f8fafc;--card:#0f1520;--card-hover:#131d2e;--mono:'Share Tech Mono',monospace;--sans:'DM Sans',sans-serif;--serif:'DM Serif Display',serif}
+[data-theme="light"]{--bg:#f4f7fb;--bg2:#fff;--bg3:#edf1f7;--border:#dce3ed;--accent:#0284c7;--green:#059669;--red:#dc2626;--yellow:#d97706;--orange:#ea580c;--purple:#7c3aed;--conflict:#dc2626;--text:#1e293b;--text-sub:#374151;--text-dim:#6b7280;--text-bright:#0f172a;--card:#fff;--card-hover:#f8fafc}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+a{text-decoration:none;color:inherit}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-tap-highlight-color:transparent}
+#app-header{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border)}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:56px}
+.logo{display:flex;align-items:baseline;gap:7px}
+.logo-mark{font-family:var(--mono);font-size:19px;color:var(--accent);letter-spacing:3px}
+.logo-sep{color:var(--border);font-family:var(--mono)}
+.logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:2px}
+.header-right{display:flex;align-items:center;gap:8px}
+.live-pill{display:flex;align-items:center;gap:5px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:20px;padding:4px 10px;font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:1px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.8s ease infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
-.icon-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text-sub);font-size:17px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;}
-.icon-btn:hover{border-color:var(--accent);color:var(--accent);}
-.icon-btn .badge{position:absolute;top:-3px;right:-3px;background:var(--conflict);color:#fff;font-family:var(--mono);font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;display:none;}
-.icon-btn .badge.show{display:flex;}
-
-/* Tabs */
-.tabs-wrap{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 4px;height:var(--tab-h);align-items:center;border-top:1px solid var(--border);}
-.tabs-wrap::-webkit-scrollbar{display:none;}
-.tab{display:flex;align-items:center;gap:5px;padding:6px 13px;background:none;border:none;color:var(--text-dim);font-family:var(--sans);font-size:13.5px;font-weight:500;cursor:pointer;white-space:nowrap;border-radius:8px;transition:all .15s;flex-shrink:0;}
-.tab:hover{color:var(--text);background:rgba(255,255,255,.04);}
-.tab.active{color:var(--text-bright);background:rgba(56,189,248,.1);}
-.tab-dot{width:6px;height:6px;border-radius:50%;}
-.tab-count{font-family:var(--mono);font-size:10px;background:rgba(255,255,255,.08);color:var(--text-dim);padding:1px 5px;border-radius:8px;}
-.tab.active .tab-count{background:rgba(56,189,248,.2);color:var(--accent);}
-
-/* Search */
-.search-wrap{padding:7px 14px 9px;border-top:1px solid var(--border);}
-.search-inner{display:flex;align-items:center;gap:9px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:0 13px;height:38px;transition:border-color .15s;}
-.search-inner:focus-within{border-color:var(--accent);}
-.search-icon{color:var(--text-dim);font-size:15px;flex-shrink:0;}
-.search-input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--sans);font-size:14px;}
-.search-input::placeholder{color:var(--text-dim);}
-.search-clear{background:none;border:none;color:var(--text-dim);font-size:16px;cursor:pointer;padding:0;line-height:1;display:none;}
-.search-clear.visible{display:block;}
-
-/* Page offset */
-.page-offset{padding-top:calc(var(--header-h) + var(--tab-h) + 58px);padding-bottom:100px;}
-
-/* Status bar */
-.status-bar{margin:0 14px 12px;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;font-size:12.5px;font-weight:500;transition:all .2s;}
-.status-bar.live{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.15);color:var(--text-sub);}
-.status-bar.error{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.15);color:var(--red);}
-.status-bar.loading{background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.15);color:var(--text-dim);}
-.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.status-bar.live .status-dot{background:var(--green);}
-.status-bar.error .status-dot{background:var(--red);}
-.status-bar.loading .status-dot{background:var(--accent);animation:pulse 1s infinite;}
-.status-refresh{margin-left:auto;background:none;border:none;color:var(--accent);font-family:var(--mono);font-size:11px;cursor:pointer;letter-spacing:1px;padding:0;}
-.status-refresh:disabled{opacity:.4;}
-
-/* Feed */
-.feed{padding:0 14px;}
-
-/* Cards — minimal layout to avoid browser compositing bugs */
-.card{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;cursor:pointer;-webkit-user-select:none;user-select:none;position:relative;}
-.card:active{background:var(--card-hover);}
-.card.alert-match{border-color:var(--yellow);}
-.card.saved-highlight{border-color:var(--accent);}
-.card-accent{height:3px;border-radius:10px 10px 0 0;}
-.accent-general{background:#4a5568;} .accent-conflict{background:var(--conflict);} .accent-contracts{background:var(--accent);}
-.accent-funding{background:var(--green);} .accent-testing{background:var(--yellow);} .accent-policy{background:var(--orange);} .accent-international{background:var(--purple);}
-.card-body{padding:16px 20px 20px;}
-.card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:13px;}
-.cat-tag{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;font-weight:bold;}
-.t-general{background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.2);}
-.t-conflict{background:rgba(255,107,107,.12);color:var(--conflict);border:1px solid rgba(255,107,107,.25);}
-.t-contracts{background:rgba(56,189,248,.12);color:var(--accent);border:1px solid rgba(56,189,248,.25);}
-.t-funding{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.25);}
-.t-testing{background:rgba(251,191,36,.12);color:var(--yellow);border:1px solid rgba(251,191,36,.25);}
-.t-policy{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.25);}
-.t-international{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.25);}
-.card-source{font-size:12px;font-weight:600;color:var(--text-sub);}
-.card-time{font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-left:auto;}
-.live-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;color:var(--green);background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);padding:1px 5px;border-radius:3px;letter-spacing:1px;}
-.live-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease infinite;}
-.alert-badge{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;color:var(--yellow);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);padding:1px 6px;border-radius:3px;letter-spacing:1px;}
-.card-headline{font-family:var(--serif);font-size:17px;color:var(--text-bright);line-height:1.45;margin-bottom:12px;overflow-wrap:break-word;}
-.card-summary{font-size:13.5px;color:var(--text-sub);line-height:1.75;overflow-wrap:break-word;}
-.card-footer{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;}
-.card-companies{font-size:12px;color:var(--text-dim);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.card-amount{font-family:var(--mono);font-size:11px;color:var(--green);background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.18);padding:2px 8px;border-radius:4px;white-space:nowrap;}
-.card-actions{display:flex;align-items:center;gap:6px;margin-left:auto;}
-.card-link{font-size:11px;font-weight:600;color:var(--accent);text-decoration:none;border:1px solid rgba(56,189,248,.2);padding:3px 10px;border-radius:5px;white-space:nowrap;transition:background .13s;}
-.card-link:hover{background:rgba(56,189,248,.1);}
-.save-btn{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:14px;width:28px;height:28px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
-.save-btn.saved{background:rgba(56,189,248,.1);border-color:var(--accent);color:var(--accent);}
-.save-btn:hover{border-color:var(--accent);color:var(--accent);}
-
-/* Loading */
-.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:20px;}
-.loading-dots{display:flex;gap:8px;}
-.loading-dot{width:10px;height:10px;border-radius:50%;background:var(--border);animation:dotpulse 1.2s ease infinite;}
-.loading-dot:nth-child(2){animation-delay:.15s;} .loading-dot:nth-child(3){animation-delay:.3s;}
+.icon-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text-sub);font-size:17px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
+.icon-btn .badge{position:absolute;top:-3px;right:-3px;background:var(--conflict);color:#fff;font-family:var(--mono);font-size:9px;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center}
+.icon-btn .badge.show{display:flex}
+.tabs-wrap{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 4px;height:44px;align-items:center;border-top:1px solid var(--border)}
+.tabs-wrap::-webkit-scrollbar{display:none}
+.tab{display:flex;align-items:center;gap:5px;padding:6px 13px;background:none;border:none;color:var(--text-dim);font-family:var(--sans);font-size:13.5px;font-weight:500;cursor:pointer;white-space:nowrap;border-radius:8px;flex-shrink:0}
+.tab.active{color:var(--text-bright);background:rgba(56,189,248,.1)}
+.tab-dot{width:6px;height:6px;border-radius:50%}
+.tab-count{font-family:var(--mono);font-size:10px;background:rgba(255,255,255,.08);color:var(--text-dim);padding:1px 5px;border-radius:8px}
+.tab.active .tab-count{background:rgba(56,189,248,.2);color:var(--accent)}
+.search-wrap{padding:7px 14px 9px;border-top:1px solid var(--border)}
+.search-inner{display:flex;align-items:center;gap:9px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:0 13px;height:38px}
+.search-inner:focus-within{border-color:var(--accent)}
+.search-icon{color:var(--text-dim);font-size:15px;flex-shrink:0}
+.search-input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--sans);font-size:14px}
+.search-input::placeholder{color:var(--text-dim)}
+.search-clear{background:none;border:none;color:var(--text-dim);font-size:16px;cursor:pointer;padding:0;line-height:1;display:none}
+.search-clear.visible{display:block}
+#main-content{padding:158px 14px 80px 14px}
+.status-bar{margin-bottom:12px;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;font-size:12.5px;font-weight:500}
+.status-bar.live{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.15);color:var(--text-sub)}
+.status-bar.error{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.15);color:var(--red)}
+.status-bar.loading{background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.15);color:var(--text-dim)}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.status-bar.live .status-dot{background:var(--green)}
+.status-bar.error .status-dot{background:var(--red)}
+.status-bar.loading .status-dot{background:var(--accent);animation:pulse 1s infinite}
+.status-refresh{margin-left:auto;background:none;border:none;color:var(--accent);font-family:var(--mono);font-size:11px;cursor:pointer;letter-spacing:1px;padding:0}
+.status-refresh:disabled{opacity:.4}
+.card-link{font-size:11px;font-weight:600;color:var(--accent);border:1px solid rgba(56,189,248,.2);padding:3px 10px;border-radius:5px;white-space:nowrap;text-decoration:none}
+.save-btn{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:14px;width:28px;height:28px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.save-btn.saved{background:rgba(56,189,248,.1);border-color:var(--accent);color:var(--accent)}
+.loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:20px}
+.loading-dots{display:flex;gap:8px}
+.loading-dot{width:10px;height:10px;border-radius:50%;background:var(--border);animation:dotpulse 1.2s ease infinite}
+.loading-dot:nth-child(2){animation-delay:.15s}.loading-dot:nth-child(3){animation-delay:.3s}
 @keyframes dotpulse{0%,100%{background:var(--border);transform:scale(1)}50%{background:var(--accent);transform:scale(1.3)}}
-.loading-text{font-family:var(--mono);font-size:12px;color:var(--text-dim);letter-spacing:2px;}
-.loading-sub{font-size:13px;color:var(--text-dim);text-align:center;max-width:260px;line-height:1.5;}
-
-/* Empty */
-.empty{text-align:center;padding:60px 24px;color:var(--text-dim);font-size:14px;line-height:1.8;}
-.empty-icon{font-size:40px;margin-bottom:12px;display:block;}
-.empty-action{display:inline-block;margin-top:14px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);color:var(--accent);font-size:13px;font-weight:500;padding:8px 18px;border-radius:8px;cursor:pointer;}
-
-/* Bottom nav */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:100;}
-[data-theme="light"] .bottom-nav{background:var(--bg);}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 0;background:none;border:none;cursor:pointer;color:var(--text-dim);font-family:var(--sans);font-size:10px;font-weight:500;transition:color .15s;position:relative;}
-.nav-item.active{color:var(--accent);}
-.nav-item:hover{color:var(--text);}
-.nav-icon{font-size:20px;line-height:1;}
-.nav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:var(--conflict);color:#fff;font-family:var(--mono);font-size:9px;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;display:none;}
-.nav-badge.show{display:flex;}
-
-/* ── SHEETS (Settings, Saved, Alerts) ── */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s;}
-.overlay.open{opacity:1;pointer-events:all;}
-.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border);z-index:201;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);max-height:90dvh;display:flex;flex-direction:column;}
-.overlay.open .sheet{transform:translateY(0);}
-.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;flex-shrink:0;}
-.sheet-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.sheet-title{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;}
-.sheet-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:0;line-height:1;}
-.sheet-body{overflow-y:auto;flex:1;padding:8px 0;}
-.sheet-row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;gap:16px;}
-.sheet-label{font-size:15px;color:var(--text);font-weight:500;}
-.sheet-sub{font-size:12px;color:var(--text-dim);margin-top:1px;}
-.sheet-divider{height:1px;background:var(--border);margin:4px 0;}
-.sheet-section{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text-dim);padding:12px 20px 6px;text-transform:uppercase;}
-
-/* iOS toggle */
-.ios-toggle{position:relative;width:51px;height:31px;flex-shrink:0;}
-.ios-toggle input{display:none;}
-.ios-track{position:absolute;inset:0;background:var(--border);border-radius:16px;cursor:pointer;transition:background .2s;}
-.ios-toggle input:checked+.ios-track{background:#30d158;}
-.ios-thumb{position:absolute;top:2px;left:2px;width:27px;height:27px;background:white;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.3);transition:transform .2s cubic-bezier(.32,.72,0,1);pointer-events:none;}
-.ios-toggle input:checked~.ios-thumb{transform:translateX(20px);}
-
-/* Saved articles */
-.saved-card{display:flex;align-items:flex-start;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;}
-.saved-card:hover{background:var(--bg3);}
-.saved-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
-.saved-info{flex:1;min-width:0;}
-.saved-headline{font-size:14px;font-weight:500;color:var(--text-bright);line-height:1.3;margin-bottom:3px;}
-.saved-meta{font-size:11px;color:var(--text-dim);}
-.saved-remove{background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:0;flex-shrink:0;line-height:1;transition:color .12s;}
-.saved-remove:hover{color:var(--red);}
-
-/* Alert keywords */
-.alert-tags{display:flex;flex-wrap:wrap;gap:8px;padding:12px 20px;}
-.alert-tag{display:flex;align-items:center;gap:6px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:var(--yellow);font-size:13px;font-weight:500;padding:5px 10px;border-radius:20px;}
-.alert-tag-remove{background:none;border:none;color:var(--yellow);cursor:pointer;font-size:14px;padding:0;line-height:1;opacity:.7;}
-.alert-tag-remove:hover{opacity:1;}
-.alert-input-row{display:flex;gap:8px;padding:8px 20px 16px;}
-.alert-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:14px;padding:9px 13px;border-radius:10px;outline:none;transition:border-color .15s;}
-.alert-input:focus{border-color:var(--yellow);}
-.alert-input::placeholder{color:var(--text-dim);}
-.alert-add-btn{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);color:var(--yellow);font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 16px;border-radius:10px;cursor:pointer;white-space:nowrap;transition:background .15s;}
-.alert-add-btn:hover{background:rgba(251,191,36,.25);}
-
-/* Push notification request */
-.push-request{margin:12px 20px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);border-radius:12px;padding:14px;}
-.push-request-text{font-size:13px;color:var(--text-sub);line-height:1.5;margin-bottom:10px;}
-.push-enable-btn{background:var(--accent);border:none;color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;width:100%;transition:opacity .15s;}
-.push-enable-btn:hover{opacity:.85;}
-.push-enable-btn:disabled{opacity:.5;cursor:not-allowed;}
-
-/* ptr hint */
-.ptr-hint{text-align:center;padding:12px 12px 4px;font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:1px;}
-
-/* Desktop centering */
-@media(min-width:600px){
-  .header,.bottom-nav,.page-offset{max-width:600px;margin-left:auto;margin-right:auto;}
-  .header{left:0;right:0;margin:0 auto;}
-  .bottom-nav{left:0;right:0;margin:0 auto;}
-  .sheet{max-width:600px;left:0;right:0;margin:0 auto;}
-}
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.loading-text{font-family:var(--mono);font-size:12px;color:var(--text-dim);letter-spacing:2px}
+.loading-sub{font-size:13px;color:var(--text-dim);text-align:center;max-width:260px;line-height:1.5}
+.empty{text-align:center;padding:60px 24px;color:var(--text-dim);font-size:14px;line-height:1.8}
+.empty-icon{font-size:40px;margin-bottom:12px;display:block}
+.empty-action{display:inline-block;margin-top:14px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);color:var(--accent);font-size:13px;font-weight:500;padding:8px 18px;border-radius:8px;cursor:pointer}
+#app-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:100}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 0;background:none;border:none;cursor:pointer;color:var(--text-dim);font-family:var(--sans);font-size:10px;font-weight:500;position:relative}
+.nav-item.active{color:var(--accent)}
+.nav-icon{font-size:20px;line-height:1}
+.nav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:var(--conflict);color:#fff;font-family:var(--mono);font-size:9px;min-width:16px;height:16px;border-radius:8px;display:none;align-items:center;justify-content:center;padding:0 3px}
+.nav-badge.show{display:flex}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.open{opacity:1;pointer-events:all}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border);z-index:201;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);max-height:90dvh;display:flex;flex-direction:column}
+.overlay.open .sheet{transform:translateY(0)}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.sheet-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sheet-title{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase}
+.sheet-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:0;line-height:1}
+.sheet-body{overflow-y:auto;flex:1;padding:8px 0}
+.sheet-row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;gap:16px}
+.sheet-label{font-size:15px;color:var(--text);font-weight:500}
+.sheet-sub{font-size:12px;color:var(--text-dim);margin-top:1px}
+.sheet-divider{height:1px;background:var(--border);margin:4px 0}
+.sheet-section{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text-dim);padding:12px 20px 6px;text-transform:uppercase}
+.ios-toggle{position:relative;width:51px;height:31px;flex-shrink:0}
+.ios-toggle input{display:none}
+.ios-track{position:absolute;inset:0;background:var(--border);border-radius:16px;cursor:pointer;transition:background .2s}
+.ios-toggle input:checked+.ios-track{background:#30d158}
+.ios-thumb{position:absolute;top:2px;left:2px;width:27px;height:27px;background:white;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.3);transition:transform .2s;pointer-events:none}
+.ios-toggle input:checked~.ios-thumb{transform:translateX(20px)}
+.saved-card{display:flex;align-items:flex-start;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer}
+.saved-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.saved-info{flex:1;min-width:0}
+.saved-headline{font-size:14px;font-weight:500;color:var(--text-bright);line-height:1.3;margin-bottom:3px}
+.saved-meta{font-size:11px;color:var(--text-dim)}
+.saved-remove{background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:0;flex-shrink:0;line-height:1}
+.alert-tags{display:flex;flex-wrap:wrap;gap:8px;padding:12px 20px}
+.alert-tag{display:flex;align-items:center;gap:6px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:var(--yellow);font-size:13px;font-weight:500;padding:5px 10px;border-radius:20px}
+.alert-tag-remove{background:none;border:none;color:var(--yellow);cursor:pointer;font-size:14px;padding:0;line-height:1;opacity:.7}
+.alert-input-row{display:flex;gap:8px;padding:8px 20px 16px}
+.alert-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:14px;padding:9px 13px;border-radius:10px;outline:none}
+.alert-input:focus{border-color:var(--yellow)}
+.alert-input::placeholder{color:var(--text-dim)}
+.alert-add-btn{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);color:var(--yellow);font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 16px;border-radius:10px;cursor:pointer;white-space:nowrap}
+.push-request{margin:12px 20px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);border-radius:12px;padding:14px}
+.push-request-text{font-size:13px;color:var(--text-sub);line-height:1.5;margin-bottom:10px}
+.push-enable-btn{background:var(--accent);border:none;color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;width:100%}
+.push-enable-btn:disabled{opacity:.5;cursor:not-allowed}
+.ptr-hint{text-align:center;padding:12px 12px 4px;font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:1px}
+@media(min-width:600px){#app-header,#app-nav,#main-content{max-width:600px;margin-left:auto;margin-right:auto}#app-header{left:0;right:0}#app-nav{left:0;right:0}.sheet{max-width:600px;left:0;right:0;margin:0 auto}}
 </style>
 </head>
 <body>
-
-<!-- ══ HEADER ══ -->
-<div class="header">
+<div id="app-header">
   <div class="header-top">
-    <div class="logo">
-      <span class="logo-mark">DEFINT</span>
-      <span class="logo-sep">//</span>
-      <span class="logo-sub">DEFENSE NEWS</span>
-    </div>
+    <div class="logo"><span class="logo-mark">DEFINT</span><span class="logo-sep">//</span><span class="logo-sub">DEFENSE NEWS</span></div>
     <div class="header-right">
       <div class="live-pill" id="livePill"><div class="live-dot"></div><span id="livePillText">LIVE</span></div>
-      <button class="icon-btn" onclick="openSheet('alertsOverlay')" title="Keyword Alerts">
-        🔔<span class="badge" id="alertNavBadge">0</span>
-      </button>
-      <button class="icon-btn" onclick="openSheet('savedOverlay')" title="Saved Articles">
-        🔖<span class="badge" id="savedNavBadge">0</span>
-      </button>
-      <button class="icon-btn" onclick="openSheet('settingsOverlay')" title="Settings">⚙</button>
+      <button class="icon-btn" onclick="openSheet('alertsOverlay')">🔔<span class="badge" id="alertNavBadge">0</span></button>
+      <button class="icon-btn" onclick="openSheet('savedOverlay')">🔖<span class="badge" id="savedNavBadge">0</span></button>
+      <button class="icon-btn" onclick="openSheet('settingsOverlay')">⚙</button>
     </div>
   </div>
-
   <div class="tabs-wrap">
     <button class="tab active" data-cat="all" onclick="setTab('all',this)">All <span class="tab-count" id="tc-all">—</span></button>
     <button class="tab" data-cat="general" onclick="setTab('general',this)"><span class="tab-dot" style="background:#64748b"></span>General <span class="tab-count" id="tc-general">—</span></button>
@@ -247,7 +139,6 @@ body::before{display:none;}
     <button class="tab" data-cat="testing" onclick="setTab('testing',this)"><span class="tab-dot" style="background:var(--yellow)"></span>Testing <span class="tab-count" id="tc-testing">—</span></button>
     <button class="tab" data-cat="policy" onclick="setTab('policy',this)"><span class="tab-dot" style="background:var(--orange)"></span>Policy <span class="tab-count" id="tc-policy">—</span></button>
   </div>
-
   <div class="search-wrap">
     <div class="search-inner">
       <span class="search-icon">🔍</span>
@@ -256,742 +147,150 @@ body::before{display:none;}
     </div>
   </div>
 </div>
-
-<!-- ══ SCROLL AREA ══ -->
-<div class="page-offset">
-  <div class="status-bar loading" id="statusBar">
-    <div class="status-dot"></div>
-    <span id="statusText">Connecting to live sources…</span>
-    <button class="status-refresh" id="refreshBtn" onclick="fetchAll()" disabled>⟳ Refresh</button>
-  </div>
-  <div class="loading" id="loadingState">
-    <div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
-    <div class="loading-text">FETCHING LIVE NEWS</div>
-    <div class="loading-sub">Pulling from Breaking Defense, USNI News, Defense One and more…</div>
-  </div>
-  <div class="feed" id="feed"></div>
+<div id="main-content">
+  <div class="status-bar loading" id="statusBar"><div class="status-dot"></div><span id="statusText">Connecting to live sources…</span><button class="status-refresh" id="refreshBtn" onclick="fetchAll()" disabled>⟳ Refresh</button></div>
+  <div class="loading-state" id="loadingState"><div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div><div class="loading-text">FETCHING LIVE NEWS</div><div class="loading-sub">Pulling from Breaking Defense, USNI News, Defense One and more…</div></div>
+  <div id="feed"></div>
   <div class="ptr-hint" id="ptrHint" style="display:none">— End of feed · Auto-refreshes every 20 min —</div>
 </div>
-
-<!-- ══ BOTTOM NAV ══ -->
-<div class="bottom-nav">
-  <button class="nav-item active" id="navFeed" onclick="setTab('all',document.querySelector('[data-cat=all]'));setActiveNav('navFeed');scrollToTop()">
-    <span class="nav-icon">⊞</span>Feed
-  </button>
-  <button class="nav-item" id="navConflict" onclick="setTab('conflict',document.querySelector('[data-cat=conflict]'));setActiveNav('navConflict');scrollToTop()">
-    <span class="nav-icon">⚡</span>Conflict
-    <span class="nav-badge" id="conflictBadge">0</span>
-  </button>
-  <button class="nav-item" id="navSaved" onclick="openSheet('savedOverlay')">
-    <span class="nav-icon">🔖</span>Saved
-    <span class="nav-badge" id="savedBadge">0</span>
-  </button>
-  <button class="nav-item" id="navAlerts" onclick="openSheet('alertsOverlay')">
-    <span class="nav-icon">🔔</span>Alerts
-    <span class="nav-badge" id="alertsBadge">0</span>
-  </button>
+<div id="app-nav">
+  <button class="nav-item active" id="navFeed" onclick="setTab('all',document.querySelector('[data-cat=all]'));setActiveNav('navFeed');scrollToTop()"><span class="nav-icon">⊞</span>Feed</button>
+  <button class="nav-item" id="navConflict" onclick="setTab('conflict',document.querySelector('[data-cat=conflict]'));setActiveNav('navConflict');scrollToTop()"><span class="nav-icon">⚡</span>Conflict<span class="nav-badge" id="conflictBadge">0</span></button>
+  <button class="nav-item" id="navSaved" onclick="openSheet('savedOverlay')"><span class="nav-icon">🔖</span>Saved<span class="nav-badge" id="savedBadge">0</span></button>
+  <button class="nav-item" id="navAlerts" onclick="openSheet('alertsOverlay')"><span class="nav-icon">🔔</span>Alerts<span class="nav-badge" id="alertsBadge">0</span></button>
 </div>
-
-<!-- ══ SETTINGS SHEET ══ -->
-<div class="overlay" id="settingsOverlay" onclick="closeSheet('settingsOverlay')">
-  <div class="sheet" onclick="event.stopPropagation()">
-    <div class="sheet-handle"></div>
-    <div class="sheet-header">
-      <span class="sheet-title">Settings</span>
-      <button class="sheet-close" onclick="closeSheet('settingsOverlay')">✕</button>
-    </div>
-    <div class="sheet-body">
-      <div class="sheet-row">
-        <div><div class="sheet-label">Light Mode</div><div class="sheet-sub">Switch to light theme</div></div>
-        <label class="ios-toggle"><input type="checkbox" id="themeToggle" onchange="setTheme(this.checked)"><div class="ios-track"></div><div class="ios-thumb"></div></label>
-      </div>
-      <div class="sheet-divider"></div>
-      <div class="sheet-row">
-        <div><div class="sheet-label">Compact Summaries</div><div class="sheet-sub">Shorter article previews</div></div>
-        <label class="ios-toggle"><input type="checkbox" id="compactToggle" onchange="setCompact(this.checked)"><div class="ios-track"></div><div class="ios-thumb"></div></label>
-      </div>
-      <div class="sheet-divider"></div>
-      <div class="sheet-row">
-        <div><div class="sheet-label">Auto-Refresh</div><div class="sheet-sub">Update every 20 minutes</div></div>
-        <label class="ios-toggle"><input type="checkbox" id="autoToggle" checked onchange="setAuto(this.checked)"><div class="ios-track"></div><div class="ios-thumb"></div></label>
-      </div>
-      <div class="sheet-divider"></div>
-      <div id="pushSection">
-        <div class="push-request" id="pushRequest">
-          <div class="push-request-text">Enable push notifications to get alerted when breaking defense stories match your keywords — even when the app is closed.</div>
-          <button class="push-enable-btn" id="pushEnableBtn" onclick="requestPushPermission()">Enable Push Notifications</button>
-        </div>
-      </div>
-      <div class="sheet-section">Source Status</div>
-      <div class="sheet-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
-        <div id="sourceStatus" style="font-size:12px;color:var(--text-dim);line-height:1.8;">Checking sources…</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ SAVED ARTICLES SHEET ══ -->
-<div class="overlay" id="savedOverlay" onclick="closeSheet('savedOverlay')">
-  <div class="sheet" onclick="event.stopPropagation()">
-    <div class="sheet-handle"></div>
-    <div class="sheet-header">
-      <span class="sheet-title">Saved Articles</span>
-      <button class="sheet-close" onclick="closeSheet('savedOverlay')">✕</button>
-    </div>
-    <div class="sheet-body" id="savedBody">
-      <div class="empty"><span class="empty-icon">🔖</span>No saved articles yet.<br>Tap the bookmark icon on any story.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ KEYWORD ALERTS SHEET ══ -->
-<div class="overlay" id="alertsOverlay" onclick="closeSheet('alertsOverlay')">
-  <div class="sheet" onclick="event.stopPropagation()">
-    <div class="sheet-handle"></div>
-    <div class="sheet-header">
-      <span class="sheet-title">Keyword Alerts</span>
-      <button class="sheet-close" onclick="closeSheet('alertsOverlay')">✕</button>
-    </div>
-    <div class="sheet-body">
-      <div class="sheet-row" style="padding-bottom:8px;">
-        <div>
-          <div class="sheet-label">Alert Keywords</div>
-          <div class="sheet-sub">Stories matching these words get highlighted and trigger notifications</div>
-        </div>
-      </div>
-      <div class="alert-tags" id="alertTags"></div>
-      <div class="alert-input-row">
-        <input class="alert-input" id="alertInput" type="text" placeholder="e.g. Anduril, hypersonic, Taiwan…" onkeydown="if(event.key==='Enter')addAlert()">
-        <button class="alert-add-btn" onclick="addAlert()">+ Add</button>
-      </div>
-      <div class="sheet-divider"></div>
-      <div class="sheet-section">Suggested Keywords</div>
-      <div class="alert-tags" id="suggestedAlerts"></div>
-    </div>
-  </div>
-</div>
-
+<div class="overlay" id="settingsOverlay" onclick="closeSheet('settingsOverlay')"><div class="sheet" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-header"><span class="sheet-title">Settings</span><button class="sheet-close" onclick="closeSheet('settingsOverlay')">✕</button></div><div class="sheet-body">
+  <div class="sheet-row"><div><div class="sheet-label">Light Mode</div><div class="sheet-sub">Switch to light theme</div></div><label class="ios-toggle"><input type="checkbox" id="themeToggle" onchange="setTheme(this.checked)"><div class="ios-track"></div><div class="ios-thumb"></div></label></div><div class="sheet-divider"></div>
+  <div class="sheet-row"><div><div class="sheet-label">Compact Summaries</div><div class="sheet-sub">Shorter article previews</div></div><label class="ios-toggle"><input type="checkbox" id="compactToggle" onchange="setCompact(this.checked)"><div class="ios-track"></div><div class="ios-thumb"></div></label></div><div class="sheet-divider"></div>
+  <div class="sheet-row"><div><div class="sheet-label">Auto-Refresh</div><div class="sheet-sub">Update every 20 minutes</div></div><label class="ios-toggle"><input type="checkbox" id="autoToggle" checked onchange="setAuto(this.checked)"><div class="ios-track"></div><div class="ios-thumb"></div></label></div><div class="sheet-divider"></div>
+  <div id="pushSection"><div class="push-request" id="pushRequest"><div class="push-request-text">Enable push notifications to get alerted when breaking defense stories match your keywords.</div><button class="push-enable-btn" id="pushEnableBtn" onclick="requestPushPermission()">Enable Push Notifications</button></div></div>
+  <div class="sheet-section">Source Status</div><div class="sheet-row" style="flex-direction:column;align-items:flex-start;gap:6px"><div id="sourceStatus" style="font-size:12px;color:var(--text-dim);line-height:1.8">Checking sources…</div></div>
+</div></div></div>
+<div class="overlay" id="savedOverlay" onclick="closeSheet('savedOverlay')"><div class="sheet" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-header"><span class="sheet-title">Saved Articles</span><button class="sheet-close" onclick="closeSheet('savedOverlay')">✕</button></div><div class="sheet-body" id="savedBody"><div class="empty"><span class="empty-icon">🔖</span>No saved articles yet.<br>Tap the bookmark icon on any story.</div></div></div></div>
+<div class="overlay" id="alertsOverlay" onclick="closeSheet('alertsOverlay')"><div class="sheet" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-header"><span class="sheet-title">Keyword Alerts</span><button class="sheet-close" onclick="closeSheet('alertsOverlay')">✕</button></div><div class="sheet-body">
+  <div class="sheet-row" style="padding-bottom:8px"><div><div class="sheet-label">Alert Keywords</div><div class="sheet-sub">Stories matching these words get highlighted</div></div></div>
+  <div class="alert-tags" id="alertTags"></div>
+  <div class="alert-input-row"><input class="alert-input" id="alertInput" type="text" placeholder="e.g. Anduril, hypersonic…" onkeydown="if(event.key==='Enter')addAlert()"><button class="alert-add-btn" onclick="addAlert()">+ Add</button></div>
+  <div class="sheet-divider"></div><div class="sheet-section">Suggested Keywords</div><div class="alert-tags" id="suggestedAlerts"></div>
+</div></div></div>
 <script>
-// ══ STATE ══
-let allArticles = [];
-let currentCat  = 'all';
-let searchQuery = '';
-let compactMode = false;
-let autoTimer   = null;
-let savedArticles = JSON.parse(localStorage.getItem('defint-saved') || '[]');
-let alertKeywords = JSON.parse(localStorage.getItem('defint-alerts') || '["Anduril","Palantir","hypersonic","Taiwan","Ukraine"]');
-let pushSubscription = null;
+let allArticles=[],currentCat='all',searchQuery='',compactMode=false,autoTimer=null;
+let savedArticles=JSON.parse(localStorage.getItem('defint-saved')||'[]');
+let alertKeywords=JSON.parse(localStorage.getItem('defint-alerts')||'["Anduril","Palantir","hypersonic","Taiwan","Ukraine"]');
+let pushSubscription=null;
+const VAPID_PUBLIC_KEY='YOUR_VAPID_PUBLIC_KEY_HERE';
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(reg=>{checkPushStatus(reg)}).catch(e=>{});navigator.serviceWorker.addEventListener('message',e=>{if(e.data.type==='NOTIFICATION_CLICK'){closeSheet('settingsOverlay');const a=allArticles.find(x=>x.url===e.data.url);if(a)window.open(a.url,'_blank')}if(e.data.type==='BG_REFRESH')fetchAll()})}
+let deferredPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e});
+function urlBase64ToUint8Array(b){const p='='.repeat((4-b.length%4)%4);const b64=(b+p).replace(/-/g,'+').replace(/_/g,'/');const r=atob(b64);const o=new Uint8Array(r.length);for(let i=0;i<r.length;++i)o[i]=r.charCodeAt(i);return o}
+async function checkPushStatus(reg){const el=document.getElementById('pushRequest');if(!('PushManager' in window)){if(el)el.style.display='none';return}if(Notification.permission==='granted'){if(el)el.style.display='none';const sub=await reg.pushManager.getSubscription();if(sub){pushSubscription=sub;return}if(VAPID_PUBLIC_KEY!=='YOUR_VAPID_PUBLIC_KEY_HERE')subscribeToPush(reg)}if(Notification.permission==='denied'&&el){el.querySelector('.push-request-text').textContent='Notifications blocked.';el.querySelector('.push-enable-btn').disabled=true}}
+async function requestPushPermission(){const btn=document.getElementById('pushEnableBtn');btn.disabled=true;btn.textContent='Requesting…';try{const p=await Notification.requestPermission();if(p==='granted'){document.getElementById('pushRequest').style.display='none';await subscribeToPush(await navigator.serviceWorker.ready);showToast('✓ Push notifications enabled!')}else btn.textContent='Permission denied'}catch(e){btn.disabled=false;btn.textContent='Enable Push Notifications'}}
+async function subscribeToPush(reg){if(VAPID_PUBLIC_KEY==='YOUR_VAPID_PUBLIC_KEY_HERE')return;try{const sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});pushSubscription=sub;localStorage.setItem('defint-push-sub',JSON.stringify(sub))}catch(e){}}
+function triggerInAppNotification(a){if(Notification.permission==='granted')new Notification('⚡ Alert: '+alertKeywords.find(k=>(a.headline+a.summary).toLowerCase().includes(k.toLowerCase())),{body:a.headline,icon:'icons/icon-192.png',tag:'defint-alert-'+Date.now()})}
+function openSheet(id){document.getElementById(id).classList.add('open');updateSavedSheet()}
+function closeSheet(id){document.getElementById(id).classList.remove('open')}
+function setTheme(l){document.documentElement.setAttribute('data-theme',l?'light':'dark')}
+function setCompact(v){compactMode=v;render()}
+function scrollToTop(){window.scrollTo({top:0,behavior:'auto'})}
+function setActiveNav(id){document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));document.getElementById(id)?.classList.add('active')}
+function setAuto(v){clearInterval(autoTimer);if(v)autoTimer=setInterval(fetchAll,20*60*1000)}
+function setTab(cat,btn){currentCat=cat;document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');document.getElementById('feed').textContent='';setTimeout(()=>{render();scrollToTop()},16)}
+function onSearch(val){searchQuery=val.toLowerCase().trim();document.getElementById('searchClear').classList.toggle('visible',val.length>0);render()}
+function clearSearch(){document.getElementById('searchInput').value='';document.getElementById('searchClear').classList.remove('visible');searchQuery='';render()}
+function isSaved(url){return savedArticles.some(a=>a.url===url)}
+function toggleSave(url,e){e.preventDefault();e.stopPropagation();const a=allArticles.find(x=>x.url===url);if(!a)return;if(isSaved(url)){savedArticles=savedArticles.filter(x=>x.url!==url);showToast('Removed from saved')}else{savedArticles.unshift({...a,savedAt:Date.now()});showToast('✓ Article saved')}localStorage.setItem('defint-saved',JSON.stringify(savedArticles));updateSavedBadge();render()}
+function updateSavedBadge(){const c=savedArticles.length;['savedBadge','savedNavBadge'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=c;b.classList.toggle('show',c>0)}})}
+function updateSavedSheet(){const body=document.getElementById('savedBody');if(!savedArticles.length){body.innerHTML='<div class="empty"><span class="empty-icon">🔖</span>No saved articles yet.<br>Tap the bookmark icon on any story.</div>';return}const C={general:'#64748b',conflict:'#ff6b6b',contracts:'#38bdf8',funding:'#34d399',testing:'#fbbf24',policy:'#fb923c',international:'#a78bfa'};body.innerHTML=savedArticles.map(a=>'<div class="saved-card" onclick="window.open(\''+a.url+'\',\'_blank\')"><div class="saved-dot" style="background:'+(C[a.category]||'#64748b')+'"></div><div class="saved-info"><div class="saved-headline">'+a.headline+'</div><div class="saved-meta">'+a.source+' · '+a.time+'</div></div><button class="saved-remove" onclick="event.stopPropagation();removeSaved(\''+a.url+'\')">✕</button></div>').join('')}
+function removeSaved(url){savedArticles=savedArticles.filter(a=>a.url!==url);localStorage.setItem('defint-saved',JSON.stringify(savedArticles));updateSavedBadge();updateSavedSheet();render()}
+const SUGGESTED=['Anduril','Palantir','Lockheed','hypersonic','Taiwan','Ukraine','Hezbollah','Houthi','AUKUS','Replicator','B-21','F-35','autonomous','drone','AI','cyber','NDAA','SpaceX'];
+function renderAlertTags(){document.getElementById('alertTags').innerHTML=alertKeywords.map(k=>'<span class="alert-tag">'+k+'<button class="alert-tag-remove" onclick="removeAlert(\''+k+'\')">✕</button></span>').join('');document.getElementById('suggestedAlerts').innerHTML=SUGGESTED.filter(s=>!alertKeywords.includes(s)).slice(0,10).map(s=>'<span class="alert-tag" style="cursor:pointer;opacity:.6" onclick="addAlertKeyword(\''+s+'\')">'+s+' <span style="opacity:.6">+</span></span>').join('');updateAlertBadge()}
+function addAlert(){const i=document.getElementById('alertInput');const v=i.value.trim();if(v&&!alertKeywords.includes(v)){alertKeywords.push(v);localStorage.setItem('defint-alerts',JSON.stringify(alertKeywords));renderAlertTags();render()}i.value=''}
+function addAlertKeyword(kw){if(!alertKeywords.includes(kw)){alertKeywords.push(kw);localStorage.setItem('defint-alerts',JSON.stringify(alertKeywords));renderAlertTags();render();showToast('✓ Alert added: '+kw)}}
+function removeAlert(kw){alertKeywords=alertKeywords.filter(k=>k!==kw);localStorage.setItem('defint-alerts',JSON.stringify(alertKeywords));renderAlertTags();render()}
+function updateAlertBadge(){const n=allArticles.filter(a=>matchesAlert(a)).length;['alertsBadge','alertNavBadge'].forEach(id=>{const b=document.getElementById(id);if(b){b.textContent=n;b.classList.toggle('show',n>0)}})}
+function matchesAlert(a){if(!alertKeywords.length)return false;const t=(a.headline+' '+(a.summary||'')).toLowerCase();return alertKeywords.some(k=>t.includes(k.toLowerCase()))}
+function showToast(msg){const t=document.createElement('div');t.textContent=msg;Object.assign(t.style,{position:'fixed',bottom:'100px',left:'50%',transform:'translateX(-50%)',background:'rgba(15,21,32,.97)',border:'1px solid #1e2d3d',color:'#e2e8f0',padding:'10px 20px',borderRadius:'20px',fontSize:'13px',fontWeight:'500',zIndex:'9999',whiteSpace:'nowrap'});document.body.appendChild(t);setTimeout(()=>t.remove(),2400)}
 
-// VAPID public key — replace with your own from: npx web-push generate-vapid-keys
-const VAPID_PUBLIC_KEY = 'YOUR_VAPID_PUBLIC_KEY_HERE';
+const CAT_LABELS={general:'DEFENSE',conflict:'CONFLICT',contracts:'CONTRACT',funding:'FUNDING',testing:'TESTING',policy:'POLICY',international:'INTL'};
+const CAT_COLORS={general:'#64748b',conflict:'#ff6b6b',contracts:'#38bdf8',funding:'#34d399',testing:'#fbbf24',policy:'#fb923c',international:'#a78bfa'};
+const CAT_BG={general:'rgba(100,116,139,.15)',conflict:'rgba(255,107,107,.12)',contracts:'rgba(56,189,248,.12)',funding:'rgba(52,211,153,.12)',testing:'rgba(251,191,36,.12)',policy:'rgba(251,146,60,.12)',international:'rgba(167,139,250,.12)'};
+const CAT_BD={general:'rgba(100,116,139,.2)',conflict:'rgba(255,107,107,.25)',contracts:'rgba(56,189,248,.25)',funding:'rgba(52,211,153,.25)',testing:'rgba(251,191,36,.25)',policy:'rgba(251,146,60,.25)',international:'rgba(167,139,250,.25)'};
 
-// ══ PWA REGISTRATION ══
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').then(reg => {
-    console.log('SW registered:', reg.scope);
-    checkPushStatus(reg);
-  }).catch(err => console.log('SW error:', err));
-
-  // Listen for messages from SW
-  navigator.serviceWorker.addEventListener('message', e => {
-    if (e.data.type === 'NOTIFICATION_CLICK') {
-      closeSheet('settingsOverlay');
-      const article = allArticles.find(a => a.url === e.data.url);
-      if (article) window.open(article.url, '_blank');
-    }
-    if (e.data.type === 'BG_REFRESH') fetchAll();
-  });
-}
-
-// Install prompt
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  // Could show a custom install button here
-});
-
-// ══ PUSH NOTIFICATIONS ══
-function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
-  return outputArray;
-}
-
-async function checkPushStatus(reg) {
-  const pushEl = document.getElementById('pushRequest');
-  if (!('PushManager' in window)) { if (pushEl) pushEl.style.display = 'none'; return; }
-  const perm = Notification.permission;
-  if (perm === 'granted') {
-    if (pushEl) pushEl.style.display = 'none';
-    const sub = await reg.pushManager.getSubscription();
-    if (sub) { pushSubscription = sub; return; }
-    // Re-subscribe if key is set
-    if (VAPID_PUBLIC_KEY !== 'YOUR_VAPID_PUBLIC_KEY_HERE') subscribeToPush(reg);
-  }
-  if (perm === 'denied') {
-    if (pushEl) { pushEl.querySelector('.push-request-text').textContent = 'Notifications blocked. To enable, go to Safari Settings → Defense News → Notifications.'; pushEl.querySelector('.push-enable-btn').disabled = true; }
-  }
-}
-
-async function requestPushPermission() {
-  const btn = document.getElementById('pushEnableBtn');
-  btn.disabled = true;
-  btn.textContent = 'Requesting…';
-  try {
-    const perm = await Notification.requestPermission();
-    if (perm === 'granted') {
-      document.getElementById('pushRequest').style.display = 'none';
-      const reg = await navigator.serviceWorker.ready;
-      await subscribeToPush(reg);
-      showToast('✓ Push notifications enabled!');
-    } else {
-      btn.textContent = 'Permission denied';
-    }
-  } catch(e) {
-    btn.disabled = false;
-    btn.textContent = 'Enable Push Notifications';
-  }
-}
-
-async function subscribeToPush(reg) {
-  if (VAPID_PUBLIC_KEY === 'YOUR_VAPID_PUBLIC_KEY_HERE') {
-    console.log('Add VAPID key to enable full push');
-    return;
-  }
-  try {
-    const sub = await reg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
-    });
-    pushSubscription = sub;
-    console.log('Push subscription:', JSON.stringify(sub));
-    // In a real setup you'd POST this to your server
-    // For now, store locally and use in-app notifications
-    localStorage.setItem('defint-push-sub', JSON.stringify(sub));
-  } catch(e) {
-    console.log('Push subscribe error:', e);
-  }
-}
-
-// In-app notification fallback (works without server)
-function triggerInAppNotification(article) {
-  if (Notification.permission === 'granted') {
-    new Notification(`⚡ Alert: ${alertKeywords.find(k => (article.headline+article.summary).toLowerCase().includes(k.toLowerCase()))}`, {
-      body: article.headline,
-      icon: 'icons/icon-192.png',
-      tag: 'defint-alert-' + Date.now(),
-    });
-  }
-}
-
-// ══ SHEETS ══
-function openSheet(id)  { document.getElementById(id).classList.add('open'); updateSavedSheet(); }
-function closeSheet(id) { document.getElementById(id).classList.remove('open'); }
-
-// ══ SETTINGS ══
-function setTheme(light)  { document.documentElement.setAttribute('data-theme', light ? 'light' : 'dark'); }
-function setCompact(v)    { compactMode = v; render(); }
-function scrollToTop()    { window.scrollTo({ top: 0, behavior: 'auto' }); }
-function setActiveNav(id) { document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active')); document.getElementById(id)?.classList.add('active'); }
-function setAuto(v) {
-  clearInterval(autoTimer);
-  if (v) autoTimer = setInterval(fetchAll, 20 * 60 * 1000);
-}
-
-// ══ TABS ══
-function setTab(cat, btn) {
-  currentCat = cat;
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  // Clear feed first so mobile Safari doesn't show stale content
-  document.getElementById('feed').innerHTML = '';
-  // Small timeout lets the DOM clear before re-rendering (fixes mobile Safari blank bug)
-  setTimeout(() => { render(); scrollToTop(); }, 16);
-}
-
-// ══ SEARCH ══
-function onSearch(val) {
-  searchQuery = val.toLowerCase().trim();
-  document.getElementById('searchClear').classList.toggle('visible', val.length > 0);
-  render();
-}
-function clearSearch() {
-  document.getElementById('searchInput').value = '';
-  document.getElementById('searchClear').classList.remove('visible');
-  searchQuery = '';
-  render();
-}
-
-// ══ SAVED ARTICLES ══
-function isSaved(url) { return savedArticles.some(a => a.url === url); }
-
-function toggleSave(url, e) {
-  e.preventDefault(); e.stopPropagation();
-  const article = allArticles.find(a => a.url === url);
-  if (!article) return;
-  if (isSaved(url)) {
-    savedArticles = savedArticles.filter(a => a.url !== url);
-    showToast('Removed from saved');
-  } else {
-    savedArticles.unshift({ ...article, savedAt: Date.now() });
-    showToast('✓ Article saved');
-  }
-  localStorage.setItem('defint-saved', JSON.stringify(savedArticles));
-  updateSavedBadge();
-  render();
-}
-
-function updateSavedBadge() {
-  const count = savedArticles.length;
-  const badge = document.getElementById('savedBadge');
-  const navBadge = document.getElementById('savedNavBadge');
-  [badge, navBadge].forEach(b => { if (!b) return; b.textContent = count; b.classList.toggle('show', count > 0); });
-}
-
-function updateSavedSheet() {
-  const body = document.getElementById('savedBody');
-  if (!savedArticles.length) {
-    body.innerHTML = `<div class="empty"><span class="empty-icon">🔖</span>No saved articles yet.<br>Tap the bookmark icon on any story.</div>`;
-    return;
-  }
-  const CAT_COLORS = { general:'#64748b', conflict:'#ff6b6b', contracts:'#38bdf8', funding:'#34d399', testing:'#fbbf24', policy:'#fb923c', international:'#a78bfa' };
-  body.innerHTML = savedArticles.map((a, i) => `
-    <div class="saved-card" onclick="window.open('${a.url}','_blank')">
-      <div class="saved-dot" style="background:${CAT_COLORS[a.category]||'#64748b'}"></div>
-      <div class="saved-info">
-        <div class="saved-headline">${a.headline}</div>
-        <div class="saved-meta">${a.source} · ${a.time}</div>
-      </div>
-      <button class="saved-remove" onclick="event.stopPropagation();removeSaved('${a.url}')">✕</button>
-    </div>`).join('');
-}
-
-function removeSaved(url) {
-  savedArticles = savedArticles.filter(a => a.url !== url);
-  localStorage.setItem('defint-saved', JSON.stringify(savedArticles));
-  updateSavedBadge();
-  updateSavedSheet();
-  render();
-}
-
-// ══ KEYWORD ALERTS ══
-const SUGGESTED = ['Anduril','Palantir','Lockheed','hypersonic','Taiwan','Ukraine','Hezbollah','Houthi','AUKUS','Replicator','B-21','F-35','autonomous','drone','AI','cyber','NDAA','SpaceX'];
-
-function renderAlertTags() {
-  document.getElementById('alertTags').innerHTML = alertKeywords.map(k => `
-    <span class="alert-tag">${k}<button class="alert-tag-remove" onclick="removeAlert('${k}')">✕</button></span>`).join('');
-  document.getElementById('suggestedAlerts').innerHTML = SUGGESTED.filter(s => !alertKeywords.includes(s)).slice(0, 10).map(s => `
-    <span class="alert-tag" style="cursor:pointer;opacity:.6" onclick="addAlertKeyword('${s}')">${s} <span style="opacity:.6">+</span></span>`).join('');
+function render(){
+  const feed=document.getElementById('feed');
+  let items=currentCat==='all'?allArticles:allArticles.filter(a=>a.category===currentCat);
+  if(searchQuery)items=items.filter(a=>(a.headline+' '+(a.summary||'')+' '+(a.companies||'')).toLowerCase().includes(searchQuery));
+  document.getElementById('ptrHint').style.display=items.length?'block':'none';
   updateAlertBadge();
-}
+  items.filter(a=>matchesAlert(a)&&a.isLive&&!a._notified).forEach(a=>{a._notified=true;triggerInAppNotification(a)});
+  if(!items.length){feed.innerHTML='<div class="empty"><span class="empty-icon">🔍</span>'+(searchQuery?'No results for "'+searchQuery+'"':'No stories in this category yet.')+'<br><span class="empty-action" onclick="clearSearch();setTab(\'all\',document.querySelector(\'[data-cat=all]\'))">View all news</span></div>';return}
 
-function addAlert() {
-  const input = document.getElementById('alertInput');
-  const val = input.value.trim();
-  if (val && !alertKeywords.includes(val)) {
-    alertKeywords.push(val);
-    localStorage.setItem('defint-alerts', JSON.stringify(alertKeywords));
-    renderAlertTags();
-    render();
+  // ALL card layout is inline styles — immune to CSS cascade, extensions, browser quirks
+  let h='';
+  for(let i=0;i<items.length;i++){
+    const a=items[i];
+    const al=matchesAlert(a),sv=isSaved(a.url),c=a.category;
+    const bc=al?'var(--yellow)':sv?'var(--accent)':'var(--border)';
+    const su=(a.url||'').replace(/'/g,"\\'");
+    h+='<div style="background:var(--card);border:1px solid '+bc+';border-radius:10px;margin:0 0 10px 0;cursor:pointer" onclick="if(!event.target.closest(\'.save-btn\')&&!event.target.closest(\'.card-link\'))window.open(\''+su+'\',\'_blank\')">';
+    h+='<div style="height:3px;border-radius:10px 10px 0 0;background:'+CAT_COLORS[c]+'"></div>';
+    h+='<div style="padding:16px 20px 20px">';
+    h+='<div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:13px">';
+    h+='<span style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;font-weight:bold;background:'+CAT_BG[c]+';color:'+CAT_COLORS[c]+';border:1px solid '+CAT_BD[c]+'">'+(CAT_LABELS[c]||c)+'</span>';
+    h+='<span style="font-size:12px;font-weight:600;color:var(--text-sub)">'+a.source+'</span>';
+    if(a.isLive)h+='<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;color:var(--green);background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);padding:1px 5px;border-radius:3px;letter-spacing:1px"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green)"></span>LIVE</span>';
+    if(al)h+='<span style="font-family:var(--mono);font-size:9px;color:var(--yellow);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);padding:1px 6px;border-radius:3px;letter-spacing:1px">⚡ ALERT</span>';
+    h+='<span style="font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-left:auto">'+a.time+'</span>';
+    h+='</div>';
+    h+='<div style="font-family:var(--serif);font-size:17px;color:var(--text-bright);line-height:1.45;margin-bottom:12px;overflow-wrap:break-word">'+a.headline+'</div>';
+    h+='<div style="font-size:13.5px;color:var(--text-sub);line-height:1.75;overflow-wrap:break-word">'+(compactMode?a.summary.split('.')[0]+'.':a.summary)+'</div>';
+    h+='<div style="display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);justify-content:flex-end">';
+    if(a.url)h+='<a class="card-link" href="'+a.url+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">Read ↗</a>';
+    h+='<button class="save-btn'+(sv?' saved':'')+'" onclick="toggleSave(\''+su+'\',event)">🔖</button>';
+    h+='</div></div></div>';
   }
-  input.value = '';
+  feed.innerHTML=h;
 }
 
-function addAlertKeyword(kw) {
-  if (!alertKeywords.includes(kw)) {
-    alertKeywords.push(kw);
-    localStorage.setItem('defint-alerts', JSON.stringify(alertKeywords));
-    renderAlertTags();
-    render();
-    showToast(`✓ Alert added: ${kw}`);
-  }
-}
+function updateCounts(articles){['all','general','conflict','contracts','funding','testing','policy'].forEach(c=>{const el=document.getElementById('tc-'+c);if(el)el.textContent=c==='all'?articles.length:articles.filter(a=>a.category===c).length});const cb=document.getElementById('conflictBadge');const n=articles.filter(a=>a.category==='conflict').length;if(cb){cb.textContent=n;cb.classList.toggle('show',n>0)}}
 
-function removeAlert(kw) {
-  alertKeywords = alertKeywords.filter(k => k !== kw);
-  localStorage.setItem('defint-alerts', JSON.stringify(alertKeywords));
-  renderAlertTags();
-  render();
-}
-
-function updateAlertBadge() {
-  const matchCount = allArticles.filter(a => matchesAlert(a)).length;
-  const b1 = document.getElementById('alertsBadge');
-  const b2 = document.getElementById('alertNavBadge');
-  [b1, b2].forEach(b => { if (!b) return; b.textContent = matchCount; b.classList.toggle('show', matchCount > 0); });
-}
-
-function matchesAlert(article) {
-  if (!alertKeywords.length) return false;
-  const text = (article.headline + ' ' + (article.summary||'')).toLowerCase();
-  return alertKeywords.some(k => text.includes(k.toLowerCase()));
-}
-
-// ══ TOAST ══
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.textContent = msg;
-  Object.assign(t.style, {
-    position:'fixed', bottom:'100px', left:'50%', transform:'translateX(-50%)',
-    background:'rgba(15,21,32,.97)', border:'1px solid var(--border)',
-    color:'var(--text)', padding:'10px 20px', borderRadius:'20px',
-    fontSize:'13px', fontWeight:'500', zIndex:'9999',
-    boxShadow:'0 4px 20px rgba(0,0,0,.4)', whiteSpace:'nowrap',
-    animation:'rise .2s ease'
-  });
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2400);
-}
-
-// ══ RENDER ══
-const CAT_LABELS = { general:'DEFENSE', conflict:'CONFLICT', contracts:'CONTRACT', funding:'FUNDING', testing:'TESTING', policy:'POLICY', international:'INTL' };
-const CAT_COLORS = { general:'#64748b', conflict:'#ff6b6b', contracts:'#38bdf8', funding:'#34d399', testing:'#fbbf24', policy:'#fb923c', international:'#a78bfa' };
-
-function render() {
-  const feed = document.getElementById('feed');
-  let items = currentCat === 'all' ? allArticles : allArticles.filter(a => a.category === currentCat);
-  if (searchQuery) items = items.filter(a => (a.headline+' '+(a.summary||'')+' '+(a.companies||'')).toLowerCase().includes(searchQuery));
-
-  document.getElementById('ptrHint').style.display = items.length ? 'block' : 'none';
-  updateAlertBadge();
-
-  // Notify for new alert matches (first render only)
-  items.filter(a => matchesAlert(a) && a.isLive && !a._notified).forEach(a => {
-    a._notified = true;
-    triggerInAppNotification(a);
-  });
-
-  if (!items.length) {
-    feed.innerHTML = `<div class="empty"><span class="empty-icon">🔍</span>${searchQuery ? `No results for "<strong>${searchQuery}</strong>"` : 'No stories in this category yet.'}<br><span class="empty-action" onclick="clearSearch();setTab('all',document.querySelector('[data-cat=all]'))">View all news</span></div>`;
-    return;
-  }
-
-  // Build cards with createElement to avoid Safari innerHTML reflow bugs
-  const frag = document.createDocumentFragment();
-
-  items.forEach((a, i) => {
-    const isAlertMatch = matchesAlert(a);
-    const saved = isSaved(a.url);
-
-    const card = document.createElement('div');
-    card.className = 'card' + (isAlertMatch ? ' alert-match' : '') + (saved ? ' saved-highlight' : '');
-    // Make the whole card clickable — opens article in new tab
-    card.addEventListener('click', function(e) {
-      // Don't navigate if they clicked save button or inner link
-      if (e.target.closest('.save-btn') || e.target.closest('.card-link')) return;
-      if (a.url) window.open(a.url, '_blank', 'noopener');
-    });
-
-    const accent = document.createElement('div');
-    accent.className = 'card-accent accent-' + a.category;
-
-    const body = document.createElement('div');
-    body.className = 'card-body';
-
-    // Meta row
-    const meta = document.createElement('div');
-    meta.className = 'card-meta';
-
-    const catTag = document.createElement('span');
-    catTag.className = 'cat-tag t-' + a.category;
-    catTag.textContent = CAT_LABELS[a.category] || a.category.toUpperCase();
-    meta.appendChild(catTag);
-
-    const source = document.createElement('span');
-    source.className = 'card-source';
-    source.textContent = a.source;
-    meta.appendChild(source);
-
-    if (a.isLive) {
-      const liveBadge = document.createElement('span');
-      liveBadge.className = 'live-badge';
-      liveBadge.innerHTML = '<span class="live-badge-dot"></span>LIVE';
-      meta.appendChild(liveBadge);
-    }
-
-    if (isAlertMatch) {
-      const alertBadge = document.createElement('span');
-      alertBadge.className = 'alert-badge';
-      alertBadge.textContent = '⚡ ALERT';
-      meta.appendChild(alertBadge);
-    }
-
-    const time = document.createElement('span');
-    time.className = 'card-time';
-    time.textContent = a.time;
-    meta.appendChild(time);
-
-    body.appendChild(meta);
-
-    // Headline
-    const headline = document.createElement('div');
-    headline.className = 'card-headline';
-    headline.textContent = a.headline;
-    body.appendChild(headline);
-
-    // Summary
-    const summary = document.createElement('div');
-    summary.className = 'card-summary';
-    summary.textContent = compactMode ? a.summary.split('.')[0] + '.' : a.summary;
-    body.appendChild(summary);
-
-    // Footer
-    const footer = document.createElement('div');
-    footer.className = 'card-footer';
-
-    const actions = document.createElement('div');
-    actions.className = 'card-actions';
-    actions.style.cssText = 'margin-left:auto;display:flex;align-items:center;gap:6px;';
-
-    if (a.url) {
-      const readLink = document.createElement('a');
-      readLink.className = 'card-link';
-      readLink.href = a.url;
-      readLink.target = '_blank';
-      readLink.rel = 'noopener';
-      readLink.textContent = 'Read ↗';
-      readLink.addEventListener('click', function(e) { e.stopPropagation(); });
-      actions.appendChild(readLink);
-    }
-
-    const saveBtn = document.createElement('button');
-    saveBtn.className = 'save-btn' + (saved ? ' saved' : '');
-    saveBtn.textContent = '🔖';
-    saveBtn.title = saved ? 'Remove saved' : 'Save article';
-    saveBtn.addEventListener('click', function(e) { toggleSave(a.url, e); });
-    actions.appendChild(saveBtn);
-
-    footer.appendChild(actions);
-    body.appendChild(footer);
-
-    card.appendChild(accent);
-    card.appendChild(body);
-    frag.appendChild(card);
-  });
-
-  // Clear and append in one shot
-  feed.innerHTML = '';
-  feed.appendChild(frag);
-
-  // DEBUG: measure card widths after paint
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const cards = feed.querySelectorAll('.card');
-      const feedW = feed.getBoundingClientRect().width;
-      let issues = [];
-      cards.forEach((c, i) => {
-        const r = c.getBoundingClientRect();
-        const parentR = c.parentElement.getBoundingClientRect();
-        if (Math.abs(r.width - (feedW - 28)) > 2) { // 28 = 14px padding * 2... but feed padding shouldn't affect child widths with border-box
-          issues.push(`Card ${i}: ${r.width.toFixed(1)}px (parent: ${parentR.width.toFixed(1)}px, feed: ${feedW.toFixed(1)}px, offsetLeft: ${c.offsetLeft}, parentTag: ${c.parentElement.tagName}.${c.parentElement.className})`);
-        }
-      });
-      if (issues.length) {
-        console.log('=== CARD WIDTH DEBUG ===');
-        console.log('Feed width:', feedW);
-        console.log('Feed padding:', getComputedStyle(feed).padding);
-        console.log('Issues:', issues.length, 'of', cards.length);
-        issues.slice(0, 10).forEach(s => console.log(s));
-        // Also check DOM nesting
-        const firstCard = cards[0];
-        const lastCard = cards[cards.length - 1];
-        if (firstCard && lastCard) {
-          let depth1 = 0, el = firstCard; while (el && el !== feed) { el = el.parentElement; depth1++; }
-          let depth2 = 0; el = lastCard; while (el && el !== feed) { el = el.parentElement; depth2++; }
-          console.log(`First card depth from feed: ${depth1}, Last card depth: ${depth2}`);
-          if (depth1 !== depth2) console.log('!!! NESTING BUG DETECTED !!!');
-        }
-      }
-    });
-  });
-}
-
-function updateCounts(articles) {
-  ['all','general','conflict','contracts','funding','testing','policy'].forEach(c => {
-    const el = document.getElementById('tc-'+c);
-    if (el) el.textContent = c==='all' ? articles.length : articles.filter(a=>a.category===c).length;
-  });
-  // Conflict badge on nav
-  const cb = document.getElementById('conflictBadge');
-  const count = articles.filter(a=>a.category==='conflict').length;
-  if (cb) { cb.textContent = count; cb.classList.toggle('show', count > 0); }
-}
-
-// ══ RSS ══
-const PROXIES = [
-  url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
-  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-  url => `https://thingproxy.freeboard.io/fetch/${url}`,
+const PROXIES=[
+  url=>'https://api.allorigins.win/get?url='+encodeURIComponent(url),
+  url=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url),
+  url=>'https://corsproxy.io/?url='+encodeURIComponent(url),
+  url=>'https://thingproxy.freeboard.io/fetch/'+url,
 ];
-
-const RSS_FEEDS = [
-  { name:'Breaking Defense', url:'https://breakingdefense.com/feed/' },
-  { name:'USNI News',        url:'https://news.usni.org/feed' },
-  { name:'Defense One',      url:'https://www.defenseone.com/rss/all/' },
-  { name:'SpaceNews',        url:'https://spacenews.com/feed/' },
-  { name:'Air Force Mag',    url:'https://www.airandspaceforces.com/feed/' },
-  { name:'DoD News',         url:'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10' },
-  { name:'RealClear Defense',url:'https://www.realcleardefense.com/index.xml' },
-  { name:'Defence Blog',     url:'https://defence-blog.com/feed/' },
-  { name:'The War Zone',     url:'https://www.thedrive.com/the-war-zone/rss' },
-  { name:'C4ISRNET',         url:'https://www.c4isrnet.com/arc/outboundfeeds/rss/' },
+const RSS_FEEDS=[
+  {name:'Breaking Defense',url:'https://breakingdefense.com/feed/'},
+  {name:'USNI News',url:'https://news.usni.org/feed'},
+  {name:'Defense One',url:'https://www.defenseone.com/rss/all/'},
+  {name:'SpaceNews',url:'https://spacenews.com/feed/'},
+  {name:'Air Force Mag',url:'https://www.airandspaceforces.com/feed/'},
+  {name:'DoD News',url:'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10'},
+  {name:'RealClear Defense',url:'https://www.realcleardefense.com/index.xml'},
+  {name:'Defence Blog',url:'https://defence-blog.com/feed/'},
+  {name:'The War Zone',url:'https://www.thedrive.com/the-war-zone/rss'},
+  {name:'C4ISRNET',url:'https://www.c4isrnet.com/arc/outboundfeeds/rss/'},
 ];
-
-function classify(title, desc) {
-  const t = (title+' '+desc).toLowerCase();
-  if (/ukraine|russia.*attack|israel|gaza|hamas|hezbollah|houthi|taiwan.*strait|pla.*exercis|combat|airstrike|offensive|ceasefire|killed in|troops.*deploy|red sea.*attack|strike.*iran|iran.*strike/.test(t)) return 'conflict';
-  if (/\bcontract\b|award|idiq|rfp|procurement|\$[\d.]+\s*(b|m)illion|deal.*defense|billion.*contract|million.*contract/.test(t)) return 'contracts';
-  if (/\bfund|raise|series [a-f]\b|invest|capital|valuation|startup|venture|\bipo\b/.test(t)) return 'funding';
-  if (/\btest\b|trial|demonstrat|prototype|flight test|live fire|war game|hypersonic.*test|mach \d/.test(t)) return 'testing';
-  if (/congress|senate|\bndaa\b|budget.*defense|policy|pentagon.*plan|legislation|authoriz|appropriat|secdef|white house.*defense/.test(t)) return 'policy';
-  if (/\bnato\b|aukus|uk.*defense|australia.*military|japan.*defense|germany.*bundeswehr|france.*military|india.*defense|bilateral|multilateral/.test(t)) return 'international';
-  return 'general';
-}
-
-function relTime(dateStr) {
-  if (!dateStr) return 'Recent';
-  try {
-    const d = new Date(dateStr);
-    if (isNaN(d)) return 'Recent';
-    const m = Math.floor((Date.now()-d)/60000);
-    if (m<2) return 'Just now';
-    if (m<60) return m+'m ago';
-    if (m<1440) return Math.floor(m/60)+'h ago';
-    if (m<2880) return 'Yesterday';
-    const days=Math.floor(m/1440);
-    if (days<=6) return days+'d ago';
-    if (days<=13) return '1 week ago';
-    if (days<=20) return '2 weeks ago';
-    return '1 month ago';
-  } catch(e) { return 'Recent'; }
-}
-
-function clean(html) {
-  return (html||'').replace(/<[^>]+>/g,'')
-    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&nbsp;/g,' ')
-    .replace(/\s+/g,' ').trim();
-}
-
-function trunc(str,n) { const s=clean(str); return s.length>n?s.slice(0,n).replace(/\s\S*$/,'')+'…':s; }
-
-async function tryProxies(feedUrl) {
-  for (const makeProxy of PROXIES) {
-    try {
-      const res = await fetch(makeProxy(feedUrl), { signal: AbortSignal.timeout(8000) });
-      if (!res.ok) continue;
-      const raw = await res.text();
-      if (!raw||raw.length<80) continue;
-      let xmlText = raw;
-      if (raw.trimStart().startsWith('{')) {
-        try { const j=JSON.parse(raw); xmlText=j.contents||j.data||raw; } catch { xmlText=raw; }
-      }
-      const xml = new DOMParser().parseFromString(xmlText,'text/xml');
-      if (xml.querySelector('parsererror')) continue;
-      if (xml.querySelectorAll('item,entry').length) return xml;
-    } catch {}
-  }
-  return null;
-}
-
-async function fetchFeed(feed) {
-  try {
-    const xml = await tryProxies(feed.url);
-    if (!xml) return [];
-    return Array.from(xml.querySelectorAll('item,entry')).slice(0,14).map(item => {
-      const title   = clean(item.querySelector('title')?.textContent||'');
-      const link    = (item.querySelector('link')?.getAttribute('href')||item.querySelector('link')?.textContent||item.querySelector('guid')?.textContent||'').trim();
-      const desc    = item.querySelector('description')?.textContent||item.querySelector('summary')?.textContent||item.querySelector('content')?.textContent||'';
-      const pubDate = item.querySelector('pubDate')?.textContent||item.querySelector('published')?.textContent||item.querySelector('updated')?.textContent||'';
-      const summary = trunc(desc,280);
-      return { headline:title, summary:summary||'Read the full story at '+feed.name, category:classify(title,summary), source:feed.name, time:relTime(pubDate), companies:null, amount:null, url:link, isLive:true, _ts:pubDate?new Date(pubDate).getTime():0, _notified:false };
-    }).filter(a=>a.headline.length>8);
-  } catch { return []; }
-}
-
-let sourceCounts = {};
-
-async function fetchAll() {
-  const btn = document.getElementById('refreshBtn');
-  const loading = document.getElementById('loadingState');
-  const statusBar = document.getElementById('statusBar');
-  const statusText = document.getElementById('statusText');
-
-  btn.disabled=true;
-  loading.style.display='flex';
-  document.getElementById('feed').innerHTML='';
-  document.getElementById('ptrHint').style.display='none';
-  statusBar.className='status-bar loading';
-  statusText.textContent='Fetching live news…';
-
-  const results = await Promise.allSettled(RSS_FEEDS.map(f=>fetchFeed(f)));
-  let articles=[]; sourceCounts={};
-  results.forEach((r,i) => {
-    const items=r.status==='fulfilled'?r.value:[];
-    sourceCounts[RSS_FEEDS[i].name]=items.length;
-    articles=articles.concat(items);
-  });
-
-  // Deduplicate
-  const seen=new Set();
-  articles=articles.filter(a=>{ const k=a.headline.toLowerCase().slice(0,55); if(seen.has(k))return false; seen.add(k);return true; });
-  articles.sort((a,b)=>(b._ts||0)-(a._ts||0));
-
-  const ok=Object.values(sourceCounts).filter(c=>c>0).length;
-
-  if (articles.length) {
-    allArticles=articles;
-    statusBar.className='status-bar live';
-    statusText.textContent=`${articles.length} stories · ${ok}/${RSS_FEEDS.length} sources · ${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;
-    document.getElementById('livePillText').textContent='LIVE';
-  } else {
-    allArticles=FALLBACK;
-    statusBar.className='status-bar error';
-    statusText.textContent='Live feeds unavailable — showing curated news';
-    document.getElementById('livePillText').textContent='CACHED';
-  }
-
-  // Update source status in settings
-  document.getElementById('sourceStatus').innerHTML =
-    RSS_FEEDS.map(f=>`<span style="color:${(sourceCounts[f.name]||0)>0?'var(--green)':'var(--red)'}">${(sourceCounts[f.name]||0)>0?'✓':'✗'} ${f.name}: ${sourceCounts[f.name]||0} stories</span>`).join('<br>');
-
-  updateCounts(allArticles);
-  loading.style.display='none';
-  render();
-  btn.disabled=false;
-}
-
-// ══ FALLBACK ══
+function classify(title,desc){const t=(title+' '+desc).toLowerCase();if(/ukraine|russia.*attack|israel|gaza|hamas|hezbollah|houthi|taiwan.*strait|pla.*exercis|combat|airstrike|offensive|ceasefire|killed in|troops.*deploy|red sea.*attack|strike.*iran|iran.*strike/.test(t))return'conflict';if(/\bcontract\b|award|idiq|rfp|procurement|\$[\d.]+\s*(b|m)illion|deal.*defense|billion.*contract|million.*contract/.test(t))return'contracts';if(/\bfund|raise|series [a-f]\b|invest|capital|valuation|startup|venture|\bipo\b/.test(t))return'funding';if(/\btest\b|trial|demonstrat|prototype|flight test|live fire|war game|hypersonic.*test|mach \d/.test(t))return'testing';if(/congress|senate|\bndaa\b|budget.*defense|policy|pentagon.*plan|legislation|authoriz|appropriat|secdef|white house.*defense/.test(t))return'policy';if(/\bnato\b|aukus|uk.*defense|australia.*military|japan.*defense|germany.*bundeswehr|france.*military|india.*defense|bilateral|multilateral/.test(t))return'international';return'general'}
+function relTime(d){if(!d)return'Recent';try{const x=new Date(d);if(isNaN(x))return'Recent';const m=Math.floor((Date.now()-x)/60000);if(m<2)return'Just now';if(m<60)return m+'m ago';if(m<1440)return Math.floor(m/60)+'h ago';if(m<2880)return'Yesterday';const dy=Math.floor(m/1440);if(dy<=6)return dy+'d ago';if(dy<=13)return'1 week ago';if(dy<=20)return'2 weeks ago';return'1 month ago'}catch(e){return'Recent'}}
+function clean(h){return(h||'').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim()}
+function trunc(s,n){const c=clean(s);return c.length>n?c.slice(0,n).replace(/\s\S*$/,'')+'…':c}
+async function tryProxies(feedUrl){for(const mk of PROXIES){try{const r=await fetch(mk(feedUrl),{signal:AbortSignal.timeout(8000)});if(!r.ok)continue;const raw=await r.text();if(!raw||raw.length<80)continue;let xml=raw;if(raw.trimStart().startsWith('{')){try{const j=JSON.parse(raw);xml=j.contents||j.data||raw}catch{xml=raw}}const doc=new DOMParser().parseFromString(xml,'text/xml');if(doc.querySelector('parsererror'))continue;if(doc.querySelectorAll('item,entry').length)return doc}catch{}}return null}
+async function fetchFeed(feed){try{const xml=await tryProxies(feed.url);if(!xml)return[];return Array.from(xml.querySelectorAll('item,entry')).slice(0,14).map(item=>{const title=clean(item.querySelector('title')?.textContent||'');const link=(item.querySelector('link')?.getAttribute('href')||item.querySelector('link')?.textContent||item.querySelector('guid')?.textContent||'').trim();const desc=item.querySelector('description')?.textContent||item.querySelector('summary')?.textContent||item.querySelector('content')?.textContent||'';const pubDate=item.querySelector('pubDate')?.textContent||item.querySelector('published')?.textContent||item.querySelector('updated')?.textContent||'';const summary=trunc(desc,280);return{headline:title,summary:summary||'Read the full story at '+feed.name,category:classify(title,summary),source:feed.name,time:relTime(pubDate),companies:null,amount:null,url:link,isLive:true,_ts:pubDate?new Date(pubDate).getTime():0,_notified:false}}).filter(a=>a.headline.length>8)}catch{return[]}}
+let sourceCounts={};
+async function fetchAll(){const btn=document.getElementById('refreshBtn');const ld=document.getElementById('loadingState');const sb=document.getElementById('statusBar');const st=document.getElementById('statusText');btn.disabled=true;ld.style.display='flex';document.getElementById('feed').textContent='';document.getElementById('ptrHint').style.display='none';sb.className='status-bar loading';st.textContent='Fetching live news…';const results=await Promise.allSettled(RSS_FEEDS.map(f=>fetchFeed(f)));let articles=[];sourceCounts={};results.forEach((r,i)=>{const items=r.status==='fulfilled'?r.value:[];sourceCounts[RSS_FEEDS[i].name]=items.length;articles=articles.concat(items)});const seen=new Set();articles=articles.filter(a=>{const k=a.headline.toLowerCase().slice(0,55);if(seen.has(k))return false;seen.add(k);return true});articles.sort((a,b)=>(b._ts||0)-(a._ts||0));const ok=Object.values(sourceCounts).filter(c=>c>0).length;if(articles.length){allArticles=articles;sb.className='status-bar live';st.textContent=articles.length+' stories · '+ok+'/'+RSS_FEEDS.length+' sources · '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});document.getElementById('livePillText').textContent='LIVE'}else{allArticles=FALLBACK;sb.className='status-bar error';st.textContent='Live feeds unavailable — showing curated news';document.getElementById('livePillText').textContent='CACHED'}document.getElementById('sourceStatus').innerHTML=RSS_FEEDS.map(f=>'<span style="color:'+((sourceCounts[f.name]||0)>0?'var(--green)':'var(--red)')+'">'+((sourceCounts[f.name]||0)>0?'✓':'✗')+' '+f.name+': '+(sourceCounts[f.name]||0)+' stories</span>').join('<br>');updateCounts(allArticles);ld.style.display='none';render();btn.disabled=false}
 const FALLBACK=[
-  {headline:"Pentagon Awards Anduril $100M+ Contract for Autonomous Counter-Drone Systems",summary:"The DoD awarded Anduril Industries a major contract deploying Lattice AI and Roadrunner interceptors across bases. The system autonomously detects and neutralizes hostile UAS threats in real time.",category:"contracts",source:"Breaking Defense",time:"Recent",companies:"Anduril Industries",amount:"$100M+",url:"https://breakingdefense.com",isLive:false,_ts:0,_notified:false},
-  {headline:"Shield AI Raises $500M Series F, Valued at $2.8B",summary:"Shield AI closed a $500M round to expand V-BAT production and accelerate Hivemind, its autonomous pilot platform that operates without GPS or human control in contested environments.",category:"funding",source:"Defense One",time:"Recent",companies:"Shield AI",amount:"$500M",url:"https://defenseone.com",isLive:false,_ts:0,_notified:false},
-  {headline:"DARPA Completes Full-Scale Mach 5+ Hypersonic Glide Vehicle Test",summary:"DARPA and AFRL successfully completed a full-range HGV flight test achieving Mach 5+ sustained glide, validating thermal protection and guidance accuracy ahead of 2026 operational evaluation.",category:"testing",source:"Aviation Week",time:"Recent",companies:"DARPA · AFRL · Lockheed Martin",amount:null,url:"https://aviationweek.com",isLive:false,_ts:0,_notified:false},
-  {headline:"Palantir Wins $480M Army AI/ML Extension for Maven Smart System",summary:"Palantir secured a $480M extension to power Maven Smart System, fusing multi-domain sensor data for AI-driven targeting and ISR through FY2027.",category:"contracts",source:"Defense News",time:"Recent",companies:"Palantir · U.S. Army",amount:"$480M",url:"https://defensenews.com",isLive:false,_ts:0,_notified:false},
-  {headline:"PLA Conducts Largest Taiwan Strait Naval Exercise in a Decade",summary:"The PLAN deployed 40+ vessels simulating amphibious assault and blockade scenarios. The U.S. dispatched a carrier strike group in response to the exercise.",category:"conflict",source:"Reuters",time:"Recent",companies:"PLA Navy · U.S. Navy",amount:null,url:"https://reuters.com",isLive:false,_ts:0,_notified:false},
-  {headline:"Northrop Grumman Wins $2.4B B-21 Raider LRIP Contract",summary:"Northrop received a $2.4B low-rate initial production contract for the B-21 Raider as it approaches IOC, replacing the B-1 and B-2 as the cornerstone of U.S. strategic airpower.",category:"contracts",source:"Air Force Mag",time:"Recent",companies:"Northrop Grumman · USAF",amount:"$2.4B",url:"https://www.airandspaceforces.com",isLive:false,_ts:0,_notified:false},
-  {headline:"Japan Approves $43B Defense Buildup Including Tomahawks",summary:"Japan's cabinet approved a ¥6.5T multi-year buildup covering Tomahawk procurement, domestic hypersonic development, and F-35 fleet expansion.",category:"international",source:"Japan Times",time:"Recent",companies:"JSDF · Raytheon",amount:"$43B",url:"https://japantimes.co.jp",isLive:false,_ts:0,_notified:false},
-  {headline:"NDAA 2026 Draft Mandates Counter-UAS at All CONUS Bases",summary:"The draft NDAA requires all continental U.S. bases to implement C-UAS perimeter defense by 2028, creating an estimated $3-5B procurement opportunity.",category:"policy",source:"Breaking Defense",time:"Recent",companies:"DoD · HASC",amount:null,url:"https://breakingdefense.com",isLive:false,_ts:0,_notified:false},
+  {headline:"Pentagon Awards Anduril $100M+ Contract for Counter-Drone Systems",summary:"The DoD awarded Anduril Industries a major contract deploying Lattice AI and Roadrunner interceptors.",category:"contracts",source:"Breaking Defense",time:"Recent",url:"https://breakingdefense.com",isLive:false,_ts:0,_notified:false},
+  {headline:"Shield AI Raises $500M Series F, Valued at $2.8B",summary:"Shield AI closed a $500M round to expand V-BAT production and Hivemind autonomous pilot platform.",category:"funding",source:"Defense One",time:"Recent",url:"https://defenseone.com",isLive:false,_ts:0,_notified:false},
+  {headline:"DARPA Completes Mach 5+ Hypersonic Glide Vehicle Test",summary:"DARPA and AFRL completed a full-range HGV flight test achieving Mach 5+ sustained glide.",category:"testing",source:"Aviation Week",time:"Recent",url:"https://aviationweek.com",isLive:false,_ts:0,_notified:false},
+  {headline:"Palantir Wins $480M Army AI/ML Extension",summary:"Palantir secured a $480M extension to power Maven Smart System through FY2027.",category:"contracts",source:"Defense News",time:"Recent",url:"https://defensenews.com",isLive:false,_ts:0,_notified:false},
+  {headline:"PLA Conducts Largest Taiwan Strait Naval Exercise in a Decade",summary:"The PLAN deployed 40+ vessels simulating amphibious assault and blockade scenarios.",category:"conflict",source:"Reuters",time:"Recent",url:"https://reuters.com",isLive:false,_ts:0,_notified:false},
+  {headline:"Northrop Grumman Wins $2.4B B-21 Raider LRIP Contract",summary:"Northrop received a $2.4B low-rate initial production contract for the B-21 Raider.",category:"contracts",source:"Air Force Mag",time:"Recent",url:"https://www.airandspaceforces.com",isLive:false,_ts:0,_notified:false},
+  {headline:"Japan Approves $43B Defense Buildup Including Tomahawks",summary:"Japan's cabinet approved a multi-year buildup covering Tomahawk procurement and F-35 expansion.",category:"international",source:"Japan Times",time:"Recent",url:"https://japantimes.co.jp",isLive:false,_ts:0,_notified:false},
+  {headline:"NDAA 2026 Draft Mandates Counter-UAS at All CONUS Bases",summary:"The draft NDAA requires all continental U.S. bases to implement C-UAS perimeter defense by 2028.",category:"policy",source:"Breaking Defense",time:"Recent",url:"https://breakingdefense.com",isLive:false,_ts:0,_notified:false},
 ];
-
-// ══ HEADER: always visible (scroll-hide removed for Safari PWA compatibility) ══
-
-// ══ BOOT ══
-renderAlertTags();
-updateSavedBadge();
-setAuto(true);
-
-// Handle URL tab shortcuts (from PWA shortcuts in manifest)
-const urlParams = new URLSearchParams(window.location.search);
-const tabParam = urlParams.get('tab');
-if (tabParam) {
-  const tabBtn = document.querySelector(`[data-cat="${tabParam}"]`);
-  if (tabBtn) setTab(tabParam, tabBtn);
-}
-
+renderAlertTags();updateSavedBadge();setAuto(true);
+const urlParams=new URLSearchParams(window.location.search);const tabParam=urlParams.get('tab');if(tabParam){const tb=document.querySelector('[data-cat="'+tabParam+'"]');if(tb)setTab(tabParam,tb)}
 fetchAll();
 </script>
 </body>
