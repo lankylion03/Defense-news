@@ -5,530 +5,217 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>DEFINT</title>
+<meta name="apple-mobile-web-app-title" content="Defense News">
+<meta name="theme-color" content="#080c10">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<title>Defense News</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
-/* ── TOKENS ── */
 :root {
-  --bg:         #080c10;
-  --bg2:        #0f1520;
-  --bg3:        #141c28;
-  --border:     #1e2d3d;
-  --accent:     #38bdf8;
-  --green:      #34d399;
-  --red:        #f87171;
-  --yellow:     #fbbf24;
-  --orange:     #fb923c;
-  --purple:     #a78bfa;
-  --conflict:   #ff6b6b;
-  --text:       #e2e8f0;
-  --text-sub:   #94a3b8;
-  --text-dim:   #4a5568;
-  --text-bright:#f8fafc;
-  --card:       #0f1520;
-  --card-hover: #131d2e;
-  --shadow:     rgba(0,0,0,0.5);
-  --mono:       'Share Tech Mono', monospace;
-  --sans:       'DM Sans', sans-serif;
-  --serif:      'DM Serif Display', serif;
-  --header-h:   56px;
-  --tab-h:      44px;
-  --search-h:   52px;
+  --bg:#080c10; --bg2:#0f1520; --bg3:#141c28; --border:#1e2d3d;
+  --accent:#38bdf8; --green:#34d399; --red:#f87171; --yellow:#fbbf24;
+  --orange:#fb923c; --purple:#a78bfa; --conflict:#ff6b6b;
+  --text:#e2e8f0; --text-sub:#94a3b8; --text-dim:#4a5568; --text-bright:#f8fafc;
+  --card:#0f1520; --card-hover:#131d2e; --shadow:rgba(0,0,0,.5);
+  --mono:'Share Tech Mono',monospace; --sans:'DM Sans',sans-serif; --serif:'DM Serif Display',serif;
+  --header-h:56px; --tab-h:44px;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.6;
-  min-height: 100vh;
-  min-height: 100dvh;
-  overscroll-behavior: none;
+[data-theme="light"] {
+  --bg:#f4f7fb; --bg2:#fff; --bg3:#edf1f7; --border:#dce3ed;
+  --accent:#0284c7; --green:#059669; --red:#dc2626; --yellow:#d97706;
+  --orange:#ea580c; --purple:#7c3aed; --conflict:#dc2626;
+  --text:#1e293b; --text-sub:#374151; --text-dim:#6b7280; --text-bright:#0f172a;
+  --card:#fff; --card-hover:#f8fafc; --shadow:rgba(0,0,0,.06);
 }
-
-/* Subtle scanlines */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.015) 3px, rgba(0,0,0,.015) 4px);
-  pointer-events: none;
-  z-index: 9999;
-}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}a{text-decoration:none;color:inherit;outline:none;}a:focus{outline:none;}a:visited{color:inherit;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;min-height:100dvh;overscroll-behavior:none;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.015) 3px,rgba(0,0,0,.015) 4px);pointer-events:none;z-index:9999;}
+[data-theme="light"] body::before{display:none;}
 
 /* ── HEADER ── */
-.header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  background: rgba(8,12,16,0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-}
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,12,16,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+[data-theme="light"] .header{background:rgba(244,247,251,.95);}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:var(--header-h);}
+.logo{display:flex;align-items:baseline;gap:7px;}
+.logo-mark{font-family:var(--mono);font-size:19px;color:var(--accent);letter-spacing:3px;}
+.logo-sep{color:var(--border);font-family:var(--mono);}
+.logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:2px;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.live-pill{display:flex;align-items:center;gap:5px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:20px;padding:4px 10px;font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:1px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.8s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
+.icon-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text-sub);font-size:17px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent);}
+.icon-btn .badge{position:absolute;top:-3px;right:-3px;background:var(--conflict);color:#fff;font-family:var(--mono);font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;display:none;}
+.icon-btn .badge.show{display:flex;}
 
-.header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  height: var(--header-h);
-}
+/* Tabs */
+.tabs-wrap{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 4px;height:var(--tab-h);align-items:center;border-top:1px solid var(--border);}
+.tabs-wrap::-webkit-scrollbar{display:none;}
+.tab{display:flex;align-items:center;gap:5px;padding:6px 13px;background:none;border:none;color:var(--text-dim);font-family:var(--sans);font-size:13.5px;font-weight:500;cursor:pointer;white-space:nowrap;border-radius:8px;transition:all .15s;flex-shrink:0;}
+.tab:hover{color:var(--text);background:rgba(255,255,255,.04);}
+.tab.active{color:var(--text-bright);background:rgba(56,189,248,.1);}
+.tab-dot{width:6px;height:6px;border-radius:50%;}
+.tab-count{font-family:var(--mono);font-size:10px;background:rgba(255,255,255,.08);color:var(--text-dim);padding:1px 5px;border-radius:8px;}
+.tab.active .tab-count{background:rgba(56,189,248,.2);color:var(--accent);}
 
-.logo {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-.logo-mark {
-  font-family: var(--mono);
-  font-size: 20px;
-  color: var(--accent);
-  letter-spacing: 3px;
-}
-.logo-sep { color: var(--border); font-family: var(--mono); }
-.logo-sub {
-  font-family: var(--mono);
-  font-size: 9px;
-  color: var(--text-dim);
-  letter-spacing: 2px;
-}
+/* Search */
+.search-wrap{padding:7px 14px 9px;border-top:1px solid var(--border);}
+.search-inner{display:flex;align-items:center;gap:9px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:0 13px;height:38px;transition:border-color .15s;}
+.search-inner:focus-within{border-color:var(--accent);}
+.search-icon{color:var(--text-dim);font-size:15px;flex-shrink:0;}
+.search-input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--sans);font-size:14px;}
+.search-input::placeholder{color:var(--text-dim);}
+.search-clear{background:none;border:none;color:var(--text-dim);font-size:16px;cursor:pointer;padding:0;line-height:1;display:none;}
+.search-clear.visible{display:block;}
 
-.header-right { display: flex; align-items: center; gap: 10px; }
+/* Page offset */
+.page-offset{padding-top:calc(var(--header-h) + var(--tab-h) + 56px);padding-bottom:90px;}
 
-.live-pill {
-  display: flex; align-items: center; gap: 5px;
-  background: rgba(52,211,153,.08);
-  border: 1px solid rgba(52,211,153,.2);
-  border-radius: 20px;
-  padding: 4px 10px;
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--green);
-  letter-spacing: 1px;
-}
-.live-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  animation: pulse 1.8s ease infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.7)} }
+/* Status bar */
+.status-bar{margin:0 14px 12px;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;font-size:12.5px;font-weight:500;transition:all .2s;}
+.status-bar.live{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.15);color:var(--text-sub);}
+.status-bar.error{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.15);color:var(--red);}
+.status-bar.loading{background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.15);color:var(--text-dim);}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.status-bar.live .status-dot{background:var(--green);}
+.status-bar.error .status-dot{background:var(--red);}
+.status-bar.loading .status-dot{background:var(--accent);animation:pulse 1s infinite;}
+.status-refresh{margin-left:auto;background:none;border:none;color:var(--accent);font-family:var(--mono);font-size:11px;cursor:pointer;letter-spacing:1px;padding:0;}
+.status-refresh:disabled{opacity:.4;}
 
-.settings-btn {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  color: var(--text-sub);
-  font-size: 18px;
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .15s;
-}
-.settings-btn:hover { border-color: var(--accent); color: var(--accent); }
+/* Feed */
+.feed{display:flex;flex-direction:column;gap:10px;padding:0 14px;}
 
-/* Settings sheet */
-.settings-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.6);
-  z-index: 200;
-  opacity: 0; pointer-events: none;
-  transition: opacity .2s;
-}
-.settings-overlay.open { opacity: 1; pointer-events: all; }
-.settings-sheet {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--bg2);
-  border-radius: 20px 20px 0 0;
-  border-top: 1px solid var(--border);
-  padding: 12px 0 40px;
-  z-index: 201;
-  transform: translateY(100%);
-  transition: transform .3s cubic-bezier(.32,.72,0,1);
-}
-.settings-overlay.open .settings-sheet { transform: translateY(0); }
-.sheet-handle {
-  width: 36px; height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  margin: 0 auto 20px;
-}
-.sheet-title {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--text-dim);
-  padding: 0 20px 12px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 8px;
-}
-.sheet-row {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  padding: 14px 20px;
-  gap: 16px;
-}
-.sheet-row-label { font-size: 15px; color: var(--text); font-weight: 500; }
-.sheet-row-sub { font-size: 12px; color: var(--text-dim); margin-top: 1px; }
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;animation:rise .3s ease both;box-shadow:0 2px 8px var(--shadow);transition:border-color .15s,background .15s;display:block;position:relative;text-decoration:none;outline:none;-webkit-user-select:none;user-select:none;}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card:active{background:var(--card-hover);border-color:rgba(56,189,248,.2);transform:scale(.99);transition:transform .1s;}.card:focus{outline:none;}.card:focus-visible{outline:none;}
+.card.alert-match{border-color:var(--yellow) !important;box-shadow:0 0 0 1px var(--yellow),0 2px 12px rgba(251,191,36,.15);}
+.card.saved-highlight{border-color:var(--accent) !important;}
+.card-accent{height:3px;width:100%;}
+.accent-general{background:#4a5568;} .accent-conflict{background:var(--conflict);} .accent-contracts{background:var(--accent);}
+.accent-funding{background:var(--green);} .accent-testing{background:var(--yellow);} .accent-policy{background:var(--orange);} .accent-international{background:var(--purple);}
+.card-body{padding:13px 15px 15px;}
+.card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:9px;}
+.cat-tag{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;font-weight:bold;}
+.t-general{background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.2);}
+.t-conflict{background:rgba(255,107,107,.12);color:var(--conflict);border:1px solid rgba(255,107,107,.25);}
+.t-contracts{background:rgba(56,189,248,.12);color:var(--accent);border:1px solid rgba(56,189,248,.25);}
+.t-funding{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.25);}
+.t-testing{background:rgba(251,191,36,.12);color:var(--yellow);border:1px solid rgba(251,191,36,.25);}
+.t-policy{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.25);}
+.t-international{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.25);}
+.card-source{font-size:12px;font-weight:600;color:var(--text-sub);}
+.card-time{font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-left:auto;}
+.live-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;color:var(--green);background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);padding:1px 5px;border-radius:3px;letter-spacing:1px;}
+.live-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease infinite;}
+.alert-badge{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;color:var(--yellow);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);padding:1px 6px;border-radius:3px;letter-spacing:1px;}
+.card-headline{font-family:var(--serif);font-size:17px;color:var(--text-bright);line-height:1.35;margin-bottom:9px;}
+.card-summary{font-size:13.5px;color:var(--text-sub);line-height:1.65;}
+.card-footer{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.card-companies{font-size:12px;color:var(--text-dim);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-amount{font-family:var(--mono);font-size:11px;color:var(--green);background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.18);padding:2px 8px;border-radius:4px;white-space:nowrap;}
+.card-actions{display:flex;align-items:center;gap:6px;margin-left:auto;}
+.card-link{font-size:11px;font-weight:600;color:var(--accent);text-decoration:none;border:1px solid rgba(56,189,248,.2);padding:3px 10px;border-radius:5px;white-space:nowrap;transition:background .13s;}
+.card-link:hover{background:rgba(56,189,248,.1);}
+.save-btn{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:14px;width:28px;height:28px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+.save-btn.saved{background:rgba(56,189,248,.1);border-color:var(--accent);color:var(--accent);}
+.save-btn:hover{border-color:var(--accent);color:var(--accent);}
 
-/* iOS-style toggle */
-.ios-toggle { position: relative; width: 51px; height: 31px; flex-shrink: 0; }
-.ios-toggle input { display: none; }
-.ios-track {
-  position: absolute; inset: 0;
-  background: var(--border);
-  border-radius: 16px;
-  cursor: pointer;
-  transition: background .2s;
-}
-.ios-toggle input:checked + .ios-track { background: #30d158; }
-.ios-thumb {
-  position: absolute;
-  top: 2px; left: 2px;
-  width: 27px; height: 27px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,.3);
-  transition: transform .2s cubic-bezier(.32,.72,0,1);
-  pointer-events: none;
-}
-.ios-toggle input:checked ~ .ios-thumb { transform: translateX(20px); }
+/* Loading */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:20px;}
+.loading-dots{display:flex;gap:8px;}
+.loading-dot{width:10px;height:10px;border-radius:50%;background:var(--border);animation:dotpulse 1.2s ease infinite;}
+.loading-dot:nth-child(2){animation-delay:.15s;} .loading-dot:nth-child(3){animation-delay:.3s;}
+@keyframes dotpulse{0%,100%{background:var(--border);transform:scale(1)}50%{background:var(--accent);transform:scale(1.3)}}
+.loading-text{font-family:var(--mono);font-size:12px;color:var(--text-dim);letter-spacing:2px;}
+.loading-sub{font-size:13px;color:var(--text-dim);text-align:center;max-width:260px;line-height:1.5;}
 
-/* ── TABS ── */
-.tabs-wrap {
-  display: flex;
-  overflow-x: auto;
-  scrollbar-width: none;
-  gap: 0;
-  padding: 0 4px;
-  height: var(--tab-h);
-  align-items: center;
-  border-top: 1px solid var(--border);
-}
-.tabs-wrap::-webkit-scrollbar { display: none; }
+/* Empty */
+.empty{text-align:center;padding:60px 24px;color:var(--text-dim);font-size:14px;line-height:1.8;}
+.empty-icon{font-size:40px;margin-bottom:12px;display:block;}
+.empty-action{display:inline-block;margin-top:14px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);color:var(--accent);font-size:13px;font-weight:500;padding:8px 18px;border-radius:8px;cursor:pointer;}
 
-.tab {
-  display: flex; align-items: center; gap: 6px;
-  padding: 6px 14px;
-  background: none; border: none;
-  color: var(--text-dim);
-  font-family: var(--sans);
-  font-size: 13.5px;
-  font-weight: 500;
-  cursor: pointer;
-  white-space: nowrap;
-  border-radius: 8px;
-  transition: all .15s;
-  position: relative;
-  flex-shrink: 0;
-}
-.tab:hover { color: var(--text); background: rgba(255,255,255,.04); }
-.tab.active { color: var(--text-bright); background: rgba(56,189,248,.1); }
-.tab-dot { width: 6px; height: 6px; border-radius: 50%; }
-.tab-count {
-  font-family: var(--mono);
-  font-size: 10px;
-  background: rgba(255,255,255,.08);
-  color: var(--text-dim);
-  padding: 1px 5px;
-  border-radius: 8px;
-}
-.tab.active .tab-count { background: rgba(56,189,248,.2); color: var(--accent); }
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,12,16,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:100;}
+[data-theme="light"] .bottom-nav{background:rgba(244,247,251,.96);}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 0;background:none;border:none;cursor:pointer;color:var(--text-dim);font-family:var(--sans);font-size:10px;font-weight:500;transition:color .15s;position:relative;}
+.nav-item.active{color:var(--accent);}
+.nav-item:hover{color:var(--text);}
+.nav-icon{font-size:20px;line-height:1;}
+.nav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:var(--conflict);color:#fff;font-family:var(--mono);font-size:9px;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;display:none;}
+.nav-badge.show{display:flex;}
 
-/* ── SEARCH BAR ── */
-.search-wrap {
-  padding: 8px 14px 10px;
-  border-top: 1px solid var(--border);
-}
-.search-inner {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 0 14px;
-  height: 38px;
-  transition: border-color .15s;
-}
-.search-inner:focus-within { border-color: var(--accent); }
-.search-icon { color: var(--text-dim); font-size: 15px; flex-shrink: 0; }
-.search-input {
-  flex: 1;
-  background: none; border: none; outline: none;
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 14px;
-}
-.search-input::placeholder { color: var(--text-dim); }
-.search-clear {
-  background: none; border: none;
-  color: var(--text-dim);
-  font-size: 18px;
-  cursor: pointer;
-  padding: 0;
-  display: none;
-  line-height: 1;
-}
-.search-clear.visible { display: block; }
+/* ── SHEETS (Settings, Saved, Alerts) ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s;}
+.overlay.open{opacity:1;pointer-events:all;}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border);z-index:201;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);max-height:90dvh;display:flex;flex-direction:column;}
+.overlay.open .sheet{transform:translateY(0);}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;flex-shrink:0;}
+.sheet-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.sheet-title{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;}
+.sheet-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:0;line-height:1;}
+.sheet-body{overflow-y:auto;flex:1;padding:8px 0;}
+.sheet-row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;gap:16px;}
+.sheet-label{font-size:15px;color:var(--text);font-weight:500;}
+.sheet-sub{font-size:12px;color:var(--text-dim);margin-top:1px;}
+.sheet-divider{height:1px;background:var(--border);margin:4px 0;}
+.sheet-section{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text-dim);padding:12px 20px 6px;text-transform:uppercase;}
 
-/* ── MAIN SCROLL AREA ── */
-.page-offset {
-  /* header-top + tabs + search */
-  padding-top: calc(var(--header-h) + var(--tab-h) + 58px);
-  padding-bottom: 90px;
-}
+/* iOS toggle */
+.ios-toggle{position:relative;width:51px;height:31px;flex-shrink:0;}
+.ios-toggle input{display:none;}
+.ios-track{position:absolute;inset:0;background:var(--border);border-radius:16px;cursor:pointer;transition:background .2s;}
+.ios-toggle input:checked+.ios-track{background:#30d158;}
+.ios-thumb{position:absolute;top:2px;left:2px;width:27px;height:27px;background:white;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.3);transition:transform .2s cubic-bezier(.32,.72,0,1);pointer-events:none;}
+.ios-toggle input:checked~.ios-thumb{transform:translateX(20px);}
 
-/* ── STATUS BAR ── */
-.status-bar {
-  margin: 0 14px 12px;
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 14px;
-  border-radius: 10px;
-  font-size: 12.5px;
-  font-weight: 500;
-  transition: all .2s;
-}
-.status-bar.live   { background: rgba(52,211,153,.07); border: 1px solid rgba(52,211,153,.15); color: var(--text-sub); }
-.status-bar.error  { background: rgba(248,113,113,.07); border: 1px solid rgba(248,113,113,.15); color: #f87171; }
-.status-bar.loading{ background: rgba(56,189,248,.07); border: 1px solid rgba(56,189,248,.15); color: var(--text-dim); }
-.status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.status-bar.live .status-dot   { background: var(--green); }
-.status-bar.error .status-dot  { background: var(--red); }
-.status-bar.loading .status-dot{ background: var(--accent); animation: pulse 1s infinite; }
-.status-refresh {
-  margin-left: auto;
-  background: none; border: none;
-  color: var(--accent);
-  font-family: var(--mono);
-  font-size: 11px;
-  cursor: pointer;
-  letter-spacing: 1px;
-  padding: 0;
-}
-.status-refresh:disabled { opacity: .4; }
+/* Saved articles */
+.saved-card{display:flex;align-items:flex-start;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;}
+.saved-card:hover{background:var(--bg3);}
+.saved-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.saved-info{flex:1;min-width:0;}
+.saved-headline{font-size:14px;font-weight:500;color:var(--text-bright);line-height:1.3;margin-bottom:3px;}
+.saved-meta{font-size:11px;color:var(--text-dim);}
+.saved-remove{background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:0;flex-shrink:0;line-height:1;transition:color .12s;}
+.saved-remove:hover{color:var(--red);}
 
-/* ── FEED ── */
-.feed {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 0 14px;
-}
+/* Alert keywords */
+.alert-tags{display:flex;flex-wrap:wrap;gap:8px;padding:12px 20px;}
+.alert-tag{display:flex;align-items:center;gap:6px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:var(--yellow);font-size:13px;font-weight:500;padding:5px 10px;border-radius:20px;}
+.alert-tag-remove{background:none;border:none;color:var(--yellow);cursor:pointer;font-size:14px;padding:0;line-height:1;opacity:.7;}
+.alert-tag-remove:hover{opacity:1;}
+.alert-input-row{display:flex;gap:8px;padding:8px 20px 16px;}
+.alert-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:14px;padding:9px 13px;border-radius:10px;outline:none;transition:border-color .15s;}
+.alert-input:focus{border-color:var(--yellow);}
+.alert-input::placeholder{color:var(--text-dim);}
+.alert-add-btn{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);color:var(--yellow);font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 16px;border-radius:10px;cursor:pointer;white-space:nowrap;transition:background .15s;}
+.alert-add-btn:hover{background:rgba(251,191,36,.25);}
 
-/* ── CARDS ── */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-  cursor: pointer;
-  animation: rise .3s ease both;
-  box-shadow: 0 2px 8px var(--shadow);
-  transition: border-color .15s, background .15s;
-  text-decoration: none;
-  display: block;
-  -webkit-user-select: none;
-  user-select: none;
-}
-@keyframes rise { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
-.card:active { background: var(--card-hover); border-color: rgba(56,189,248,.2); transform: scale(.99); transition: transform .1s; }
+/* Push notification request */
+.push-request{margin:12px 20px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);border-radius:12px;padding:14px;}
+.push-request-text{font-size:13px;color:var(--text-sub);line-height:1.5;margin-bottom:10px;}
+.push-enable-btn{background:var(--accent);border:none;color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;width:100%;transition:opacity .15s;}
+.push-enable-btn:hover{opacity:.85;}
+.push-enable-btn:disabled{opacity:.5;cursor:not-allowed;}
 
-.card-accent {
-  height: 3px;
-  width: 100%;
-}
+/* ptr hint */
+.ptr-hint{text-align:center;padding:12px;font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:1px;}
 
-.card-body { padding: 14px 16px 16px; }
-
-.card-meta {
-  display: flex; align-items: center;
-  flex-wrap: wrap; gap: 7px;
-  margin-bottom: 10px;
+/* Desktop centering */
+@media(min-width:600px){
+  .header,.bottom-nav{max-width:600px;margin:0 auto;left:50%;transform:translateX(-50%);right:auto;width:100%;}
+  .page-offset{max-width:600px;margin:0 auto;}
+  .overlay .sheet{max-width:600px;margin:0 auto;left:50%;transform:translateX(-50%) translateY(100%);right:auto;width:100%;}
+  .overlay.open .sheet{transform:translateX(-50%) translateY(0);}
 }
-
-.cat-tag {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 2px 7px;
-  border-radius: 4px;
-  font-weight: bold;
-}
-.t-general      { background: rgba(100,116,139,.15); color: #94a3b8; border: 1px solid rgba(100,116,139,.2); }
-.t-conflict     { background: rgba(255,107,107,.12); color: var(--conflict); border: 1px solid rgba(255,107,107,.25); }
-.t-contracts    { background: rgba(56,189,248,.12);  color: var(--accent);   border: 1px solid rgba(56,189,248,.25); }
-.t-funding      { background: rgba(52,211,153,.12);  color: var(--green);    border: 1px solid rgba(52,211,153,.25); }
-.t-testing      { background: rgba(251,191,36,.12);  color: var(--yellow);   border: 1px solid rgba(251,191,36,.25); }
-.t-policy       { background: rgba(251,146,60,.12);  color: var(--orange);   border: 1px solid rgba(251,146,60,.25); }
-.t-international{ background: rgba(167,139,250,.12); color: var(--purple);   border: 1px solid rgba(167,139,250,.25); }
-
-.card-source { font-size: 12px; font-weight: 600; color: var(--text-sub); }
-.card-time   { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-left: auto; }
-
-.live-badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-family: var(--mono); font-size: 9px;
-  color: var(--green);
-  background: rgba(52,211,153,.1);
-  border: 1px solid rgba(52,211,153,.2);
-  padding: 1px 5px; border-radius: 3px;
-  letter-spacing: 1px;
-}
-.live-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse 1.6s ease infinite; }
-
-.card-headline {
-  font-family: var(--serif);
-  font-size: 17px;
-  color: var(--text-bright);
-  line-height: 1.35;
-  margin-bottom: 9px;
-}
-
-.card-summary {
-  font-size: 13.5px;
-  color: var(--text-sub);
-  line-height: 1.65;
-}
-
-.card-footer {
-  display: flex; align-items: center;
-  gap: 8px;
-  margin-top: 12px;
-  padding-top: 11px;
-  border-top: 1px solid var(--border);
-  flex-wrap: wrap;
-}
-.card-companies { font-size: 12px; color: var(--text-dim); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card-amount {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--green);
-  background: rgba(52,211,153,.08);
-  border: 1px solid rgba(52,211,153,.18);
-  padding: 2px 8px; border-radius: 4px;
-  white-space: nowrap;
-}
-.card-link {
-  margin-left: auto;
-  font-size: 11px; font-weight: 600;
-  color: var(--accent);
-  text-decoration: none;
-  border: 1px solid rgba(56,189,248,.2);
-  padding: 3px 10px; border-radius: 5px;
-  white-space: nowrap;
-  transition: background .13s;
-}
-.card-link:hover { background: rgba(56,189,248,.1); }
-
-/* Accent bar colors */
-.accent-general      { background: #4a5568; }
-.accent-conflict     { background: var(--conflict); }
-.accent-contracts    { background: var(--accent); }
-.accent-funding      { background: var(--green); }
-.accent-testing      { background: var(--yellow); }
-.accent-policy       { background: var(--orange); }
-.accent-international{ background: var(--purple); }
-
-/* ── LOADING ── */
-.loading {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 60px 20px; gap: 20px;
-}
-.loading-dots {
-  display: flex; gap: 8px;
-}
-.loading-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--border);
-  animation: dotpulse 1.2s ease infinite;
-}
-.loading-dot:nth-child(2) { animation-delay: .15s; }
-.loading-dot:nth-child(3) { animation-delay: .3s; }
-@keyframes dotpulse { 0%,100%{background:var(--border);transform:scale(1)} 50%{background:var(--accent);transform:scale(1.3)} }
-.loading-text { font-family: var(--mono); font-size: 12px; color: var(--text-dim); letter-spacing: 2px; }
-.loading-sub  { font-size: 13px; color: var(--text-dim); text-align: center; max-width: 260px; line-height: 1.5; }
-
-/* ── EMPTY ── */
-.empty {
-  text-align: center;
-  padding: 60px 24px;
-  color: var(--text-dim);
-  font-size: 14px;
-  line-height: 1.6;
-}
-.empty-icon { font-size: 40px; margin-bottom: 12px; display: block; }
-
-/* ── BOTTOM NAV ── */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(8,12,16,0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid var(--border);
-  display: flex;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  z-index: 100;
-}
-.nav-item {
-  flex: 1;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 3px;
-  padding: 10px 0;
-  background: none; border: none;
-  cursor: pointer;
-  color: var(--text-dim);
-  font-family: var(--sans);
-  font-size: 10px;
-  font-weight: 500;
-  transition: color .15s;
-}
-.nav-item.active { color: var(--accent); }
-.nav-item:hover { color: var(--text); }
-.nav-icon { font-size: 20px; line-height: 1; }
-
-/* ── PULL TO REFRESH hint ── */
-.ptr-hint {
-  text-align: center;
-  padding: 12px;
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text-dim);
-  letter-spacing: 1px;
-}
-
-/* ── LIGHT MODE ── */
-[data-theme="light"] {
-  --bg: #f4f7fb; --bg2: #ffffff; --bg3: #edf1f7; --border: #dce3ed;
-  --accent: #0284c7; --green: #059669; --red: #dc2626;
-  --yellow: #d97706; --orange: #ea580c; --purple: #7c3aed; --conflict: #dc2626;
-  --text: #1e293b; --text-sub: #374151; --text-dim: #6b7280; --text-bright: #0f172a;
-  --card: #ffffff; --card-hover: #f8fafc; --shadow: rgba(0,0,0,.06);
-}
-[data-theme="light"] body::before { display: none; }
-[data-theme="light"] .header { background: rgba(244,247,251,0.95); }
-[data-theme="light"] .bottom-nav { background: rgba(244,247,251,0.95); }
-
-/* ── DESKTOP CENTERING ── */
-@media (min-width: 600px) {
-  .header, .bottom-nav { max-width: 600px; margin: 0 auto; left: 50%; transform: translateX(-50%); right: auto; width: 100%; }
-  .page-offset { max-width: 600px; margin: 0 auto; }
-}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 </style>
 </head>
 <body>
@@ -542,51 +229,31 @@ body::before {
       <span class="logo-sub">DEFENSE NEWS</span>
     </div>
     <div class="header-right">
-      <div class="live-pill" id="livePill">
-        <div class="live-dot"></div>
-        <span id="livePillText">LIVE</span>
-      </div>
-      <button class="settings-btn" onclick="openSettings()" aria-label="Settings">⚙</button>
+      <div class="live-pill" id="livePill"><div class="live-dot"></div><span id="livePillText">LIVE</span></div>
+      <button class="icon-btn" onclick="openSheet('alertsOverlay')" title="Keyword Alerts">
+        🔔<span class="badge" id="alertNavBadge">0</span>
+      </button>
+      <button class="icon-btn" onclick="openSheet('savedOverlay')" title="Saved Articles">
+        🔖<span class="badge" id="savedNavBadge">0</span>
+      </button>
+      <button class="icon-btn" onclick="openSheet('settingsOverlay')" title="Settings">⚙</button>
     </div>
   </div>
 
-  <!-- Category tabs -->
-  <div class="tabs-wrap" id="tabsWrap">
-    <button class="tab active" data-cat="all" onclick="setTab('all',this)">
-      All <span class="tab-count" id="tc-all">—</span>
-    </button>
-    <button class="tab" data-cat="general" onclick="setTab('general',this)">
-      <span class="tab-dot" style="background:#64748b"></span>General
-      <span class="tab-count" id="tc-general">—</span>
-    </button>
-    <button class="tab" data-cat="conflict" onclick="setTab('conflict',this)">
-      <span class="tab-dot" style="background:var(--conflict)"></span>Conflict
-      <span class="tab-count" id="tc-conflict">—</span>
-    </button>
-    <button class="tab" data-cat="contracts" onclick="setTab('contracts',this)">
-      <span class="tab-dot" style="background:var(--accent)"></span>Contracts
-      <span class="tab-count" id="tc-contracts">—</span>
-    </button>
-    <button class="tab" data-cat="funding" onclick="setTab('funding',this)">
-      <span class="tab-dot" style="background:var(--green)"></span>Funding
-      <span class="tab-count" id="tc-funding">—</span>
-    </button>
-    <button class="tab" data-cat="testing" onclick="setTab('testing',this)">
-      <span class="tab-dot" style="background:var(--yellow)"></span>Testing
-      <span class="tab-count" id="tc-testing">—</span>
-    </button>
-    <button class="tab" data-cat="policy" onclick="setTab('policy',this)">
-      <span class="tab-dot" style="background:var(--orange)"></span>Policy
-      <span class="tab-count" id="tc-policy">—</span>
-    </button>
+  <div class="tabs-wrap">
+    <button class="tab active" data-cat="all" onclick="setTab('all',this)">All <span class="tab-count" id="tc-all">—</span></button>
+    <button class="tab" data-cat="general" onclick="setTab('general',this)"><span class="tab-dot" style="background:#64748b"></span>General <span class="tab-count" id="tc-general">—</span></button>
+    <button class="tab" data-cat="conflict" onclick="setTab('conflict',this)"><span class="tab-dot" style="background:var(--conflict)"></span>Conflict <span class="tab-count" id="tc-conflict">—</span></button>
+    <button class="tab" data-cat="contracts" onclick="setTab('contracts',this)"><span class="tab-dot" style="background:var(--accent)"></span>Contracts <span class="tab-count" id="tc-contracts">—</span></button>
+    <button class="tab" data-cat="funding" onclick="setTab('funding',this)"><span class="tab-dot" style="background:var(--green)"></span>Funding <span class="tab-count" id="tc-funding">—</span></button>
+    <button class="tab" data-cat="testing" onclick="setTab('testing',this)"><span class="tab-dot" style="background:var(--yellow)"></span>Testing <span class="tab-count" id="tc-testing">—</span></button>
+    <button class="tab" data-cat="policy" onclick="setTab('policy',this)"><span class="tab-dot" style="background:var(--orange)"></span>Policy <span class="tab-count" id="tc-policy">—</span></button>
   </div>
 
-  <!-- Search -->
   <div class="search-wrap">
     <div class="search-inner">
       <span class="search-icon">🔍</span>
-      <input class="search-input" id="searchInput" type="search" placeholder="Search defense news…"
-        oninput="onSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+      <input class="search-input" id="searchInput" type="search" placeholder="Search defense news…" oninput="onSearch(this.value)" autocomplete="off" spellcheck="false">
       <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
     </div>
   </div>
@@ -594,124 +261,259 @@ body::before {
 
 <!-- ══ SCROLL AREA ══ -->
 <div class="page-offset">
-
-  <!-- Status bar -->
   <div class="status-bar loading" id="statusBar">
     <div class="status-dot"></div>
     <span id="statusText">Connecting to live sources…</span>
     <button class="status-refresh" id="refreshBtn" onclick="fetchAll()" disabled>⟳ Refresh</button>
   </div>
-
-  <!-- Loading -->
   <div class="loading" id="loadingState">
-    <div class="loading-dots">
-      <div class="loading-dot"></div>
-      <div class="loading-dot"></div>
-      <div class="loading-dot"></div>
-    </div>
+    <div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
     <div class="loading-text">FETCHING LIVE NEWS</div>
     <div class="loading-sub">Pulling from Breaking Defense, USNI News, Defense One and more…</div>
   </div>
-
-  <!-- Feed -->
   <div class="feed" id="feed"></div>
-
   <div class="ptr-hint" id="ptrHint" style="display:none">— End of feed · Auto-refreshes every 20 min —</div>
 </div>
 
 <!-- ══ BOTTOM NAV ══ -->
 <div class="bottom-nav">
-  <button class="nav-item active" onclick="scrollToTop()">
+  <button class="nav-item active" id="navFeed" onclick="setTab('all',document.querySelector('[data-cat=all]'));setActiveNav('navFeed');scrollToTop()">
     <span class="nav-icon">⊞</span>Feed
   </button>
-  <button class="nav-item" onclick="setTab('conflict', document.querySelector('[data-cat=conflict]')); scrollToTop()">
+  <button class="nav-item" id="navConflict" onclick="setTab('conflict',document.querySelector('[data-cat=conflict]'));setActiveNav('navConflict');scrollToTop()">
     <span class="nav-icon">⚡</span>Conflict
+    <span class="nav-badge" id="conflictBadge">0</span>
   </button>
-  <button class="nav-item" onclick="setTab('contracts', document.querySelector('[data-cat=contracts]')); scrollToTop()">
-    <span class="nav-icon">📋</span>Contracts
+  <button class="nav-item" id="navSaved" onclick="openSheet('savedOverlay')">
+    <span class="nav-icon">🔖</span>Saved
+    <span class="nav-badge" id="savedBadge">0</span>
   </button>
-  <button class="nav-item" onclick="openSettings()">
-    <span class="nav-icon">⚙</span>Settings
+  <button class="nav-item" id="navAlerts" onclick="openSheet('alertsOverlay')">
+    <span class="nav-icon">🔔</span>Alerts
+    <span class="nav-badge" id="alertsBadge">0</span>
   </button>
 </div>
 
 <!-- ══ SETTINGS SHEET ══ -->
-<div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()">
-  <div class="settings-sheet" onclick="event.stopPropagation()">
+<div class="overlay" id="settingsOverlay" onclick="closeSheet('settingsOverlay')">
+  <div class="sheet" onclick="event.stopPropagation()">
     <div class="sheet-handle"></div>
-    <div class="sheet-title">SETTINGS</div>
-    <div class="sheet-row">
-      <div>
-        <div class="sheet-row-label">Light Mode</div>
-        <div class="sheet-row-sub">Switch to light theme</div>
-      </div>
-      <label class="ios-toggle">
-        <input type="checkbox" id="themeToggle" onchange="setTheme(this.checked)">
-        <div class="ios-track"></div>
-        <div class="ios-thumb"></div>
-      </label>
+    <div class="sheet-header">
+      <span class="sheet-title">Settings</span>
+      <button class="sheet-close" onclick="closeSheet('settingsOverlay')">✕</button>
     </div>
-    <div class="sheet-row">
-      <div>
-        <div class="sheet-row-label">Compact Summaries</div>
-        <div class="sheet-row-sub">Show shorter article previews</div>
+    <div class="sheet-body">
+      <div class="sheet-row">
+        <div><div class="sheet-label">Light Mode</div><div class="sheet-sub">Switch to light theme</div></div>
+        <label class="ios-toggle"><input type="checkbox" id="themeToggle" onchange="setTheme(this.checked)"><div class="ios-track"></div><div class="ios-thumb"></div></label>
       </div>
-      <label class="ios-toggle">
-        <input type="checkbox" id="compactToggle" onchange="setCompact(this.checked)">
-        <div class="ios-track"></div>
-        <div class="ios-thumb"></div>
-      </label>
-    </div>
-    <div class="sheet-row">
-      <div>
-        <div class="sheet-row-label">Auto-Refresh</div>
-        <div class="sheet-row-sub">Update feed every 20 minutes</div>
+      <div class="sheet-divider"></div>
+      <div class="sheet-row">
+        <div><div class="sheet-label">Compact Summaries</div><div class="sheet-sub">Shorter article previews</div></div>
+        <label class="ios-toggle"><input type="checkbox" id="compactToggle" onchange="setCompact(this.checked)"><div class="ios-track"></div><div class="ios-thumb"></div></label>
       </div>
-      <label class="ios-toggle">
-        <input type="checkbox" id="autoToggle" checked onchange="setAuto(this.checked)">
-        <div class="ios-track"></div>
-        <div class="ios-thumb"></div>
-      </label>
-    </div>
-    <div class="sheet-row" style="border-top:1px solid var(--border); margin-top:4px; padding-top:18px;">
-      <div>
-        <div class="sheet-row-label" style="color:var(--text-dim);font-size:13px;" id="sourceStatus">Sources: checking…</div>
+      <div class="sheet-divider"></div>
+      <div class="sheet-row">
+        <div><div class="sheet-label">Auto-Refresh</div><div class="sheet-sub">Update every 20 minutes</div></div>
+        <label class="ios-toggle"><input type="checkbox" id="autoToggle" checked onchange="setAuto(this.checked)"><div class="ios-track"></div><div class="ios-thumb"></div></label>
+      </div>
+      <div class="sheet-divider"></div>
+      <div id="pushSection">
+        <div class="push-request" id="pushRequest">
+          <div class="push-request-text">Enable push notifications to get alerted when breaking defense stories match your keywords — even when the app is closed.</div>
+          <button class="push-enable-btn" id="pushEnableBtn" onclick="requestPushPermission()">Enable Push Notifications</button>
+        </div>
+      </div>
+      <div class="sheet-section">Source Status</div>
+      <div class="sheet-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
+        <div id="sourceStatus" style="font-size:12px;color:var(--text-dim);line-height:1.8;">Checking sources…</div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ══ SAVED ARTICLES SHEET ══ -->
+<div class="overlay" id="savedOverlay" onclick="closeSheet('savedOverlay')">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <span class="sheet-title">Saved Articles</span>
+      <button class="sheet-close" onclick="closeSheet('savedOverlay')">✕</button>
+    </div>
+    <div class="sheet-body" id="savedBody">
+      <div class="empty"><span class="empty-icon">🔖</span>No saved articles yet.<br>Tap the bookmark icon on any story.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ KEYWORD ALERTS SHEET ══ -->
+<div class="overlay" id="alertsOverlay" onclick="closeSheet('alertsOverlay')">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <span class="sheet-title">Keyword Alerts</span>
+      <button class="sheet-close" onclick="closeSheet('alertsOverlay')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-row" style="padding-bottom:8px;">
+        <div>
+          <div class="sheet-label">Alert Keywords</div>
+          <div class="sheet-sub">Stories matching these words get highlighted and trigger notifications</div>
+        </div>
+      </div>
+      <div class="alert-tags" id="alertTags"></div>
+      <div class="alert-input-row">
+        <input class="alert-input" id="alertInput" type="text" placeholder="e.g. Anduril, hypersonic, Taiwan…" onkeydown="if(event.key==='Enter')addAlert()">
+        <button class="alert-add-btn" onclick="addAlert()">+ Add</button>
+      </div>
+      <div class="sheet-divider"></div>
+      <div class="sheet-section">Suggested Keywords</div>
+      <div class="alert-tags" id="suggestedAlerts"></div>
+    </div>
+  </div>
+</div>
+
 <script>
-// ── STATE ──
+// ══ STATE ══
 let allArticles = [];
 let currentCat  = 'all';
 let searchQuery = '';
 let compactMode = false;
 let autoTimer   = null;
+let savedArticles = JSON.parse(localStorage.getItem('defint-saved') || '[]');
+let alertKeywords = JSON.parse(localStorage.getItem('defint-alerts') || '["Anduril","Palantir","hypersonic","Taiwan","Ukraine"]');
+let pushSubscription = null;
 
-// ── SETTINGS ──
-function openSettings()  { document.getElementById('settingsOverlay').classList.add('open'); }
-function closeSettings() { document.getElementById('settingsOverlay').classList.remove('open'); }
-function setTheme(light) { document.documentElement.setAttribute('data-theme', light ? 'light' : 'dark'); }
-function setCompact(v)   { compactMode = v; render(); }
+// VAPID public key — replace with your own from: npx web-push generate-vapid-keys
+const VAPID_PUBLIC_KEY = 'YOUR_VAPID_PUBLIC_KEY_HERE';
+
+// ══ PWA REGISTRATION ══
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    console.log('SW registered:', reg.scope);
+    checkPushStatus(reg);
+  }).catch(err => console.log('SW error:', err));
+
+  // Listen for messages from SW
+  navigator.serviceWorker.addEventListener('message', e => {
+    if (e.data.type === 'NOTIFICATION_CLICK') {
+      closeSheet('settingsOverlay');
+      const article = allArticles.find(a => a.url === e.data.url);
+      if (article) window.open(article.url, '_blank');
+    }
+    if (e.data.type === 'BG_REFRESH') fetchAll();
+  });
+}
+
+// Install prompt
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Could show a custom install button here
+});
+
+// ══ PUSH NOTIFICATIONS ══
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+  return outputArray;
+}
+
+async function checkPushStatus(reg) {
+  const pushEl = document.getElementById('pushRequest');
+  if (!('PushManager' in window)) { if (pushEl) pushEl.style.display = 'none'; return; }
+  const perm = Notification.permission;
+  if (perm === 'granted') {
+    if (pushEl) pushEl.style.display = 'none';
+    const sub = await reg.pushManager.getSubscription();
+    if (sub) { pushSubscription = sub; return; }
+    // Re-subscribe if key is set
+    if (VAPID_PUBLIC_KEY !== 'YOUR_VAPID_PUBLIC_KEY_HERE') subscribeToPush(reg);
+  }
+  if (perm === 'denied') {
+    if (pushEl) { pushEl.querySelector('.push-request-text').textContent = 'Notifications blocked. To enable, go to Safari Settings → Defense News → Notifications.'; pushEl.querySelector('.push-enable-btn').disabled = true; }
+  }
+}
+
+async function requestPushPermission() {
+  const btn = document.getElementById('pushEnableBtn');
+  btn.disabled = true;
+  btn.textContent = 'Requesting…';
+  try {
+    const perm = await Notification.requestPermission();
+    if (perm === 'granted') {
+      document.getElementById('pushRequest').style.display = 'none';
+      const reg = await navigator.serviceWorker.ready;
+      await subscribeToPush(reg);
+      showToast('✓ Push notifications enabled!');
+    } else {
+      btn.textContent = 'Permission denied';
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'Enable Push Notifications';
+  }
+}
+
+async function subscribeToPush(reg) {
+  if (VAPID_PUBLIC_KEY === 'YOUR_VAPID_PUBLIC_KEY_HERE') {
+    console.log('Add VAPID key to enable full push');
+    return;
+  }
+  try {
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+    });
+    pushSubscription = sub;
+    console.log('Push subscription:', JSON.stringify(sub));
+    // In a real setup you'd POST this to your server
+    // For now, store locally and use in-app notifications
+    localStorage.setItem('defint-push-sub', JSON.stringify(sub));
+  } catch(e) {
+    console.log('Push subscribe error:', e);
+  }
+}
+
+// In-app notification fallback (works without server)
+function triggerInAppNotification(article) {
+  if (Notification.permission === 'granted') {
+    new Notification(`⚡ Alert: ${alertKeywords.find(k => (article.headline+article.summary).toLowerCase().includes(k.toLowerCase()))}`, {
+      body: article.headline,
+      icon: 'icons/icon-192.png',
+      tag: 'defint-alert-' + Date.now(),
+    });
+  }
+}
+
+// ══ SHEETS ══
+function openSheet(id)  { document.getElementById(id).classList.add('open'); updateSavedSheet(); }
+function closeSheet(id) { document.getElementById(id).classList.remove('open'); }
+
+// ══ SETTINGS ══
+function setTheme(light)  { document.documentElement.setAttribute('data-theme', light ? 'light' : 'dark'); }
+function setCompact(v)    { compactMode = v; render(); }
+function scrollToTop()    { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function setActiveNav(id) { document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active')); document.getElementById(id)?.classList.add('active'); }
 function setAuto(v) {
   clearInterval(autoTimer);
   if (v) autoTimer = setInterval(fetchAll, 20 * 60 * 1000);
 }
-function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-// ── TABS ──
+// ══ TABS ══
 function setTab(cat, btn) {
   currentCat = cat;
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  // sync bottom nav active
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   render();
   scrollToTop();
 }
 
-// ── SEARCH ──
+// ══ SEARCH ══
 function onSearch(val) {
   searchQuery = val.toLowerCase().trim();
   document.getElementById('searchClear').classList.toggle('visible', val.length > 0);
@@ -724,57 +526,193 @@ function clearSearch() {
   render();
 }
 
-// ── RENDER ──
+// ══ SAVED ARTICLES ══
+function isSaved(url) { return savedArticles.some(a => a.url === url); }
+
+function toggleSave(url, e) {
+  e.preventDefault(); e.stopPropagation();
+  const article = allArticles.find(a => a.url === url);
+  if (!article) return;
+  if (isSaved(url)) {
+    savedArticles = savedArticles.filter(a => a.url !== url);
+    showToast('Removed from saved');
+  } else {
+    savedArticles.unshift({ ...article, savedAt: Date.now() });
+    showToast('✓ Article saved');
+  }
+  localStorage.setItem('defint-saved', JSON.stringify(savedArticles));
+  updateSavedBadge();
+  render();
+}
+
+function updateSavedBadge() {
+  const count = savedArticles.length;
+  const badge = document.getElementById('savedBadge');
+  const navBadge = document.getElementById('savedNavBadge');
+  [badge, navBadge].forEach(b => { if (!b) return; b.textContent = count; b.classList.toggle('show', count > 0); });
+}
+
+function updateSavedSheet() {
+  const body = document.getElementById('savedBody');
+  if (!savedArticles.length) {
+    body.innerHTML = `<div class="empty"><span class="empty-icon">🔖</span>No saved articles yet.<br>Tap the bookmark icon on any story.</div>`;
+    return;
+  }
+  const CAT_COLORS = { general:'#64748b', conflict:'#ff6b6b', contracts:'#38bdf8', funding:'#34d399', testing:'#fbbf24', policy:'#fb923c', international:'#a78bfa' };
+  body.innerHTML = savedArticles.map((a, i) => `
+    <div class="saved-card" onclick="window.open('${a.url}','_blank')">
+      <div class="saved-dot" style="background:${CAT_COLORS[a.category]||'#64748b'}"></div>
+      <div class="saved-info">
+        <div class="saved-headline">${a.headline}</div>
+        <div class="saved-meta">${a.source} · ${a.time}</div>
+      </div>
+      <button class="saved-remove" onclick="event.stopPropagation();removeSaved('${a.url}')">✕</button>
+    </div>`).join('');
+}
+
+function removeSaved(url) {
+  savedArticles = savedArticles.filter(a => a.url !== url);
+  localStorage.setItem('defint-saved', JSON.stringify(savedArticles));
+  updateSavedBadge();
+  updateSavedSheet();
+  render();
+}
+
+// ══ KEYWORD ALERTS ══
+const SUGGESTED = ['Anduril','Palantir','Lockheed','hypersonic','Taiwan','Ukraine','Hezbollah','Houthi','AUKUS','Replicator','B-21','F-35','autonomous','drone','AI','cyber','NDAA','SpaceX'];
+
+function renderAlertTags() {
+  document.getElementById('alertTags').innerHTML = alertKeywords.map(k => `
+    <span class="alert-tag">${k}<button class="alert-tag-remove" onclick="removeAlert('${k}')">✕</button></span>`).join('');
+  document.getElementById('suggestedAlerts').innerHTML = SUGGESTED.filter(s => !alertKeywords.includes(s)).slice(0, 10).map(s => `
+    <span class="alert-tag" style="cursor:pointer;opacity:.6" onclick="addAlertKeyword('${s}')">${s} <span style="opacity:.6">+</span></span>`).join('');
+  updateAlertBadge();
+}
+
+function addAlert() {
+  const input = document.getElementById('alertInput');
+  const val = input.value.trim();
+  if (val && !alertKeywords.includes(val)) {
+    alertKeywords.push(val);
+    localStorage.setItem('defint-alerts', JSON.stringify(alertKeywords));
+    renderAlertTags();
+    render();
+  }
+  input.value = '';
+}
+
+function addAlertKeyword(kw) {
+  if (!alertKeywords.includes(kw)) {
+    alertKeywords.push(kw);
+    localStorage.setItem('defint-alerts', JSON.stringify(alertKeywords));
+    renderAlertTags();
+    render();
+    showToast(`✓ Alert added: ${kw}`);
+  }
+}
+
+function removeAlert(kw) {
+  alertKeywords = alertKeywords.filter(k => k !== kw);
+  localStorage.setItem('defint-alerts', JSON.stringify(alertKeywords));
+  renderAlertTags();
+  render();
+}
+
+function updateAlertBadge() {
+  const matchCount = allArticles.filter(a => matchesAlert(a)).length;
+  const b1 = document.getElementById('alertsBadge');
+  const b2 = document.getElementById('alertNavBadge');
+  [b1, b2].forEach(b => { if (!b) return; b.textContent = matchCount; b.classList.toggle('show', matchCount > 0); });
+}
+
+function matchesAlert(article) {
+  if (!alertKeywords.length) return false;
+  const text = (article.headline + ' ' + (article.summary||'')).toLowerCase();
+  return alertKeywords.some(k => text.includes(k.toLowerCase()));
+}
+
+// ══ TOAST ══
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  Object.assign(t.style, {
+    position:'fixed', bottom:'100px', left:'50%', transform:'translateX(-50%)',
+    background:'rgba(15,21,32,.97)', border:'1px solid var(--border)',
+    color:'var(--text)', padding:'10px 20px', borderRadius:'20px',
+    fontSize:'13px', fontWeight:'500', zIndex:'9999',
+    boxShadow:'0 4px 20px rgba(0,0,0,.4)', whiteSpace:'nowrap',
+    animation:'rise .2s ease'
+  });
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2400);
+}
+
+// ══ RENDER ══
+const CAT_LABELS = { general:'DEFENSE', conflict:'CONFLICT', contracts:'CONTRACT', funding:'FUNDING', testing:'TESTING', policy:'POLICY', international:'INTL' };
+const CAT_COLORS = { general:'#64748b', conflict:'#ff6b6b', contracts:'#38bdf8', funding:'#34d399', testing:'#fbbf24', policy:'#fb923c', international:'#a78bfa' };
+
 function render() {
   const feed = document.getElementById('feed');
   let items = currentCat === 'all' ? allArticles : allArticles.filter(a => a.category === currentCat);
-  if (searchQuery) {
-    items = items.filter(a =>
-      (a.headline + ' ' + (a.summary||'') + ' ' + (a.companies||'')).toLowerCase().includes(searchQuery)
-    );
-  }
+  if (searchQuery) items = items.filter(a => (a.headline+' '+(a.summary||'')+' '+(a.companies||'')).toLowerCase().includes(searchQuery));
 
   document.getElementById('ptrHint').style.display = items.length ? 'block' : 'none';
+  updateAlertBadge();
+
+  // Notify for new alert matches (first render only)
+  items.filter(a => matchesAlert(a) && a.isLive && !a._notified).forEach(a => {
+    a._notified = true;
+    triggerInAppNotification(a);
+  });
 
   if (!items.length) {
-    feed.innerHTML = `<div class="empty"><span class="empty-icon">🔍</span>${searchQuery ? 'No results for "'+searchQuery+'"' : 'No stories in this category yet.'}</div>`;
+    feed.innerHTML = `<div class="empty"><span class="empty-icon">🔍</span>${searchQuery ? `No results for "<strong>${searchQuery}</strong>"` : 'No stories in this category yet.'}<br><span class="empty-action" onclick="clearSearch();setTab('all',document.querySelector('[data-cat=all]'))">View all news</span></div>`;
     return;
   }
 
-  const CAT_LABELS = { general:'DEFENSE', conflict:'CONFLICT', contracts:'CONTRACT', funding:'FUNDING', testing:'TESTING', policy:'POLICY', international:'INTL' };
-
-  feed.innerHTML = items.map((a, i) => `
-    <a class="card" href="${a.url||'#'}" target="${a.url?'_blank':'_self'}" rel="noopener"
-       style="animation-delay:${Math.min(i * .04, .5)}s">
+  feed.innerHTML = items.map((a, i) => {
+    const isAlertMatch = matchesAlert(a);
+    const saved = isSaved(a.url);
+    return `
+    <a class="card${isAlertMatch?' alert-match':''}${saved?' saved-highlight':''}"
+       href="${a.url||'#'}" target="${a.url?'_blank':'_self'}" rel="noopener"
+       style="animation-delay:${Math.min(i*.04,.5)}s">
       <div class="card-accent accent-${a.category}"></div>
       <div class="card-body">
         <div class="card-meta">
           <span class="cat-tag t-${a.category}">${CAT_LABELS[a.category]||a.category.toUpperCase()}</span>
           <span class="card-source">${a.source}</span>
           ${a.isLive ? `<span class="live-badge"><span class="live-badge-dot"></span>LIVE</span>` : ''}
+          ${isAlertMatch ? `<span class="alert-badge">⚡ ALERT</span>` : ''}
           <span class="card-time">${a.time}</span>
         </div>
         <div class="card-headline">${a.headline}</div>
         <div class="card-summary">${compactMode ? a.summary.split('.')[0]+'.' : a.summary}</div>
-        ${(a.companies || a.amount) ? `
         <div class="card-footer">
           ${a.companies ? `<span class="card-companies">▸ ${a.companies}</span>` : ''}
           ${a.amount    ? `<span class="card-amount">${a.amount}</span>` : ''}
-          ${a.url       ? `<span class="card-link">Read ↗</span>` : ''}
-        </div>` : ''}
+          <div class="card-actions">
+            ${a.url ? `<a class="card-link" href="${a.url}" target="_blank" onclick="event.stopPropagation()">Read ↗</a>` : ''}
+            <button class="save-btn${saved?' saved':''}" onclick="toggleSave('${a.url}',event)" title="${saved?'Remove saved':'Save article'}">${saved?'🔖':'🔖'}</button>
+          </div>
+        </div>
       </div>
-    </a>`).join('');
+    </a>`;
+  }).join('');
 }
 
 function updateCounts(articles) {
-  const cats = ['all','general','conflict','contracts','funding','testing','policy'];
-  cats.forEach(c => {
+  ['all','general','conflict','contracts','funding','testing','policy'].forEach(c => {
     const el = document.getElementById('tc-'+c);
-    if (el) el.textContent = c === 'all' ? articles.length : articles.filter(a=>a.category===c).length;
+    if (el) el.textContent = c==='all' ? articles.length : articles.filter(a=>a.category===c).length;
   });
+  // Conflict badge on nav
+  const cb = document.getElementById('conflictBadge');
+  const count = articles.filter(a=>a.category==='conflict').length;
+  if (cb) { cb.textContent = count; cb.classList.toggle('show', count > 0); }
 }
 
-// ── CORS PROXY CHAIN ──
+// ══ RSS ══
 const PROXIES = [
   url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
   url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
@@ -797,12 +735,12 @@ const RSS_FEEDS = [
 
 function classify(title, desc) {
   const t = (title+' '+desc).toLowerCase();
-  if (/\bukrain|russia.*attack|israel|gaza|hamas|hezbollah|houthi|taiwan.*strait|pla.*exercis|combat|airstrike|offensive|ceasefire|killed|troops.*deploy|red sea.*attack|strike.*iran/.test(t)) return 'conflict';
-  if (/contract|award|idiq|rfp|procurement|\$\d.*[mb]illion|deal.*defense|billion.*contract/.test(t)) return 'contracts';
-  if (/fund|raise|series [a-f]|invest|capital|valuation|startup|venture|ipo/.test(t)) return 'funding';
-  if (/test|trial|demonstrat|prototype|flight test|live fire|exercise|war game|hypersonic.*test/.test(t)) return 'testing';
-  if (/congress|senate|ndaa|budget|policy|pentagon.*plan|legislation|authoriz|appropriat|secdef|white house.*defense/.test(t)) return 'policy';
-  if (/nato|aukus|uk.*defense|australia.*military|japan.*defense|germany.*bundeswehr|france.*military|india.*defense|bilateral|multilateral/.test(t)) return 'international';
+  if (/ukraine|russia.*attack|israel|gaza|hamas|hezbollah|houthi|taiwan.*strait|pla.*exercis|combat|airstrike|offensive|ceasefire|killed in|troops.*deploy|red sea.*attack|strike.*iran|iran.*strike/.test(t)) return 'conflict';
+  if (/\bcontract\b|award|idiq|rfp|procurement|\$[\d.]+\s*(b|m)illion|deal.*defense|billion.*contract|million.*contract/.test(t)) return 'contracts';
+  if (/\bfund|raise|series [a-f]\b|invest|capital|valuation|startup|venture|\bipo\b/.test(t)) return 'funding';
+  if (/\btest\b|trial|demonstrat|prototype|flight test|live fire|war game|hypersonic.*test|mach \d/.test(t)) return 'testing';
+  if (/congress|senate|\bndaa\b|budget.*defense|policy|pentagon.*plan|legislation|authoriz|appropriat|secdef|white house.*defense/.test(t)) return 'policy';
+  if (/\bnato\b|aukus|uk.*defense|australia.*military|japan.*defense|germany.*bundeswehr|france.*military|india.*defense|bilateral|multilateral/.test(t)) return 'international';
   return 'general';
 }
 
@@ -811,15 +749,15 @@ function relTime(dateStr) {
   try {
     const d = new Date(dateStr);
     if (isNaN(d)) return 'Recent';
-    const m = Math.floor((Date.now() - d) / 60000);
-    if (m < 2)    return 'Just now';
-    if (m < 60)   return m+'m ago';
-    if (m < 1440) return Math.floor(m/60)+'h ago';
-    if (m < 2880) return 'Yesterday';
-    const days = Math.floor(m/1440);
-    if (days <= 6)  return days+'d ago';
-    if (days <= 13) return '1 week ago';
-    if (days <= 20) return '2 weeks ago';
+    const m = Math.floor((Date.now()-d)/60000);
+    if (m<2) return 'Just now';
+    if (m<60) return m+'m ago';
+    if (m<1440) return Math.floor(m/60)+'h ago';
+    if (m<2880) return 'Yesterday';
+    const days=Math.floor(m/1440);
+    if (days<=6) return days+'d ago';
+    if (days<=13) return '1 week ago';
+    if (days<=20) return '2 weeks ago';
     return '1 month ago';
   } catch(e) { return 'Recent'; }
 }
@@ -830,10 +768,7 @@ function clean(html) {
     .replace(/\s+/g,' ').trim();
 }
 
-function trunc(str, n) {
-  const s = clean(str);
-  return s.length > n ? s.slice(0,n).replace(/\s\S*$/,'')+'…' : s;
-}
+function trunc(str,n) { const s=clean(str); return s.length>n?s.slice(0,n).replace(/\s\S*$/,'')+'…':s; }
 
 async function tryProxies(feedUrl) {
   for (const makeProxy of PROXIES) {
@@ -841,15 +776,14 @@ async function tryProxies(feedUrl) {
       const res = await fetch(makeProxy(feedUrl), { signal: AbortSignal.timeout(8000) });
       if (!res.ok) continue;
       const raw = await res.text();
-      if (!raw || raw.length < 80) continue;
+      if (!raw||raw.length<80) continue;
       let xmlText = raw;
       if (raw.trimStart().startsWith('{')) {
-        try { const j = JSON.parse(raw); xmlText = j.contents || j.data || raw; } catch { xmlText = raw; }
+        try { const j=JSON.parse(raw); xmlText=j.contents||j.data||raw; } catch { xmlText=raw; }
       }
-      const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
+      const xml = new DOMParser().parseFromString(xmlText,'text/xml');
       if (xml.querySelector('parsererror')) continue;
-      const items = xml.querySelectorAll('item, entry');
-      if (items.length) return xml;
+      if (xml.querySelectorAll('item,entry').length) return xml;
     } catch {}
   }
   return null;
@@ -859,28 +793,15 @@ async function fetchFeed(feed) {
   try {
     const xml = await tryProxies(feed.url);
     if (!xml) return [];
-    const items = Array.from(xml.querySelectorAll('item, entry')).slice(0, 14);
-    return items.map(item => {
+    return Array.from(xml.querySelectorAll('item,entry')).slice(0,14).map(item => {
       const title   = clean(item.querySelector('title')?.textContent||'');
-      const link    = (item.querySelector('link')?.getAttribute('href') || item.querySelector('link')?.textContent || item.querySelector('guid')?.textContent || '').trim();
-      const desc    = item.querySelector('description')?.textContent || item.querySelector('summary')?.textContent || item.querySelector('content')?.textContent || '';
-      const pubDate = item.querySelector('pubDate')?.textContent || item.querySelector('published')?.textContent || item.querySelector('updated')?.textContent || '';
-      const summary = trunc(desc, 280);
-      return {
-        headline: title,
-        summary: summary || 'Read the full story at ' + feed.name,
-        category: classify(title, summary),
-        source: feed.name,
-        time: relTime(pubDate),
-        companies: null, amount: null,
-        url: link,
-        isLive: true,
-        _ts: pubDate ? new Date(pubDate).getTime() : 0
-      };
-    }).filter(a => a.headline.length > 8);
-  } catch(e) {
-    return [];
-  }
+      const link    = (item.querySelector('link')?.getAttribute('href')||item.querySelector('link')?.textContent||item.querySelector('guid')?.textContent||'').trim();
+      const desc    = item.querySelector('description')?.textContent||item.querySelector('summary')?.textContent||item.querySelector('content')?.textContent||'';
+      const pubDate = item.querySelector('pubDate')?.textContent||item.querySelector('published')?.textContent||item.querySelector('updated')?.textContent||'';
+      const summary = trunc(desc,280);
+      return { headline:title, summary:summary||'Read the full story at '+feed.name, category:classify(title,summary), source:feed.name, time:relTime(pubDate), companies:null, amount:null, url:link, isLive:true, _ts:pubDate?new Date(pubDate).getTime():0, _notified:false };
+    }).filter(a=>a.headline.length>8);
+  } catch { return []; }
 }
 
 let sourceCounts = {};
@@ -891,75 +812,75 @@ async function fetchAll() {
   const statusBar = document.getElementById('statusBar');
   const statusText = document.getElementById('statusText');
 
-  btn.disabled = true;
-  loading.style.display = 'flex';
-  document.getElementById('feed').innerHTML = '';
-  document.getElementById('ptrHint').style.display = 'none';
-  statusBar.className = 'status-bar loading';
-  statusText.textContent = 'Fetching live news…';
+  btn.disabled=true;
+  loading.style.display='flex';
+  document.getElementById('feed').innerHTML='';
+  document.getElementById('ptrHint').style.display='none';
+  statusBar.className='status-bar loading';
+  statusText.textContent='Fetching live news…';
 
-  const results = await Promise.allSettled(RSS_FEEDS.map(f => fetchFeed(f)));
-  let articles = [];
-  sourceCounts = {};
-
-  results.forEach((r, i) => {
-    const items = r.status === 'fulfilled' ? r.value : [];
-    sourceCounts[RSS_FEEDS[i].name] = items.length;
-    articles = articles.concat(items);
+  const results = await Promise.allSettled(RSS_FEEDS.map(f=>fetchFeed(f)));
+  let articles=[]; sourceCounts={};
+  results.forEach((r,i) => {
+    const items=r.status==='fulfilled'?r.value:[];
+    sourceCounts[RSS_FEEDS[i].name]=items.length;
+    articles=articles.concat(items);
   });
 
-  // Deduplicate by headline similarity
-  const seen = new Set();
-  articles = articles.filter(a => {
-    const key = a.headline.toLowerCase().slice(0, 60);
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  // Deduplicate
+  const seen=new Set();
+  articles=articles.filter(a=>{ const k=a.headline.toLowerCase().slice(0,55); if(seen.has(k))return false; seen.add(k);return true; });
+  articles.sort((a,b)=>(b._ts||0)-(a._ts||0));
 
-  // Sort newest first
-  articles.sort((a, b) => (b._ts || 0) - (a._ts || 0));
-
-  const ok = Object.values(sourceCounts).filter(c => c > 0).length;
+  const ok=Object.values(sourceCounts).filter(c=>c>0).length;
 
   if (articles.length) {
-    allArticles = articles;
-    statusBar.className = 'status-bar live';
-    statusText.textContent = `${articles.length} stories · ${ok}/${RSS_FEEDS.length} sources · updated ${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
-    document.getElementById('livePillText').textContent = 'LIVE';
-    document.getElementById('sourceStatus').textContent =
-      RSS_FEEDS.map(f => `${f.name}: ${sourceCounts[f.name]||0}`).join(' · ');
+    allArticles=articles;
+    statusBar.className='status-bar live';
+    statusText.textContent=`${articles.length} stories · ${ok}/${RSS_FEEDS.length} sources · ${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;
+    document.getElementById('livePillText').textContent='LIVE';
   } else {
-    allArticles = FALLBACK;
-    statusBar.className = 'status-bar error';
-    statusText.textContent = 'Live feeds unavailable — showing curated news';
-    document.getElementById('livePillText').textContent = 'CACHED';
+    allArticles=FALLBACK;
+    statusBar.className='status-bar error';
+    statusText.textContent='Live feeds unavailable — showing curated news';
+    document.getElementById('livePillText').textContent='CACHED';
   }
 
+  // Update source status in settings
+  document.getElementById('sourceStatus').innerHTML =
+    RSS_FEEDS.map(f=>`<span style="color:${(sourceCounts[f.name]||0)>0?'var(--green)':'var(--red)'}">${(sourceCounts[f.name]||0)>0?'✓':'✗'} ${f.name}: ${sourceCounts[f.name]||0} stories</span>`).join('<br>');
+
   updateCounts(allArticles);
-  loading.style.display = 'none';
+  loading.style.display='none';
   render();
-  btn.disabled = false;
+  btn.disabled=false;
 }
 
-// ── FALLBACK ──
-const FALLBACK = [
-  {headline:"Pentagon Awards Anduril $100M+ Contract for Autonomous Counter-Drone Systems",summary:"The DoD awarded Anduril Industries a major contract deploying Lattice AI and Roadrunner interceptors across bases. The system autonomously detects and neutralizes hostile UAS threats in real time.",category:"contracts",source:"Breaking Defense",time:"Recent",companies:"Anduril Industries",amount:"$100M+",url:"https://breakingdefense.com",isLive:false,_ts:0},
-  {headline:"Shield AI Raises $500M Series F, Valued at $2.8B",summary:"Shield AI closed a $500M round to expand V-BAT production and accelerate Hivemind, which allows aircraft to fly without GPS or human control in contested environments.",category:"funding",source:"Defense One",time:"Recent",companies:"Shield AI",amount:"$500M",url:"https://defenseone.com",isLive:false,_ts:0},
-  {headline:"DARPA Completes Full-Scale Mach 5+ Hypersonic Glide Vehicle Test",summary:"DARPA and AFRL successfully completed a full-range flight test of an air-launched HGV achieving Mach 5+ sustained glide, validating thermal protection and guidance ahead of 2026 evaluation.",category:"testing",source:"Aviation Week",time:"Recent",companies:"DARPA · AFRL · Lockheed Martin",amount:null,url:"https://aviationweek.com",isLive:false,_ts:0},
-  {headline:"DoD Releases Replicator 2.0 RFP for 1,000 Attritable Drones",summary:"DIU issued an RFP seeking 1,000+ low-cost attritable autonomous systems by Q4 2025, emphasizing open-architecture software and sub-$500K unit costs.",category:"policy",source:"C4ISRNET",time:"Recent",companies:"DoD · DIU",amount:null,url:"https://c4isrnet.com",isLive:false,_ts:0},
-  {headline:"Palantir Wins $480M Army AI/ML Extension for Maven Smart System",summary:"Palantir secured a $480M extension to power Maven Smart System, fusing multi-domain sensor data for AI-driven targeting and ISR through FY2027.",category:"contracts",source:"Defense News",time:"Recent",companies:"Palantir · U.S. Army",amount:"$480M",url:"https://defensenews.com",isLive:false,_ts:0},
-  {headline:"Ukraine Claims Major Strike on Russian Black Sea Fleet HQ",summary:"Ukrainian forces struck the Black Sea Fleet headquarters using long-range cruise missiles, causing significant damage to command infrastructure in Sevastopol.",category:"conflict",source:"Reuters",time:"Recent",companies:null,amount:null,url:"https://reuters.com",isLive:false,_ts:0},
-  {headline:"Japan Approves $43B Defense Buildup Including Tomahawks and Hypersonics",summary:"Japan's cabinet approved a ¥6.5T multi-year buildup covering Tomahawk procurement, domestic hypersonic development, and F-35 fleet expansion — Japan's largest defense expansion since WWII.",category:"international",source:"Japan Times",time:"Recent",companies:"JSDF · Raytheon",amount:"$43B",url:"https://japantimes.co.jp",isLive:false,_ts:0},
-  {headline:"Northrop Grumman Wins $2.4B B-21 Raider Low-Rate Initial Production Contract",summary:"Northrop received a $2.4B LRIP contract for the B-21 Raider as it approaches IOC, replacing the B-1 and B-2 as the cornerstone of U.S. strategic airpower.",category:"contracts",source:"Air Force Mag",time:"Recent",companies:"Northrop Grumman · USAF",amount:"$2.4B",url:"https://www.airandspaceforces.com",isLive:false,_ts:0},
-  {headline:"AeroVironment Awarded $180M IDIQ for Switchblade 600 Loitering Munitions",summary:"AeroVironment received a $180M IDIQ for Switchblade 600 systems for U.S. Army and allied partners. The anti-armor munition has 40+ km range and proven combat use in Ukraine.",category:"contracts",source:"Defense News",time:"Recent",companies:"AeroVironment · U.S. Army",amount:"$180M",url:"https://defensenews.com",isLive:false,_ts:0},
-  {headline:"PLA Conducts Largest Taiwan Strait Naval Exercise in a Decade",summary:"The PLAN deployed 40+ vessels simulating amphibious assault and blockade scenarios around Taiwan. The U.S. dispatched a carrier strike group in response.",category:"conflict",source:"Reuters",time:"Recent",companies:"PLA Navy · U.S. Navy",amount:null,url:"https://reuters.com",isLive:false,_ts:0},
-  {headline:"NATO Approves Multi-Domain Command Structure Integrating Space and Cyber",summary:"NATO established a dedicated Space Centre at Ramstein AB and permanent Cyber directorate at SHAPE, formally integrating space and cyber into joint command.",category:"international",source:"Defense News",time:"Recent",companies:"NATO · SHAPE",amount:null,url:"https://defensenews.com",isLive:false,_ts:0},
-  {headline:"NDAA 2026 Draft Mandates Counter-UAS at All CONUS Military Installations",summary:"The draft NDAA requires all continental U.S. bases to implement C-UAS perimeter defense by 2028, creating an estimated $3-5B procurement opportunity.",category:"policy",source:"Breaking Defense",time:"Recent",companies:"DoD · HASC",amount:null,url:"https://breakingdefense.com",isLive:false,_ts:0},
+// ══ FALLBACK ══
+const FALLBACK=[
+  {headline:"Pentagon Awards Anduril $100M+ Contract for Autonomous Counter-Drone Systems",summary:"The DoD awarded Anduril Industries a major contract deploying Lattice AI and Roadrunner interceptors across bases. The system autonomously detects and neutralizes hostile UAS threats in real time.",category:"contracts",source:"Breaking Defense",time:"Recent",companies:"Anduril Industries",amount:"$100M+",url:"https://breakingdefense.com",isLive:false,_ts:0,_notified:false},
+  {headline:"Shield AI Raises $500M Series F, Valued at $2.8B",summary:"Shield AI closed a $500M round to expand V-BAT production and accelerate Hivemind, its autonomous pilot platform that operates without GPS or human control in contested environments.",category:"funding",source:"Defense One",time:"Recent",companies:"Shield AI",amount:"$500M",url:"https://defenseone.com",isLive:false,_ts:0,_notified:false},
+  {headline:"DARPA Completes Full-Scale Mach 5+ Hypersonic Glide Vehicle Test",summary:"DARPA and AFRL successfully completed a full-range HGV flight test achieving Mach 5+ sustained glide, validating thermal protection and guidance accuracy ahead of 2026 operational evaluation.",category:"testing",source:"Aviation Week",time:"Recent",companies:"DARPA · AFRL · Lockheed Martin",amount:null,url:"https://aviationweek.com",isLive:false,_ts:0,_notified:false},
+  {headline:"Palantir Wins $480M Army AI/ML Extension for Maven Smart System",summary:"Palantir secured a $480M extension to power Maven Smart System, fusing multi-domain sensor data for AI-driven targeting and ISR through FY2027.",category:"contracts",source:"Defense News",time:"Recent",companies:"Palantir · U.S. Army",amount:"$480M",url:"https://defensenews.com",isLive:false,_ts:0,_notified:false},
+  {headline:"PLA Conducts Largest Taiwan Strait Naval Exercise in a Decade",summary:"The PLAN deployed 40+ vessels simulating amphibious assault and blockade scenarios. The U.S. dispatched a carrier strike group in response to the exercise.",category:"conflict",source:"Reuters",time:"Recent",companies:"PLA Navy · U.S. Navy",amount:null,url:"https://reuters.com",isLive:false,_ts:0,_notified:false},
+  {headline:"Northrop Grumman Wins $2.4B B-21 Raider LRIP Contract",summary:"Northrop received a $2.4B low-rate initial production contract for the B-21 Raider as it approaches IOC, replacing the B-1 and B-2 as the cornerstone of U.S. strategic airpower.",category:"contracts",source:"Air Force Mag",time:"Recent",companies:"Northrop Grumman · USAF",amount:"$2.4B",url:"https://www.airandspaceforces.com",isLive:false,_ts:0,_notified:false},
+  {headline:"Japan Approves $43B Defense Buildup Including Tomahawks",summary:"Japan's cabinet approved a ¥6.5T multi-year buildup covering Tomahawk procurement, domestic hypersonic development, and F-35 fleet expansion.",category:"international",source:"Japan Times",time:"Recent",companies:"JSDF · Raytheon",amount:"$43B",url:"https://japantimes.co.jp",isLive:false,_ts:0,_notified:false},
+  {headline:"NDAA 2026 Draft Mandates Counter-UAS at All CONUS Bases",summary:"The draft NDAA requires all continental U.S. bases to implement C-UAS perimeter defense by 2028, creating an estimated $3-5B procurement opportunity.",category:"policy",source:"Breaking Defense",time:"Recent",companies:"DoD · HASC",amount:null,url:"https://breakingdefense.com",isLive:false,_ts:0,_notified:false},
 ];
 
-// ── BOOT ──
+// ══ BOOT ══
+renderAlertTags();
+updateSavedBadge();
 setAuto(true);
+
+// Handle URL tab shortcuts (from PWA shortcuts in manifest)
+const urlParams = new URLSearchParams(window.location.search);
+const tabParam = urlParams.get('tab');
+if (tabParam) {
+  const tabBtn = document.querySelector(`[data-cat="${tabParam}"]`);
+  if (tabBtn) setTab(tabParam, tabBtn);
+}
+
 fetchAll();
 </script>
 </body>
