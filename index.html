@@ -73,7 +73,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .search-clear.visible{display:block;}
 
 /* Page offset */
-.page-offset{padding-top:calc(var(--header-h) + var(--tab-h) + 58px);padding-bottom:100px;}
+.page-offset{padding-top:calc(var(--header-h) + var(--tab-h) + 58px);padding-bottom:100px;width:100%;overflow-x:hidden;}
 
 /* Status bar */
 .status-bar{margin:0 14px 12px;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;font-size:12.5px;font-weight:500;transition:all .2s;}
@@ -88,18 +88,18 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .status-refresh:disabled{opacity:.4;}
 
 /* Feed */
-.feed{display:flex;flex-direction:column;gap:0;padding:0 16px;}
+.feed{display:flex;flex-direction:column;gap:0;padding:0 14px;width:100%;}
 
 /* Cards */
-.card{background:var(--card);border:none;outline:1px solid var(--border);border-radius:10px;overflow:hidden;animation:none;box-shadow:0 1px 4px var(--shadow);transition:outline-color .15s,background .15s;display:block;position:relative;text-decoration:none;-webkit-user-select:none;user-select:none;margin-bottom:10px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;animation:none;box-shadow:0 1px 4px var(--shadow);transition:border-color .15s,background .15s;display:block;position:relative;text-decoration:none;-webkit-user-select:none;user-select:none;margin-bottom:10px;width:100%;}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .card:active{background:var(--card-hover);border-color:rgba(56,189,248,.2);transform:scale(.99);transition:transform .1s;}.card:focus{outline:none;}.card:focus-visible{outline:none;}
-.card.alert-match{outline-color:var(--yellow) !important;outline-width:2px;}
-.card.saved-highlight{outline-color:var(--accent) !important;outline-width:2px;}
+.card.alert-match{border-color:var(--yellow) !important;}
+.card.saved-highlight{border-color:var(--accent) !important;}
 .card-accent{height:3px;width:100%;display:block;}
 .accent-general{background:#4a5568;} .accent-conflict{background:var(--conflict);} .accent-contracts{background:var(--accent);}
 .accent-funding{background:var(--green);} .accent-testing{background:var(--yellow);} .accent-policy{background:var(--orange);} .accent-international{background:var(--purple);}
-.card-body{padding:20px 20px 20px 20px;}
+.card-body{padding:20px 20px 20px 20px;width:100%;}
 .card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:13px;}
 .cat-tag{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;font-weight:bold;}
 .t-general{background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.2);}
