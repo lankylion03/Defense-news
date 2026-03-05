@@ -36,7 +36,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 [data-theme="light"] body::before{display:none;}
 
 /* ── HEADER ── */
-.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,12,16,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,12,16,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:transform .25s ease;}
 [data-theme="light"] .header{background:rgba(244,247,251,.95);}
 .header-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:var(--header-h);}
 .logo{display:flex;align-items:baseline;gap:7px;}
@@ -99,8 +99,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .card-accent{height:3px;width:100%;display:block;}
 .accent-general{background:#4a5568;} .accent-conflict{background:var(--conflict);} .accent-contracts{background:var(--accent);}
 .accent-funding{background:var(--green);} .accent-testing{background:var(--yellow);} .accent-policy{background:var(--orange);} .accent-international{background:var(--purple);}
-.card-body{padding:13px 15px 15px;}
-.card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:9px;}
+.card-body{padding:16px 18px 18px;}
+.card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:11px;}
 .cat-tag{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;font-weight:bold;}
 .t-general{background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.2);}
 .t-conflict{background:rgba(255,107,107,.12);color:var(--conflict);border:1px solid rgba(255,107,107,.25);}
@@ -114,9 +114,9 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .live-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;color:var(--green);background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);padding:1px 5px;border-radius:3px;letter-spacing:1px;}
 .live-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease infinite;}
 .alert-badge{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;color:var(--yellow);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);padding:1px 6px;border-radius:3px;letter-spacing:1px;}
-.card-headline{font-family:var(--serif);font-size:17px;color:var(--text-bright);line-height:1.35;margin-bottom:9px;}
+.card-headline{font-family:var(--serif);font-size:17px;color:var(--text-bright);line-height:1.4;margin-bottom:10px;}
 .card-summary{font-size:13.5px;color:var(--text-sub);line-height:1.65;}
-.card-footer{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.card-footer{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap;}
 .card-companies{font-size:12px;color:var(--text-dim);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .card-amount{font-family:var(--mono);font-size:11px;color:var(--green);background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.18);padding:2px 8px;border-radius:4px;white-space:nowrap;}
 .card-actions{display:flex;align-items:center;gap:6px;margin-left:auto;}
@@ -689,9 +689,7 @@ function render() {
         <div class="card-headline">${a.headline}</div>
         <div class="card-summary">${compactMode ? a.summary.split('.')[0]+'.' : a.summary}</div>
         <div class="card-footer">
-          ${a.companies ? `<span class="card-companies">▸ ${a.companies}</span>` : '<span></span>'}
-          ${a.amount    ? `<span class="card-amount">${a.amount}</span>` : ''}
-          <div class="card-actions">
+          <div class="card-actions" style="margin-left:auto;display:flex;align-items:center;gap:6px;">
             ${a.url ? `<a class="card-link" href="${a.url}" target="_blank" onclick="event.stopPropagation()">Read ↗</a>` : ''}
             <button class="save-btn${saved?' saved':''}" onclick="toggleSave('${a.url}',event)" title="${saved?'Remove saved':'Save article'}">🔖</button>
           </div>
@@ -867,6 +865,26 @@ const FALLBACK=[
   {headline:"Japan Approves $43B Defense Buildup Including Tomahawks",summary:"Japan's cabinet approved a ¥6.5T multi-year buildup covering Tomahawk procurement, domestic hypersonic development, and F-35 fleet expansion.",category:"international",source:"Japan Times",time:"Recent",companies:"JSDF · Raytheon",amount:"$43B",url:"https://japantimes.co.jp",isLive:false,_ts:0,_notified:false},
   {headline:"NDAA 2026 Draft Mandates Counter-UAS at All CONUS Bases",summary:"The draft NDAA requires all continental U.S. bases to implement C-UAS perimeter defense by 2028, creating an estimated $3-5B procurement opportunity.",category:"policy",source:"Breaking Defense",time:"Recent",companies:"DoD · HASC",amount:null,url:"https://breakingdefense.com",isLive:false,_ts:0,_notified:false},
 ];
+
+// ══ SCROLL TO HIDE HEADER ══
+let lastScroll = 0;
+let headerHidden = false;
+window.addEventListener('scroll', () => {
+  const current = window.scrollY;
+  const header = document.querySelector('.header');
+  const headerH = header.offsetHeight;
+  if (current <= 10) {
+    header.style.transform = 'translateY(0)';
+    headerHidden = false;
+  } else if (current > lastScroll + 8 && !headerHidden) {
+    header.style.transform = `translateY(-${headerH}px)`;
+    headerHidden = true;
+  } else if (current < lastScroll - 8 && headerHidden) {
+    header.style.transform = 'translateY(0)';
+    headerHidden = false;
+  }
+  lastScroll = current;
+}, { passive: true });
 
 // ══ BOOT ══
 renderAlertTags();
