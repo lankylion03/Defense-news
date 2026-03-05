@@ -91,7 +91,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .feed{display:flex;flex-direction:column;gap:0;padding:0 14px;}
 
 /* Cards */
-.card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;animation:rise .3s ease both;box-shadow:0 1px 4px var(--shadow);transition:border-color .15s,background .15s;display:block;position:relative;text-decoration:none;outline:none;-webkit-user-select:none;user-select:none;margin-bottom:10px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;animation:none;box-shadow:0 1px 4px var(--shadow);transition:border-color .15s,background .15s;display:block;position:relative;text-decoration:none;outline:none;-webkit-user-select:none;user-select:none;margin-bottom:10px;}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .card:active{background:var(--card-hover);border-color:rgba(56,189,248,.2);transform:scale(.99);transition:transform .1s;}.card:focus{outline:none;}.card:focus-visible{outline:none;}
 .card.alert-match{border-color:var(--yellow) !important;border-left:3px solid var(--yellow);}
@@ -497,7 +497,7 @@ function closeSheet(id) { document.getElementById(id).classList.remove('open'); 
 // ══ SETTINGS ══
 function setTheme(light)  { document.documentElement.setAttribute('data-theme', light ? 'light' : 'dark'); }
 function setCompact(v)    { compactMode = v; render(); }
-function scrollToTop()    { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function scrollToTop()    { window.scrollTo({ top: 0, behavior: 'auto' }); }
 function setActiveNav(id) { document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active')); document.getElementById(id)?.classList.add('active'); }
 function setAuto(v) {
   clearInterval(autoTimer);
@@ -509,8 +509,10 @@ function setTab(cat, btn) {
   currentCat = cat;
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  render();
-  scrollToTop();
+  // Clear feed first so mobile Safari doesn't show stale content
+  document.getElementById('feed').innerHTML = '';
+  // Small timeout lets the DOM clear before re-rendering (fixes mobile Safari blank bug)
+  setTimeout(() => { render(); scrollToTop(); }, 16);
 }
 
 // ══ SEARCH ══
@@ -676,7 +678,7 @@ function render() {
     return `
     <a class="card${isAlertMatch?' alert-match':''}${saved?' saved-highlight':''}"
        href="${a.url||'#'}" target="${a.url?'_blank':'_self'}" rel="noopener"
-       style="animation-delay:${Math.min(i*.04,.5)}s">
+       style="animation-delay:0s">
       <div class="card-accent accent-${a.category}"></div>
       <div class="card-body">
         <div class="card-meta">
