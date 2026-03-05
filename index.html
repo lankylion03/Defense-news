@@ -88,15 +88,15 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .status-refresh:disabled{opacity:.4;}
 
 /* Feed */
-.feed{display:flex;flex-direction:column;gap:10px;padding:0 14px;}
+.feed{display:flex;flex-direction:column;gap:0;padding:0 14px;}
 
 /* Cards */
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;animation:rise .3s ease both;box-shadow:0 2px 8px var(--shadow);transition:border-color .15s,background .15s;display:block;position:relative;text-decoration:none;outline:none;-webkit-user-select:none;user-select:none;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;animation:rise .3s ease both;box-shadow:0 2px 8px var(--shadow);transition:border-color .15s,background .15s;display:block;position:relative;text-decoration:none;outline:none;-webkit-user-select:none;user-select:none;margin-bottom:10px;}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .card:active{background:var(--card-hover);border-color:rgba(56,189,248,.2);transform:scale(.99);transition:transform .1s;}.card:focus{outline:none;}.card:focus-visible{outline:none;}
-.card.alert-match{border-color:var(--yellow) !important;box-shadow:0 0 0 1px var(--yellow),0 2px 12px rgba(251,191,36,.15);}
+.card.alert-match{border-color:var(--yellow) !important;box-shadow:0 2px 12px rgba(251,191,36,.12);}
 .card.saved-highlight{border-color:var(--accent) !important;}
-.card-accent{height:3px;width:100%;}
+.card-accent{height:3px;width:100%;display:block;}
 .accent-general{background:#4a5568;} .accent-conflict{background:var(--conflict);} .accent-contracts{background:var(--accent);}
 .accent-funding{background:var(--green);} .accent-testing{background:var(--yellow);} .accent-policy{background:var(--orange);} .accent-international{background:var(--purple);}
 .card-body{padding:13px 15px 15px;}
@@ -204,7 +204,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .push-enable-btn:disabled{opacity:.5;cursor:not-allowed;}
 
 /* ptr hint */
-.ptr-hint{text-align:center;padding:12px;font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:1px;}
+.ptr-hint{text-align:center;padding:12px 12px 4px;font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:1px;}
 
 /* Desktop centering */
 @media(min-width:600px){
@@ -689,11 +689,11 @@ function render() {
         <div class="card-headline">${a.headline}</div>
         <div class="card-summary">${compactMode ? a.summary.split('.')[0]+'.' : a.summary}</div>
         <div class="card-footer">
-          ${a.companies ? `<span class="card-companies">▸ ${a.companies}</span>` : ''}
+          ${a.companies ? `<span class="card-companies">▸ ${a.companies}</span>` : '<span></span>'}
           ${a.amount    ? `<span class="card-amount">${a.amount}</span>` : ''}
           <div class="card-actions">
             ${a.url ? `<a class="card-link" href="${a.url}" target="_blank" onclick="event.stopPropagation()">Read ↗</a>` : ''}
-            <button class="save-btn${saved?' saved':''}" onclick="toggleSave('${a.url}',event)" title="${saved?'Remove saved':'Save article'}">${saved?'🔖':'🔖'}</button>
+            <button class="save-btn${saved?' saved':''}" onclick="toggleSave('${a.url}',event)" title="${saved?'Remove saved':'Save article'}">🔖</button>
           </div>
         </div>
       </div>
